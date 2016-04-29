@@ -10,6 +10,7 @@ rules:
   comma-style: 2
   comma-spacing: 2
   complexity: [1, 9]
+  constructor-super: 0
   curly: [2, multi-line]
   dot-location: [2, property]
   eqeqeq: [2, smart]
