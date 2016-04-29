@@ -1,0 +1,31 @@
+{
+  "name": "edtf",
+  "version": "0.0.1",
+  "description": "Extended Date Time Format (EDTF) Parser and Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inukshuk/edtf.js.git"
+  },
+  "keywords": [
+    "edtf",
+    "date",
+    "time",
+    "parser",
+    "ISO 8601"
+  ],
+  "author": "Sylvester Keil <sylvester@keil.or.at>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/inukshuk/edtf.js/issues"
+  },
+  "homepage": "https://github.com/inukshuk/edtf.js#readme",
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "mocha": "^2.4.5",
+    "nearley": "^2.4.1"
+  }
+}
