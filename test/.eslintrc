@@ -1,0 +1,6 @@
+env:
+  mocha: true
+globals:
+  expect: true
+
+# vi: set ft=yaml

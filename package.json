@@ -23,9 +23,12 @@
     "url": "https://github.com/inukshuk/edtf.js/issues"
   },
   "homepage": "https://github.com/inukshuk/edtf.js#readme",
-  "devDependencies": {
-    "eslint": "^2.9.0",
-    "mocha": "^2.4.5",
+  "dependencies": {
     "nearley": "^2.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.9.0",
+    "mocha": "^2.4.5"
   }
 }
