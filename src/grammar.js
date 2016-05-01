@@ -4,8 +4,6 @@
 function id(x) {return x[0]; }
 
 
-  function zero() { return 0; }
-
   function num(data) { return Number(data.join('')) }
 
   function pick(...args) {
@@ -24,7 +22,7 @@ var grammar = {
     {"name": "year", "symbols": ["positive_year"], "postprocess": id},
     {"name": "year", "symbols": ["negative_year"], "postprocess": id},
     {"name": "year$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "year", "symbols": ["year$string$1"], "postprocess": zero},
+    {"name": "year", "symbols": ["year$string$1"], "postprocess": () => 0},
     {"name": "positive_year", "symbols": ["positive_digit", "digit", "digit", "digit"], "postprocess": num},
     {"name": "positive_year", "symbols": [{"literal":"0"}, "positive_digit", "digit", "digit"], "postprocess": data => num(data.slice(1))},
     {"name": "positive_year$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},

@@ -2,8 +2,6 @@
 
 @{%
 
-  function zero() { return 0; }
-
   function num(data) { return Number(data.join('')) }
 
   function pick(...args) {
@@ -28,7 +26,7 @@ L0 -> year           {% data => ({ values: data }) %}
 
 year -> positive_year {% id %}
       | negative_year {% id %}
-      | "0000"        {% zero %}
+      | "0000"        {% () => 0 %}
 
 positive_year -> positive_digit digit digit digit {% num  %}
                | "0" positive_digit digit digit   {% data => num(data.slice(1)) %}
