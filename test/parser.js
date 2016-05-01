@@ -34,6 +34,12 @@ describe('parser', () => {
 
       expect(() => p('2016-05-00')).to.be.rejected
       expect(() => p('2016-05-32')).to.be.rejected
+      expect(() => p('2016-02-30')).to.be.rejected
+      expect(() => p('2016-02-31')).to.be.rejected
+      expect(() => p('2016-04-31')).to.be.rejected
+      expect(() => p('2016-06-31')).to.be.rejected
+      expect(() => p('2016-09-31')).to.be.rejected
+      expect(() => p('2016-11-31')).to.be.rejected
     })
   })
 })
