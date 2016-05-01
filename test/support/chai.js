@@ -56,6 +56,20 @@ chai.use(function (_, utils) {
     expect(date.getUTCTime()).to.eql(expected)
   }
 
+  function ymd(expected) {
+    const date = utils.flag(this, 'object')
+    expect(date.getUTCFullYear()).to.eql(expected[0])
+    expect(date.getUTCMonth()).to.eql(expected[1])
+    expect(date.getUTCDate()).to.eql(expected[2])
+  }
+
+  function hms(expected) {
+    const date = utils.flag(this, 'object')
+    expect(date.getUTCHours()).to.eql(expected[0])
+    expect(date.getUTCMinutes()).to.eql(expected[1])
+    expect(date.getUTCSeconds()).to.eql(expected[2])
+  }
+
   Assertion.addChainableMethod('year', year)
   Assertion.addChainableMethod('years', year)
 
@@ -78,4 +92,6 @@ chai.use(function (_, utils) {
   Assertion.addChainableMethod('milliseconds', ms)
 
   Assertion.addChainableMethod('time', time)
+  Assertion.addChainableMethod('ymd', ymd)
+  Assertion.addChainableMethod('hms', hms)
 })
