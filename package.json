@@ -4,8 +4,9 @@
   "description": "Extended Date Time Format (EDTF) Parser and Library",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src test",
     "grammar": "nearleyc -o src/grammar.js src/edtf.ne || true",
-    "test": "mocha"
+    "test": "npm run lint && mocha"
   },
   "repository": {
     "type": "git",
