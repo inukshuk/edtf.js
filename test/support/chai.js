@@ -95,8 +95,12 @@ chai.use(function (_, utils) {
   Assertion.addChainableMethod('ymd', ymd)
   Assertion.addChainableMethod('hms', hms)
 
-  Assertion.addChainableMethod('yield', function (expected) {
+  Assertion.addChainableMethod('produce', function (expected) {
     const res = utils.flag(this, 'object')
     expect(res).to.have.property('values').and.eql(expected)
+  })
+
+  Assertion.addProperty('rejected', function () {
+    expect(utils.flag(this, 'object')).to.throw('No possible parsings')
   })
 })
