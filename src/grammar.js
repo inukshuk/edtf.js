@@ -13,7 +13,7 @@ function id(x) {return x[0]; }
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L1"], "postprocess": id},
-    {"name": "L1", "symbols": ["year"], "postprocess": id},
+    {"name": "L1", "symbols": ["year"], "postprocess": function (d) { return { values: d } }},
     {"name": "year", "symbols": ["positive_year"], "postprocess": id},
     {"name": "year", "symbols": ["negative_year"], "postprocess": id},
     {"name": "year$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},

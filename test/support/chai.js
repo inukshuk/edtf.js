@@ -94,4 +94,9 @@ chai.use(function (_, utils) {
   Assertion.addChainableMethod('time', time)
   Assertion.addChainableMethod('ymd', ymd)
   Assertion.addChainableMethod('hms', hms)
+
+  Assertion.addChainableMethod('yield', function (expected) {
+    const res = utils.flag(this, 'object')
+    expect(res).to.have.property('values').and.eql(expected)
+  })
 })

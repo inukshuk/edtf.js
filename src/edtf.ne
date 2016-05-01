@@ -16,7 +16,7 @@ edtf -> L1 {% id %}
 
 # --- Level 1 ---
 
-L1 -> year {% id %}
+L1 -> year {% function (d) { return { values: d } } %}
 
 year -> positive_year {% id %}
       | negative_year {% id %}
