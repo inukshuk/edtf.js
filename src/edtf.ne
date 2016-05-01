@@ -35,7 +35,7 @@ positive_year -> positive_digit digit digit digit {% num  %}
                | "00" positive_digit digit        {% data => num(data.slice(1)) %}
                | "000" positive_digit             {% data => num(data.slice(1)) %}
 
-negative_year -> "-" positive_year {% function (d) { return -d[1] } %}
+negative_year -> "-" positive_year {% data => -data[1] %}
 
 year_month -> year "-" month {% pick(0, 2) %}
 

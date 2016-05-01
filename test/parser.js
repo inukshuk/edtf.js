@@ -15,8 +15,25 @@ describe('parser', () => {
     it('00YY', () => expect(p('0023')).to.yield([23]))
     it('000Y', () => expect(p('0007')).to.yield([7]))
 
-    it('YYYY-MM', () => expect(p('2016-05')).to.yield([2016, 5]))
-    it('YYYY-MM-DD', () => expect(p('2016-05-01')).to.yield([2016, 5, 1]))
+    it('YYYY-MM', () => {
+      expect(p('2016-05')).to.yield([2016, 5])
+      expect(p('2016-01')).to.yield([2016, 1])
+      expect(p('2016-12')).to.yield([2016, 12])
+
+      expect(() => p('2016-13')).to.throw('No possible parsings')
+      expect(() => p('2016-00')).to.throw('No possible parsings')
+    })
+
+    it('YYYY-MM-DD', () => {
+      expect(p('2016-05-01')).to.yield([2016, 5, 1])
+      expect(p('2016-05-13')).to.yield([2016, 5, 13])
+      expect(p('2016-05-29')).to.yield([2016, 5, 29])
+      expect(p('2016-05-30')).to.yield([2016, 5, 30])
+      expect(p('2016-05-31')).to.yield([2016, 5, 31])
+
+      expect(() => p('2016-05-00')).to.throw('No possible parsings')
+      expect(() => p('2016-05-32')).to.throw('No possible parsings')
+    })
   })
 })
 

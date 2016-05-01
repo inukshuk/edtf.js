@@ -31,7 +31,7 @@ var grammar = {
     {"name": "positive_year", "symbols": ["positive_year$string$1", "positive_digit", "digit"], "postprocess": data => num(data.slice(1))},
     {"name": "positive_year$string$2", "symbols": [{"literal":"0"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "positive_year", "symbols": ["positive_year$string$2", "positive_digit"], "postprocess": data => num(data.slice(1))},
-    {"name": "negative_year", "symbols": [{"literal":"-"}, "positive_year"], "postprocess": function (d) { return -d[1] }},
+    {"name": "negative_year", "symbols": [{"literal":"-"}, "positive_year"], "postprocess": data => -data[1]},
     {"name": "year_month", "symbols": ["year", {"literal":"-"}, "month"], "postprocess": pick(0, 2)},
     {"name": "month", "symbols": ["d01_12"], "postprocess": id},
     {"name": "year_month_day", "symbols": ["year_month", {"literal":"-"}, "day"], "postprocess": pick(0, 2)},
