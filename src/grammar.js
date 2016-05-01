@@ -31,7 +31,7 @@ var grammar = {
     {"name": "positive_year", "symbols": ["positive_year$string$2", "positive_digit"], "postprocess": data => num(data.slice(1))},
     {"name": "negative_year", "symbols": [{"literal":"-"}, "positive_year"], "postprocess": data => -data[1]},
     {"name": "year_month", "symbols": ["year", {"literal":"-"}, "month"], "postprocess": pick(0, 2)},
-    {"name": "month", "symbols": ["d01_12"], "postprocess": id},
+    {"name": "month", "symbols": ["d01_12"], "postprocess": data => data[0] - 1},
     {"name": "year_month_day", "symbols": ["year_month", {"literal":"-"}, "day"], "postprocess": pick(0, 2)},
     {"name": "day", "symbols": ["d01_31"], "postprocess": id},
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},

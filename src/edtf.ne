@@ -37,7 +37,7 @@ negative_year -> "-" positive_year {% data => -data[1] %}
 
 year_month -> year "-" month {% pick(0, 2) %}
 
-month -> d01_12 {% id %}
+month -> d01_12 {% data => data[0] - 1 %}
 
 year_month_day -> year_month "-" day {% pick(0, 2) %}
 

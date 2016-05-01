@@ -17,20 +17,20 @@ describe('parser', () => {
     it('0000', () => expect(p('0000')).to.produce([0]))
 
     it('YYYY-MM', () => {
-      expect(p('2016-05')).to.produce([2016, 5])
-      expect(p('2016-01')).to.produce([2016, 1])
-      expect(p('2016-12')).to.produce([2016, 12])
+      expect(p('2016-05')).to.produce([2016, 4])
+      expect(p('2016-01')).to.produce([2016, 0])
+      expect(p('2016-12')).to.produce([2016, 11])
 
       expect(() => p('2016-13')).to.be.rejected
       expect(() => p('2016-00')).to.be.rejected
     })
 
     it('YYYY-MM-DD', () => {
-      expect(p('2016-05-01')).to.produce([2016, 5, 1])
-      expect(p('2016-05-13')).to.produce([2016, 5, 13])
-      expect(p('2016-05-29')).to.produce([2016, 5, 29])
-      expect(p('2016-05-30')).to.produce([2016, 5, 30])
-      expect(p('2016-05-31')).to.produce([2016, 5, 31])
+      expect(p('2016-05-01')).to.produce([2016, 4, 1])
+      expect(p('2016-05-13')).to.produce([2016, 4, 13])
+      expect(p('2016-05-29')).to.produce([2016, 4, 29])
+      expect(p('2016-05-30')).to.produce([2016, 4, 30])
+      expect(p('2016-05-31')).to.produce([2016, 4, 31])
 
       expect(() => p('2016-05-00')).to.be.rejected
       expect(() => p('2016-05-32')).to.be.rejected
