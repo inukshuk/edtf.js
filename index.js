@@ -2,8 +2,8 @@
 
 const ExtDate = require('./src/date')
 
-function edtf(input) {
-  return new ExtDate(input)
+function edtf(...args) {
+  return new ExtDate(...args)
 }
 
 
