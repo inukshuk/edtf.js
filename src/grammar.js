@@ -6,23 +6,29 @@ function id(x) {return x[0]; }
 
   function num(data) { return Number(data.join('')) }
 
+  function zero() { return 0 }
+
   function pick(...args) {
     return args.length === 1 ?
       data => data[args[0]] :
       data => args.reduce((a, i) => a.concat(data[i]), [])
   }
 
+  function merge(...args) {
+    return data => args.reduce((a, i) => Object.assign(a, data[i]), {})
+  }
 
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
-    {"name": "L0", "symbols": ["year"], "postprocess": data => ({ values: data })},
-    {"name": "L0", "symbols": ["year_month"], "postprocess": data => ({ values: data[0] })},
-    {"name": "L0", "symbols": ["year_month_day"], "postprocess": data => ({ values: data[0] })},
+    {"name": "L0", "symbols": ["date"], "postprocess": id},
+    {"name": "date", "symbols": ["year"], "postprocess": data => ({ values: data })},
+    {"name": "date", "symbols": ["year_month"], "postprocess": data => ({ values: data[0] })},
+    {"name": "date", "symbols": ["year_month_day"], "postprocess": data => ({ values: data[0] })},
     {"name": "year", "symbols": ["positive_year"], "postprocess": id},
     {"name": "year", "symbols": ["negative_year"], "postprocess": id},
     {"name": "year$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "year", "symbols": ["year$string$1"], "postprocess": () => 0},
+    {"name": "year", "symbols": ["year$string$1"], "postprocess": zero},
     {"name": "positive_year", "symbols": ["positive_digit", "digit", "digit", "digit"], "postprocess": num},
     {"name": "positive_year", "symbols": [{"literal":"0"}, "positive_digit", "digit", "digit"], "postprocess": data => num(data.slice(1))},
     {"name": "positive_year$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
