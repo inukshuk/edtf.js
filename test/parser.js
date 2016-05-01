@@ -10,11 +10,13 @@ describe('parser', () => {
     expect(parser()).to.be.instanceof(Parser))
 
   describe('recognizes', () => {
-
     it('YYYY', () => expect(p('2016')).to.yield([2016]))
     it('0YYY', () => expect(p('0409')).to.yield([409]))
     it('00YY', () => expect(p('0023')).to.yield([23]))
     it('000Y', () => expect(p('0007')).to.yield([7]))
+
+    it('YYYY-MM', () => expect(p('2016-05')).to.yield([2016, 5]))
+    it('YYYY-MM-DD', () => expect(p('2016-05-01')).to.yield([2016, 5, 1]))
   })
 })
 
