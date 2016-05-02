@@ -9,7 +9,12 @@
   function pick(...args) {
     return args.length === 1 ?
       data => data[args[0]] :
-      data => args.reduce((a, i) => a.concat(data[i]), [])
+      data => concat(data, args)
+  }
+
+  function concat(data, idx = data.keys()) {
+    return Array.from(idx)
+      .reduce((memo, i) => data[i] !== null ? memo.concat(data[i]) : memo, [])
   }
 
   function merge(...args) {
@@ -26,6 +31,7 @@ edtf -> L0 {% id %}
 # --- Level 0 / ISO 8601 Rules ---
 
 L0 -> date      {% id %}
+    | datetime  {% id %}
 
 date -> year           {% data => ({ values: data }) %}
       | year_month     {% data => ({ values: data[0] }) %}
@@ -54,10 +60,37 @@ month_day -> m31 "-" day    {% pick(0, 2) %}
 
 day -> d01_31 {% id %}
 
+datetime -> date "T" time (timezone):?
+  {%
+    data => ({ values: concat(data, [0, 2]), offset: data[3] })
+  %}
+
+time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}
+      | "24:00:00"                                 {% () => [24, 0, 0] %}
+
+hours   -> d00_23 {% id %}
+minutes -> d00_59 {% id %}
+seconds -> d00_59 {% id %}
+
+milliseconds -> null
+              | "." digit digit digit {% data => num(data.slice(1)) %}
+
+timezone -> "Z"                 {% zero %}
+          | "-" offset          {% data => -data[1] %}
+          | "+" positive_offset {% pick(1) %}
+
+positive_offset -> offset  {% id %}
+                 | "00:00" {% zero %}
+
+offset -> d01_13 ":" minutes {% data => data[0] * 60 + data[2] %}
+        | "14:00"            {% () => 840 %}
+        | "00:" d01_59       {% pick(1) %}
+
+
 # --- Base Definitions ---
 
 digit -> positive_digit {% id %}
-       | "0"            {% num %}
+       | "0"            {% zero %}
 
 positive_digit -> [1-9] {% num %}
 
@@ -67,11 +100,27 @@ m30 -> ("04"|"06"|"09"|"11")                {% data => num(data) - 1 %}
 d01_12 -> "0" positive_digit {% pick(1) %}
         | "1" [0-2]          {% num %}
 
+d01_13 -> d01_12 {% id %}
+        | "13"   {% () => 13 %}
+
+d00_23 -> "00"   {% zero %}
+        | d01_23 {% id %}
+
+d01_23 -> "0" positive_digit {% pick(1) %}
+        | "1" digit          {% num %}
+        | "2" [0-3]          {% num %}
+
 d01_29 -> "0" positive_digit {% pick(1) %}
         | [1-2] digit        {% num %}
 
 d01_30 -> d01_29 {% id  %}
-        | "30"   {% num %}
+        | "30"   {% () => 30 %}
 
 d01_31 -> d01_30 {% id  %}
-        | "31"   {% num %}
+        | "31"   {% () => 31 %}
+
+d00_59 -> "00"   {% zero %}
+        | d01_59 {% id %}
+
+d01_59 -> d01_29      {% id %}
+        | [345] digit {% num %}
