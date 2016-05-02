@@ -62,7 +62,7 @@ day -> d01_31 {% id %}
 
 datetime -> date "T" time (timezone):?
   {%
-    data => ({ values: concat(data, [0, 2]), offset: data[3] })
+    data => ({ values: data[0].values.concat(data[2]), offset: data[3] })
   %}
 
 time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}

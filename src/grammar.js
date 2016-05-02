@@ -54,7 +54,7 @@ var grammar = {
     {"name": "datetime$ebnf$1", "symbols": ["datetime$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "datetime$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "datetime", "symbols": ["date", {"literal":"T"}, "time", "datetime$ebnf$1"], "postprocess": 
-        data => ({ values: concat(data, [0, 2]), offset: data[3] })
+        data => ({ values: data[0].values.concat(data[2]), offset: data[3] })
           },
     {"name": "time", "symbols": ["hours", {"literal":":"}, "minutes", {"literal":":"}, "seconds", "milliseconds"], "postprocess": pick(0, 2, 4, 5)},
     {"name": "time$string$1", "symbols": [{"literal":"2"}, {"literal":"4"}, {"literal":":"}, {"literal":"0"}, {"literal":"0"}, {"literal":":"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},

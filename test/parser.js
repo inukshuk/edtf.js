@@ -41,6 +41,26 @@ describe('parser', () => {
       expect(() => p('2016-09-31')).to.be.rejected
       expect(() => p('2016-11-31')).to.be.rejected
     })
+
+    it('YYYY-MM-DDTHH:MM:SS', () => {
+      expect(p('2016-05-02T16:54:59'))
+        .to.produce([2016, 4, 2, 16, 54, 59])
+      expect(p('2016-05-02T16:54:59.042'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42])
+      expect(p('2016-05-02T24:00:00'))
+        .to.produce([2016, 4, 2, 24, 0, 0])
+
+      expect(() => p('2016-05-02T24:00:01')).to.be.rejected
+      expect(() => p('2016-05-02T00:61:00')).to.be.rejected
+      expect(() => p('2016-05-02T01:01:60')).to.be.rejected
+    })
+
+    it('YYYY-MM-DDTHH:MM:SSZ', () => {
+      expect(p('2016-05-02T16:54:59Z'))
+        .to.produce([2016, 4, 2, 16, 54, 59])
+      expect(p('2016-05-02T16:54:59.042Z'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42])
+    })
   })
 })
 
