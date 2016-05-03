@@ -10,11 +10,19 @@ describe('parser', () => {
     expect(parser()).to.be.instanceof(Parser))
 
   describe('recognizes', () => {
-    it('YYYY', () => expect(p('2016')).to.produce([2016]))
-    it('0YYY', () => expect(p('0409')).to.produce([409]))
-    it('00YY', () => expect(p('0023')).to.produce([23]))
-    it('000Y', () => expect(p('0007')).to.produce([7]))
-    it('0000', () => expect(p('0000')).to.produce([0]))
+    it('YYYY', () => {
+      expect(p('2016')).to.produce([2016])
+      expect(p('0409')).to.produce([409])
+      expect(p('0023')).to.produce([23])
+      expect(p('0007')).to.produce([7])
+      expect(p('0000')).to.produce([0])
+      expect(p('9999')).to.produce([9999])
+      expect(p('-0002')).to.produce([-2])
+      expect(p('-9999')).to.produce([-9999])
+
+      expect(() => p('-0000')).to.be.rejected
+      expect(() => p('12345')).to.be.rejected
+    })
 
     it('YYYY-MM', () => {
       expect(p('2016-05')).to.produce([2016, 4])
