@@ -2,7 +2,7 @@
 
 class X {
   constructor(value = 0) {
-    this.value = value
+    this.value = X.convert(value)
   }
 
   is(value = 0) {
@@ -16,6 +16,10 @@ class X {
 
   reset(value = 0) {
     return (this.value = X.convert(value)), this
+  }
+
+  static is(a, b) {
+    return this.convert(a) & this.convert(b)
   }
 
   static convert(value = 0) {

@@ -13,6 +13,22 @@ describe('x', () => {
     expect(x.is('year')).to.be.zero
   })
 
+  it('static equality', () => {
+    expect(X.is(true, true)).to.be.ok
+    expect(X.is(true, 'day')).to.be.ok
+    expect(X.is(true, 'month')).to.be.ok
+    expect(X.is(true, 'year')).to.be.ok
+
+    expect(X.is('day', 'day')).to.be.ok
+    expect(X.is('month', 'month')).to.be.ok
+    expect(X.is('year', 'year')).to.be.ok
+
+    expect(X.is('year', 'day')).to.be.zero
+    expect(X.is('year', 'month')).to.be.zero
+
+    expect(X.is(false, false)).to.be.zero
+  })
+
   it('day', () => {
     x.set(X.day)
     expect(x.is('day')).to.be.ok

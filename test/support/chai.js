@@ -3,6 +3,7 @@
 const edtf = require('../..')
 const chai = require('chai')
 
+const { X } = edtf
 const { expect, Assertion } = chai
 
 global.expect = expect
@@ -71,20 +72,22 @@ chai.use(function (_, utils) {
     expect(date.getUTCSeconds()).to.eql(expected[2])
   }
 
-  function uncertain(expected) {
-    const res = utils.flag(this, 'object')
-    expect(res).to.have.property('uncertain', expected || true)
+  function uncertain(expected = true) {
+    expect(utils.flag(this, 'object'))
+      .to.have.property('uncertain')
+      .and.satisfy(x => X.is(x, expected) !== 0)
   }
 
-  function approximate(expected) {
-    const res = utils.flag(this, 'object')
-    expect(res).to.have.property('approximate', expected || true)
+  function approximate(expected = true) {
+    expect(utils.flag(this, 'object'))
+      .to.have.property('approximate')
+      .and.satisfy(x => X.is(x, expected) !== 0)
   }
 
-  function unspecified(expected) {
+  function unspecified(expected = true) {
     expect(utils.flag(this, 'object'))
       .to.have.property('unspecified')
-      .and.satisfy(x => x.is(expected || 0))
+      .and.satisfy(x => X.is(x, expected) !== 0)
   }
 
 
