@@ -61,6 +61,27 @@ describe('parser', () => {
       expect(p('2016-05-02T16:54:59.042Z'))
         .to.produce([2016, 4, 2, 16, 54, 59, 42])
     })
+
+    it('YYYY-MM-DDTHH:MM:SS[+-]HH:MM', () => {
+      expect(p('2016-05-02T16:54:59+02:30'))
+        .to.produce([2016, 4, 2, 16, 54, 59])
+        .and.have.property('offset', 150)
+
+      expect(p('2016-05-02T16:54:59+00:00')).to.have.property('offset', 0)
+      expect(p('2016-05-02T16:54:59+14:00')).to.have.property('offset', 840)
+      expect(p('2016-05-02T16:54:59+13:30')).to.have.property('offset', 810)
+      expect(p('2016-05-02T16:54:59+12:00')).to.have.property('offset', 720)
+      expect(p('2016-05-02T16:54:59+04:10')).to.have.property('offset', 250)
+      expect(p('2016-05-02T16:54:59-00:15')).to.have.property('offset', -15)
+      expect(p('2016-05-02T16:54:59-11:59')).to.have.property('offset', -719)
+      expect(p('2016-05-02T16:54:59-12:00')).to.have.property('offset', -720)
+
+      expect(() => p('2016-05-02T12:00:00-00:00')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00-12:01')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00-13:00')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00-14:00')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00+14:01')).to.be.rejected
+    })
   })
 })
 

@@ -60,7 +60,7 @@ month_day -> m31 "-" day    {% pick(0, 2) %}
 
 day -> d01_31 {% id %}
 
-datetime -> date "T" time (timezone):?
+datetime -> date "T" time (timezone {% id %}):?
   {%
     data => ({ values: data[0].values.concat(data[2]), offset: data[3] })
   %}
@@ -79,12 +79,14 @@ timezone -> "Z"                 {% zero %}
           | "-" offset          {% data => -data[1] %}
           | "+" positive_offset {% pick(1) %}
 
-positive_offset -> offset  {% id %}
-                 | "00:00" {% zero %}
+positive_offset -> offset                  {% id %}
+                 | "00:00"                 {% zero %}
+                 | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
+                 | "14:00"                 {% () => 840 %}
 
-offset -> d01_13 ":" minutes {% data => data[0] * 60 + data[2] %}
-        | "14:00"            {% () => 840 %}
+offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
         | "00:" d01_59       {% pick(1) %}
+        | "12:00"            {% () => 720 %}
 
 
 # --- Base Definitions ---
@@ -97,8 +99,11 @@ positive_digit -> [1-9] {% num %}
 m31 -> ("01"|"03"|"05"|"07"|"08"|"10"|"12") {% data => num(data) - 1 %}
 m30 -> ("04"|"06"|"09"|"11")                {% data => num(data) - 1 %}
 
-d01_12 -> "0" positive_digit {% pick(1) %}
-        | "1" [0-2]          {% num %}
+d01_11 -> "0" positive_digit {% pick(1) %}
+        | "1" [0-1]          {% num %}
+
+d01_12 -> d01_11 {% id %}
+        | "12"   {% () => 12 %}
 
 d01_13 -> d01_12 {% id %}
         | "13"   {% () => 13 %}
