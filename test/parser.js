@@ -118,7 +118,7 @@ describe('parser', () => {
 
     it('YYYY-XX', () =>
       expect(p('2016-XX'))
-        .to.produce(2016)
+        .to.produce([2016])
         .and.have.unspecified('month')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('year'))
