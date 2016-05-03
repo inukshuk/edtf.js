@@ -1,26 +1,7 @@
 # http://www.loc.gov/standards/datetime
 
 @{%
-
-  function num(data) { return Number(data.join('')) }
-
-  function zero() { return 0 }
-
-  function pick(...args) {
-    return args.length === 1 ?
-      data => data[args[0]] :
-      data => concat(data, args)
-  }
-
-  function concat(data, idx = data.keys()) {
-    return Array.from(idx)
-      .reduce((memo, i) => data[i] !== null ? memo.concat(data[i]) : memo, [])
-  }
-
-  function merge(...args) {
-    return data => args.reduce((a, i) => Object.assign(a, data[i]), {})
-  }
-
+  const { num, zero, pick, concat, merge } = require('./util')
 %}
 
 edtf -> L0 {% id %}
