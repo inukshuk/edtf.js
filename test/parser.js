@@ -109,17 +109,55 @@ describe('parser', () => {
       expect(p('2016-05-03%')).to.approximate.and.uncertain
     })
 
-    it('XXXX-XX-XX', () => {
+    it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
-        .to.produce([2016, 4]).and.have.unspecified('day')
+        .to.produce([2016, 4])
+        .and.have.unspecified('day')
         .and.not.have.unspecified('month')
-        .and.not.have.unspecified('year')
+        .and.not.have.unspecified('year'))
 
+    it('YYYY-XX', () =>
       expect(p('2016-XX'))
-        .to.produce(2016).and.be.unspecified('month')
+        .to.produce(2016)
+        .and.have.unspecified('month')
         .and.not.have.unspecified('day')
-        .and.not.have.unspecified('year')
-    })
+        .and.not.have.unspecified('year'))
+
+    it('XXXX', () =>
+      expect(p('XXXX'))
+        .to.produce([])
+        .and.have.unspecified('year')
+        .and.not.have.unspecified('day')
+        .and.not.have.unspecified('month'))
+
+    it('YYXX', () =>
+      expect(p('19XX'))
+        .to.produce([1900])
+        .and.have.unspecified('year')
+        .and.not.have.unspecified('day')
+        .and.not.have.unspecified('month'))
+
+    it('YYYX', () =>
+      expect(p('198X'))
+        .to.produce([1980])
+        .and.have.unspecified('year')
+        .and.not.have.unspecified('day')
+        .and.not.have.unspecified('month'))
+
+    it('XXXX-XX', () =>
+      expect(p('XXXX-XX'))
+        .to.produce([])
+        .and.have.unspecified('year')
+        .and.have.unspecified('month')
+        .and.not.have.unspecified('day'))
+
+    it('XXXX-XX-XX', () =>
+      expect(p('XXXX-XX-XX'))
+        .to.produce([])
+        .and.have.unspecified('year')
+        .and.have.unspecified('month')
+        .and.have.unspecified('day'))
+
   })
 })
 

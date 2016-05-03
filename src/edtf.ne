@@ -84,9 +84,9 @@ L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: X.d }) 
      | "XXXX-XX-XX"          {% data => ({ values: [], unspecified: X.ymd }) %}
      | year "-XX"            {% data => ({ values: data[0], unspecified: X.m }) %}
      | "XXXX-XX"             {% data => ({ values: [], unspecified: X.ym }) %}
-     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.yyxx }) %}
-     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.yyyx }) %}
-     | "XXXX"                {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.xxxx }) %}
+     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: X.yyxx }) %}
+     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: X.yyyx }) %}
+     | "XXXX"                {% data => ({ values: [], unspecified: X.xxxx }) %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
