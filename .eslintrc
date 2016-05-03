@@ -9,7 +9,7 @@ rules:
   brace-style: [2, 1tbs, { allowSingleLine: true }]
   comma-style: 2
   comma-spacing: 2
-  complexity: [1, 9]
+  complexity: [1, 10]
   constructor-super: 0
   curly: [2, multi-line]
   dot-location: [2, property]

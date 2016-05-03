@@ -4,6 +4,7 @@ const edtf = require('../..')
 const chai = require('chai')
 
 const { expect, Assertion } = chai
+
 global.expect = expect
 
 chai.use(function (_, utils) {
@@ -80,6 +81,12 @@ chai.use(function (_, utils) {
     expect(res).to.have.property('approximate', expected || true)
   }
 
+  function unspecified(expected) {
+    expect(utils.flag(this, 'object'))
+      .to.have.property('unspecified')
+      .and.satisfy(x => x.is(expected || 0))
+  }
+
 
   Assertion.addChainableMethod('year', year)
   Assertion.addChainableMethod('years', year)
@@ -117,4 +124,5 @@ chai.use(function (_, utils) {
 
   Assertion.addChainableMethod('uncertain', uncertain, uncertain)
   Assertion.addChainableMethod('approximate', approximate, approximate)
+  Assertion.addChainableMethod('unspecified', unspecified, unspecified)
 })

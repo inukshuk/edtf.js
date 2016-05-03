@@ -5,18 +5,39 @@ class X {
     this.value = value
   }
 
-  unspecified(query = 0) {
-    return this.value & this.convert(query)
+  is(value = 0) {
+    return this.value & X.convert(value)
   }
 
-  convert(value = 0) {
+
+  set(value = 0) {
+    return this.reset(this.value | value)
+  }
+
+  reset(value = 0) {
+    return (this.value = X.convert(value)), this
+  }
+
+  static convert(value = 0) {
+    value = value || 0
+
     switch (typeof value) {
       case 'number': return value
 
+      case 'boolean': return value ? X.ymd : 0
+
       case 'string':
-        if ((/^day/).test(value)) return X.day
-        if ((/^month/).test(value)) return X.month
-        if ((/^year/).test(value)) return X.year
+        if ((/^day/i).test(value)) return X.day
+        if ((/^month/i).test(value)) return X.month
+        if ((/^year/i).test(value)) return X.year
+
+        if ((/^[yx]{4}[mx][mx][dx][dx]$/i).test(value)) {
+          return value
+            .split('')
+            .reduce((memo, x, idx) =>
+                (memo | (x === 'x' || x === 'X') ? Math.pow(2, idx) : 0), 0)
+        }
+
         // fall through!
 
       default:
@@ -26,16 +47,16 @@ class X {
 }
 
 
-X.day   = X.d = 0x00000011
-X.month = X.m = 0x00001100
-X.year  = X.y = 0x11110000
+X.day   = X.d = X.convert('yyyymmxx')
+X.month = X.m = X.convert('yyyyxxdd')
+X.year  = X.y = X.convert('xxxxmmdd')
 
 X.md  = X.m | X.d
 X.ymd = X.y | X.md
 X.ym  = X.y | X.m
 
-X.yyxx = 0x00110000
-X.yyyx = 0x00010000
-X.xxxx = 0x11110000
+X.yyxx = X.convert('yyxxmmdd')
+X.yyyx = X.convert('yyyxmmdd')
+X.xxxx = X.convert('xxxxmmdd')
 
 module.exports = X
