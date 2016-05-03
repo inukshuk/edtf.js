@@ -2,6 +2,7 @@
 
 @{%
   const { num, zero, pick, concat, merge } = require('./util')
+  const X = require('./x')
 %}
 
 edtf -> L0 {% id %}
@@ -75,16 +76,17 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
-L1 -> date UA     {% merge(0, 1) %}
-    | unspecified
+L1 -> date UA          {% merge(0, 1) %}
+    | L1X              {% id %}
 
-unspecified -> year_month "-XX"
-             | year "-XX-XX"
-             | "XXXX-XX-XX"
-             | year "-XX"
-             | digit digit "XX"
-             | digit digit digit "X"
-             | "XXXX-XX"
+L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: X.d }) %}
+     | year "-XX-XX"         {% data => ({ values: data[0], unspecified: X.md }) %}
+     | "XXXX-XX-XX"          {% data => ({ values: [], unspecified: X.ymd }) %}
+     | year "-XX"            {% data => ({ values: data[0], unspecified: X.m }) %}
+     | "XXXX-XX"             {% data => ({ values: [], unspecified: X.ym }) %}
+     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.yyxx }) %}
+     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.yyyx }) %}
+     | "XXXX"                {% data => ({ values: [num(data.slice(0, 2))], unspecified: X.xxxx }) %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
