@@ -23,6 +23,10 @@ describe('x', () => {
     expect(X.is('month', 'month')).to.be.ok
     expect(X.is('year', 'year')).to.be.ok
 
+    expect(X.is('day', 'month')).to.be.zero
+    expect(X.is('day', 'year')).to.be.zero
+    expect(X.is('month', 'year')).to.be.zero
+    expect(X.is('month', 'day')).to.be.zero
     expect(X.is('year', 'day')).to.be.zero
     expect(X.is('year', 'month')).to.be.zero
 

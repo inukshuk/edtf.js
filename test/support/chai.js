@@ -73,21 +73,48 @@ chai.use(function (_, utils) {
   }
 
   function uncertain(expected = true) {
-    expect(utils.flag(this, 'object'))
-      .to.have.property('uncertain')
-      .and.satisfy(x => X.is(x, expected) !== 0)
+    let neg = utils.flag(this, 'negate')
+    let obj = utils.flag(this, 'object')
+
+    if (neg) {
+      if (obj.hasOwnProperty('uncertain')) {
+        expect(X.is(obj.uncertain, expected)).to.be.eql(0)
+      }
+    } else {
+      expect(obj)
+        .to.have.property('uncertain')
+        .and.satisfy(x => X.is(x, expected) !== 0)
+    }
   }
 
   function approximate(expected = true) {
-    expect(utils.flag(this, 'object'))
-      .to.have.property('approximate')
-      .and.satisfy(x => X.is(x, expected) !== 0)
+    let neg = utils.flag(this, 'negate')
+    let obj = utils.flag(this, 'object')
+
+    if (neg) {
+      if (obj.hasOwnProperty('approximate')) {
+        expect(X.is(obj.approximate, expected)).to.be.eql(0)
+      }
+    } else {
+      expect(obj)
+        .to.have.property('approximate')
+        .and.satisfy(x => X.is(x, expected) !== 0)
+    }
   }
 
-  function unspecified(expected = true) {
-    expect(utils.flag(this, 'object'))
-      .to.have.property('unspecified')
-      .and.satisfy(x => X.is(x, expected) !== 0)
+  function unspecified(expected) {
+    let neg = utils.flag(this, 'negate')
+    let obj = utils.flag(this, 'object')
+
+    if (neg) {
+      if (obj.hasOwnProperty('unspecified')) {
+        expect(X.is(obj.unspecified, expected)).to.be.eql(0)
+      }
+    } else {
+      expect(obj)
+        .to.have.property('unspecified')
+        .and.satisfy(x => X.is(x, expected) !== 0)
+    }
   }
 
 
@@ -126,6 +153,11 @@ chai.use(function (_, utils) {
   })
 
   Assertion.addChainableMethod('uncertain', uncertain, uncertain)
-  Assertion.addChainableMethod('approximate', approximate, approximate)
-  Assertion.addChainableMethod('unspecified', unspecified, unspecified)
+  Assertion.addChainableMethod('approximate', approximate)
+  Assertion.addChainableMethod('unspecified', unspecified)
+
+  Assertion.addChainableMethod('level', function (expected) {
+    expect(utils.flag(this, 'object'))
+      .to.have.property('level', expected)
+  })
 })
