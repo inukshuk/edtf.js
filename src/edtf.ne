@@ -5,11 +5,14 @@
 %}
 
 edtf -> L0 {% id %}
-#     | L1 {% id %}
+      | L1 {% id %}
 #     | L2 {% id %}
 
 
-# --- Level 0 / ISO 8601 Rules ---
+# --- EDTF Level 0 / ISO 8601-1 ---
+
+# - L0 Intervals
+# - L0 Century
 
 L0 -> date      {% id %}
     | datetime  {% id %}
@@ -68,6 +71,27 @@ positive_offset -> offset                  {% id %}
 offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
         | "00:" d01_59       {% pick(1) %}
         | "12:00"            {% () => 720 %}
+
+
+# --- EDTF / ISO 8601-2 Level 1 ---
+
+L1 -> date UA     {% merge(0, 1) %}
+    | unspecified
+
+unspecified -> year_month "-XX"
+             | year "-XX-XX"
+             | "XXXX-XX-XX"
+             | year "-XX"
+             | digit digit "XX"
+             | digit digit digit "X"
+             | "XXXX-XX"
+
+UA -> "?" {% () => ({ uncertain: true }) %}
+    | "~" {% () => ({ approximate: true }) %}
+    | "%" {% () => ({ approximate: true, uncertain: true }) %}
+
+
+# --- EDTF / ISO 8601-2 Level 2 ---
 
 
 # --- Base Definitions ---

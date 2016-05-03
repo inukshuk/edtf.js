@@ -70,6 +70,17 @@ chai.use(function (_, utils) {
     expect(date.getUTCSeconds()).to.eql(expected[2])
   }
 
+  function uncertain(expected) {
+    const res = utils.flag(this, 'object')
+    expect(res).to.have.property('uncertain', expected || true)
+  }
+
+  function approximate(expected) {
+    const res = utils.flag(this, 'object')
+    expect(res).to.have.property('approximate', expected || true)
+  }
+
+
   Assertion.addChainableMethod('year', year)
   Assertion.addChainableMethod('years', year)
 
@@ -103,4 +114,7 @@ chai.use(function (_, utils) {
   Assertion.addProperty('rejected', function () {
     expect(utils.flag(this, 'object')).to.throw('No possible parsings')
   })
+
+  Assertion.addChainableMethod('uncertain', uncertain)
+  Assertion.addChainableMethod('approximate', approximate)
 })
