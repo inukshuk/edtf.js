@@ -90,6 +90,12 @@ describe('parser', () => {
       expect(() => p('2016-05-02T12:00:00-14:00')).to.be.rejected
       expect(() => p('2016-05-02T12:00:00+14:01')).to.be.rejected
     })
+
+    it('YYYY[?~%]', () => {
+      expect(p('2016?')).to.produce([2016]).and.be.uncertain
+      expect(p('2016~')).to.produce([2016]).and.be.approximate
+      expect(p('2016%')).to.approximate.and.uncertain
+    })
   })
 })
 

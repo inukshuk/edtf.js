@@ -115,6 +115,6 @@ chai.use(function (_, utils) {
     expect(utils.flag(this, 'object')).to.throw('No possible parsings')
   })
 
-  Assertion.addChainableMethod('uncertain', uncertain)
-  Assertion.addChainableMethod('approximate', approximate)
+  Assertion.addChainableMethod('uncertain', uncertain, uncertain)
+  Assertion.addChainableMethod('approximate', approximate, approximate)
 })
