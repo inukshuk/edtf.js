@@ -96,6 +96,18 @@ describe('parser', () => {
       expect(p('2016~')).to.produce([2016]).and.be.approximate
       expect(p('2016%')).to.approximate.and.uncertain
     })
+
+    it('YYYY-MM[?~%]', () => {
+      expect(p('2016-05?')).to.produce([2016, 4]).and.be.uncertain
+      expect(p('2016-05~')).to.produce([2016, 4]).and.be.approximate
+      expect(p('2016-05%')).to.approximate.and.uncertain
+    })
+
+    it('YYYY-MM-DD[?~%]', () => {
+      expect(p('2016-05-03?')).to.produce([2016, 4, 3]).and.be.uncertain
+      expect(p('2016-05-03~')).to.produce([2016, 4, 3]).and.be.approximate
+      expect(p('2016-05-03%')).to.approximate.and.uncertain
+    })
   })
 })
 
