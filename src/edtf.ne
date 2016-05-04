@@ -12,12 +12,23 @@ edtf -> L0 {% id %}
 
 # --- EDTF Level 0 / ISO 8601-1 ---
 
-# - L0 Intervals
-# - L0 Century
-
-L0 -> date      {% id %}
-    | datetime  {% id %}
+L0 -> date_time {% id %}
     | century   {% id %}
+    | L0i       {% id %}
+
+
+L0i -> date_time "/" date_time
+  {%
+    data => ({
+      values: [data[0], data[1]],
+      type: 'interval',
+      level: 0
+    })
+  %}
+
+
+date_time -> date {% id %}
+           | datetime {% id %}
 
 date -> year           {% data => ({ values: data , type: 'date', level: 0 }) %}
       | year_month     {% data => ({ values: data[0], type: 'date', level: 0 }) %}

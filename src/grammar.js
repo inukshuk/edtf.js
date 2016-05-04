@@ -9,9 +9,18 @@ var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
     {"name": "edtf", "symbols": ["L1"], "postprocess": id},
-    {"name": "L0", "symbols": ["date"], "postprocess": id},
-    {"name": "L0", "symbols": ["datetime"], "postprocess": id},
+    {"name": "L0", "symbols": ["date_time"], "postprocess": id},
     {"name": "L0", "symbols": ["century"], "postprocess": id},
+    {"name": "L0", "symbols": ["L0i"], "postprocess": id},
+    {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": 
+        data => ({
+          values: [data[0], data[1]],
+          type: 'interval',
+          level: 0
+        })
+          },
+    {"name": "date_time", "symbols": ["date"], "postprocess": id},
+    {"name": "date_time", "symbols": ["datetime"], "postprocess": id},
     {"name": "date", "symbols": ["year"], "postprocess": data => ({ values: data , type: 'date', level: 0 })},
     {"name": "date", "symbols": ["year_month"], "postprocess": data => ({ values: data[0], type: 'date', level: 0 })},
     {"name": "date", "symbols": ["year_month_day"], "postprocess": data => ({ values: data[0], type: 'date', level: 0 })},
