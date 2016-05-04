@@ -124,7 +124,7 @@ L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) 
      | "XXXX"                {% data => ({ values: [], unspecified: XXXX }) %}
 
 L1Y -> "Y" d5+  {% data => ({ values: [data[1]], type: 'date', level: 1 }) %}
-L1Y -> "Y-" d5+ {% data => ({ values: [-data[1]], type: 'date', level: 1 }) %}
+     | "Y-" d5+ {% data => ({ values: [-data[1]], type: 'date', level: 1 }) %}
 
 d5+ -> positive_digit digit digit digit digits {% num %}
 
@@ -137,9 +137,16 @@ L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season',
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> L2S       {% id %}
+L2 -> L2Y       {% id %}
+    | L2S       {% id %}
     | decade    {% id %}
     | decade UA {% merge(0, 1) %}
+
+L2Y -> "Y" exp_year  {% data => ({ values: [data[1]], type: 'date', level: 2 }) %}
+     | "Y-" exp_year {% data => ({ values: [-data[1]], type: 'date', level: 2 }) %}
+
+exp_year -> digits "E" digits {% data => data[0] * Math.pow(10, data[2]) %}
+
 
 L2S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
 

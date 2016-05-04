@@ -142,39 +142,43 @@ describe('parser', () => {
   describe('Level 1', () => {
     it('YYYY?', () =>
       expect(p('2016?'))
-        .to.produce([2016]).at.level(1).and.be.uncertain().and.not.approximate)
+        .to.produce([2016]).at.level(1)
+        .and.be.uncertain().and.not.approximate())
 
     it('YYYY~', () =>
       expect(p('2016~'))
-        .to.produce([2016]).at.level(1).and.be.approximate().and.not.uncertain)
+        .to.produce([2016]).at.level(1)
+        .and.be.approximate().and.not.uncertain())
 
     it('YYYY%', () =>
       expect(p('2016%'))
-        .to.produce([2016]).at.level(1).to.be.approximate().and.uncertain)
+        .to.produce([2016]).at.level(1)
+        .to.be.approximate().and.uncertain())
 
     it('YYYY-MM?', () =>
       expect(p('2016-05?'))
-        .to.produce([2016, 4]).at.level(1).and.be.uncertain)
+        .to.produce([2016, 4]).at.level(1).and.be.uncertain())
 
     it('YYYY-MM~', () =>
       expect(p('2016-05~'))
-        .to.produce([2016, 4]).at.level(1).and.be.approximate)
+        .to.produce([2016, 4]).at.level(1).and.be.approximate())
 
     it('YYYY-MM%', () =>
       expect(p('2016-05%'))
-        .to.produce([2016, 4]).at.level(1).and.be.approximate().and.uncertain)
+        .to.produce([2016, 4]).at.level(1).and.be.approximate().and.uncertain())
 
     it('YYYY-MM-DD?', () =>
       expect(p('2016-05-03?'))
-        .to.produce([2016, 4, 3]).at.level(1).and.be.uncertain)
+        .to.produce([2016, 4, 3]).at.level(1).and.be.uncertain())
 
     it('YYYY-MM-DD~', () =>
       expect(p('2016-05-03~'))
-        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate)
+        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate())
 
     it('YYYY-MM-DD%', () =>
       expect(p('2016-05-03%'))
-        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate().and.uncertain)
+        .to.produce([2016, 4, 3]).at.level(1)
+        .and.be.approximate().and.uncertain)
 
     it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
@@ -271,6 +275,12 @@ describe('parser', () => {
   })
 
   describe('Level 2', () => {
+
+    it('YKEK', () =>
+      expect(p('Y17E7')).to.produce([170000000]).at.level(2))
+    it('Y-KEK', () =>
+      expect(p('Y-17E7')).to.produce([-170000000]).at.level(2))
+
     it('YYYY-SS', () => {
       expect(p('2001-25'))
         .to.produce([2001, 25]).at.level(2).and.be.a.season
