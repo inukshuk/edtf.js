@@ -5,9 +5,9 @@
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 %}
 
-edtf -> L0 {% merge(0, { level: 0 }) %}
-      | L1 {% merge(0, { level: 1 }) %}
-#     | L2 {% merge(0, { level: 1 }) %}
+edtf -> L0 {% id %}
+      | L1 {% id %}
+#     | L2 {% id %}
 
 
 # --- EDTF Level 0 / ISO 8601-1 ---
@@ -19,9 +19,9 @@ L0 -> date      {% id %}
     | datetime  {% id %}
     | century   {% id %}
 
-date -> year           {% data => ({ values: data }) %}
-      | year_month     {% data => ({ values: data[0] }) %}
-      | year_month_day {% data => ({ values: data[0] }) %}
+date -> year           {% data => ({ values: data , type: 'date', level: 0 }) %}
+      | year_month     {% data => ({ values: data[0], type: 'date', level: 0 }) %}
+      | year_month_day {% data => ({ values: data[0], type: 'date', level: 0 }) %}
 
 year -> positive_year {% id %}
       | negative_year {% id %}
@@ -48,7 +48,12 @@ day -> d01_31 {% id %}
 
 datetime -> date "T" time (timezone {% id %}):?
   {%
-    data => ({ values: data[0].values.concat(data[2]), offset: data[3] })
+    data => ({
+      values: data[0].values.concat(data[2]),
+      offset: data[3],
+      type: 'datetime',
+      level: 0
+    })
   %}
 
 time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}
@@ -74,12 +79,12 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
         | "00:" d01_59       {% pick(1) %}
         | "12:00"            {% () => 720 %}
 
-century -> digit digit {% data => ({ values: [num(data)], type: 'century' }) %}
+century -> digit digit {% data => ({ values: [num(data)], type: 'century', level: 0 }) %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
-L1 -> date UA          {% merge(0, 1) %}
-    | L1X              {% id %}
+L1 -> date UA          {% merge(0, 1, { level: 1 }) %}
+    | L1X              {% merge(0, { type: 'date', level: 1 }) %}
     | L1Y              {% id %}
     | L1S              {% id %}
 
@@ -92,8 +97,8 @@ L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) 
      | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX }) %}
      | "XXXX"                {% data => ({ values: [], unspecified: XXXX }) %}
 
-L1Y -> "Y" d5+  {% data => ({ values: [data[1]] }) %}
-L1Y -> "Y-" d5+ {% data => ({ values: [-data[1]] }) %}
+L1Y -> "Y" d5+  {% data => ({ values: [data[1]], type: 'date', level: 1 }) %}
+L1Y -> "Y-" d5+ {% data => ({ values: [-data[1]], type: 'date', level: 1 }) %}
 
 d5+ -> positive_digit digit digit digit digits {% num %}
 
@@ -102,12 +107,12 @@ UA -> "?" {% () => ({ uncertain: true }) %}
     | "%" {% () => ({ approximate: true, uncertain: true }) %}
 
 
-L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season' }) %}
+L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season', level: 1 }) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-#decade -> digit digit {% data => ({ values: [num(data)], type: 'decade' }) %}
-#L1S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season' }) %}
+#decade -> digit digit {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
+#L1S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
 
 # --- Base Definitions ---
 
