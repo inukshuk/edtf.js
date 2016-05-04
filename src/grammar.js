@@ -5,6 +5,14 @@ function id(x) {return x[0]; }
 
   const { num, zero, pick, join, concat, merge } = require('./util')
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
+
+  function interval(level) {
+    return data => ({
+      values: [data[0], data[2]],
+      type: 'interval',
+      level
+    })
+  }
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
@@ -12,13 +20,7 @@ var grammar = {
     {"name": "L0", "symbols": ["date_time"], "postprocess": id},
     {"name": "L0", "symbols": ["century"], "postprocess": id},
     {"name": "L0", "symbols": ["L0i"], "postprocess": id},
-    {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": 
-        data => ({
-          values: [data[0], data[2]],
-          type: 'interval',
-          level: 0
-        })
-          },
+    {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": interval(0)},
     {"name": "date_time", "symbols": ["date"], "postprocess": id},
     {"name": "date_time", "symbols": ["datetime"], "postprocess": id},
     {"name": "date", "symbols": ["year"], "postprocess": data => ({ values: data , type: 'date', level: 0 })},
@@ -87,16 +89,12 @@ var grammar = {
     {"name": "L1", "symbols": ["L1S"], "postprocess": id},
     {"name": "L1", "symbols": ["L1i"], "postprocess": id},
     {"name": "date_ua", "symbols": ["date", "UA"], "postprocess": merge(0, 1, { level: 1 })},
-    {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "L1i_date"], "postprocess": 
-        data => ({
-          values: [data[0], data[2]],
-          type: 'interval',
-          level: 1
-        })
-          },
-    {"name": "L1i_date", "symbols": [], "postprocess": () => ({ type: 'unknown', level: 1 })},
+    {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
+    {"name": "L1i", "symbols": ["date_time", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
+    {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "date_time"], "postprocess": interval(1)},
+    {"name": "L1i_date", "symbols": [], "postprocess": () => ({ values: [], type: 'unknown', level: 1 })},
     {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
-    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": () => ({ type: 'open', level: 1 })},
+    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": () => ({ values: [], type: 'open', level: 1 })},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},

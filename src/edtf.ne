@@ -3,6 +3,14 @@
 @{%
   const { num, zero, pick, join, concat, merge } = require('./util')
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
+
+  function interval(level) {
+    return data => ({
+      values: [data[0], data[2]],
+      type: 'interval',
+      level
+    })
+  }
 %}
 
 edtf -> L0 {% id %}
@@ -17,15 +25,7 @@ L0 -> date_time {% id %}
     | L0i       {% id %}
 
 
-L0i -> date_time "/" date_time
-  {%
-    data => ({
-      values: [data[0], data[2]],
-      type: 'interval',
-      level: 0
-    })
-  %}
-
+L0i -> date_time "/" date_time {% interval(0) %}
 
 date_time -> date     {% id %}
            | datetime {% id %}
@@ -102,18 +102,14 @@ L1 -> date_ua {% id %}
 
 date_ua -> date UA  {% merge(0, 1, { level: 1 }) %}
 
-L1i -> L1i_date "/" L1i_date
-  {%
-    data => ({
-      values: [data[0], data[2]],
-      type: 'interval',
-      level: 1
-    })
-  %}
 
-L1i_date -> null     {% () => ({ type: 'unknown', level: 1 }) %}
+L1i -> L1i_date "/" L1i_date  {% interval(1) %}
+     | date_time "/" L1i_date {% interval(1) %}
+     | L1i_date "/" date_time {% interval(1) %}
+
+L1i_date -> null     {% () => ({ values: [], type: 'unknown', level: 1 }) %}
           | date_ua  {% id %}
-          | "*"      {% () => ({ type: 'open', level: 1 }) %}
+          | "*"      {% () => ({ values: [], type: 'open', level: 1 }) %}
 
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}

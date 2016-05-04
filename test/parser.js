@@ -235,6 +235,22 @@ describe('parser', () => {
       expect(p('2001-24'))
         .to.produce([2001, 24]).at.level(1).and.be.a.season
     })
+
+    it('YYYY?/YYYY~', () =>
+      expect(p('1980?/1994~'))
+        .to.be.an.interval.from([1980]).until([1994]).at.level(1))
+
+    it('/', () =>
+      expect(p('/'))
+        .to.be.an.interval.from([]).until([]).at.level(1))
+
+    it('YYYY-MM/*', () =>
+      expect(p('2016-05/*'))
+        .to.be.an.interval.from([2016, 4]).until([]).at.level(1))
+
+    it('/YYYY-MM', () =>
+      expect(p('/2016-05'))
+        .to.be.an.interval.from([]).until([2016, 4]).at.level(1))
   })
 })
 
