@@ -130,63 +130,63 @@ describe('parser', () => {
 
     it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
-        .to.produce([2016, 4])
+        .to.produce([2016, 4]).at.level(1)
         .and.have.unspecified('day')
         .and.not.have.unspecified('month')
         .and.not.have.unspecified('year'))
 
     it('YYYY-XX', () =>
       expect(p('2016-XX'))
-        .to.produce([2016])
+        .to.produce([2016]).at.level(1)
         .and.have.unspecified('month')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('year'))
 
     it('XXXX', () =>
       expect(p('XXXX'))
-        .to.produce([])
+        .to.produce([]).at.level(1)
         .and.have.unspecified('year')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('month'))
 
     it('YYXX', () =>
       expect(p('19XX'))
-        .to.produce([1900])
+        .to.produce([1900]).at.level(1)
         .and.have.unspecified('year')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('month'))
 
     it('YYYX', () =>
       expect(p('198X'))
-        .to.produce([1980])
+        .to.produce([1980]).at.level(1)
         .and.have.unspecified('year')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('month'))
 
     it('XXXX-XX', () =>
       expect(p('XXXX-XX'))
-        .to.produce([])
+        .to.produce([]).at.level(1)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
         .and.not.have.unspecified('day'))
 
     it('XXXX-XX-XX', () =>
       expect(p('XXXX-XX-XX'))
-        .to.produce([])
+        .to.produce([]).at.level(1)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
         .and.have.unspecified('day'))
 
     it('"Y"YYYYY...', () => {
-      expect(p('Y170002')).to.produce([170002])
-      expect(p('Y10000')).to.produce([10000])
+      expect(p('Y170002')).to.produce([170002]).at.level(1)
+      expect(p('Y10000')).to.produce([10000]).at.level(1)
       expect(() => p('Y9999')).to.be.rejected
       expect(() => p('Y00001')).to.be.rejected
     })
 
     it('"Y"-YYYYY...', () => {
-      expect(p('Y-170002')).to.produce([-170002])
-      expect(p('Y-10000')).to.produce([-10000])
+      expect(p('Y-170002')).to.produce([-170002]).at.level(1)
+      expect(p('Y-10000')).to.produce([-10000]).at.level(1)
       expect(() => p('Y-9999')).to.be.rejected
       expect(() => p('Y-00001')).to.be.rejected
     })
