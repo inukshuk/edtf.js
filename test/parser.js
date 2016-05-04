@@ -276,6 +276,62 @@ describe('parser', () => {
 
   describe('Level 2', () => {
 
+    it('YYYX-MM-DD', () =>
+      expect(p('156X-12-25'))
+        .to.produce([1560, 11, 25]).at.level(2)
+        .and.have.unspecified('year')
+        .and.not.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YYXX-MM-DD', () =>
+      expect(p('15XX-12-25'))
+        .to.produce([1500, 11, 25]).at.level(2)
+        .and.have.unspecified('year')
+        .and.not.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YYXX-MM-XX', () =>
+      expect(p('15XX-12-XX'))
+        .to.produce([1500, 11, 1]).at.level(2)
+        .and.have.unspecified('year')
+        .and.have.unspecified('day')
+        .and.not.unspecified('month'))
+
+    it('YYXX-XX-DD', () =>
+      expect(p('15XX-XX-25'))
+        .to.produce([1500, 0, 25]).at.level(2)
+        .and.have.unspecified('year')
+        .and.have.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YYXX-XM', () =>
+      expect(p('15XX-X2'))
+        .to.produce([1500, 1]).at.level(2)
+        .and.have.unspecified('year')
+        .and.have.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YXXX-XX', () =>
+      expect(p('1XXX-XX'))
+        .to.produce([1000, 0]).at.level(2)
+        .and.have.unspecified('year')
+        .and.have.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YXXX-MM', () =>
+      expect(p('1XXX-12'))
+        .to.produce([1000, 11]).at.level(2)
+        .and.have.unspecified('year')
+        .and.not.unspecified('month')
+        .and.not.unspecified('day'))
+
+    it('YXXY', () =>
+      expect(p('1XX3'))
+        .to.produce([1003]).at.level(2)
+        .and.have.unspecified('year')
+        .and.not.unspecified('month')
+        .and.not.unspecified('day'))
+
     it('YKEK', () =>
       expect(p('Y17E7')).to.produce([170000000]).at.level(2))
     it('Y-KEK', () =>
