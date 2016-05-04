@@ -142,15 +142,15 @@ describe('parser', () => {
   describe('Level 1', () => {
     it('YYYY?', () =>
       expect(p('2016?'))
-        .to.produce([2016]).at.level(1).and.be.uncertain.and.not.approximate)
+        .to.produce([2016]).at.level(1).and.be.uncertain().and.not.approximate)
 
     it('YYYY~', () =>
       expect(p('2016~'))
-        .to.produce([2016]).at.level(1).and.be.approximate.and.not.uncertain)
+        .to.produce([2016]).at.level(1).and.be.approximate().and.not.uncertain)
 
     it('YYYY%', () =>
       expect(p('2016%'))
-        .to.produce([2016]).at.level(1).to.be.approximate.and.uncertain)
+        .to.produce([2016]).at.level(1).to.be.approximate().and.uncertain)
 
     it('YYYY-MM?', () =>
       expect(p('2016-05?'))
@@ -162,7 +162,7 @@ describe('parser', () => {
 
     it('YYYY-MM%', () =>
       expect(p('2016-05%'))
-        .to.produce([2016, 4]).at.level(1).and.be.approximate.and.uncertain)
+        .to.produce([2016, 4]).at.level(1).and.be.approximate().and.uncertain)
 
     it('YYYY-MM-DD?', () =>
       expect(p('2016-05-03?'))
@@ -174,7 +174,7 @@ describe('parser', () => {
 
     it('YYYY-MM-DD%', () =>
       expect(p('2016-05-03%'))
-        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate.and.uncertain)
+        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate().and.uncertain)
 
     it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
@@ -284,6 +284,11 @@ describe('parser', () => {
 
     it('YYY', () =>
       expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade)
+
+    it('YYY~', () =>
+      expect(p('197~')).to.produce([197])
+        .at.level(2)
+        .and.be.an.approximate().decade)
   })
 })
 

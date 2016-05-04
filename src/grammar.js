@@ -123,6 +123,7 @@ var grammar = {
     {"name": "L1S", "symbols": ["year", {"literal":"-"}, "d21_24"], "postprocess": data => ({ values: [data[0], data[2]], type: 'season', level: 1 })},
     {"name": "L2", "symbols": ["L2S"], "postprocess": id},
     {"name": "L2", "symbols": ["decade"], "postprocess": id},
+    {"name": "L2", "symbols": ["decade", "UA"], "postprocess": merge(0, 1)},
     {"name": "L2S", "symbols": ["year", {"literal":"-"}, "d25_39"], "postprocess": data => ({ values: [data[0], data[2]], type: 'season', level: 2 })},
     {"name": "decade", "symbols": ["digit", "digit", "digit"], "postprocess": data => ({ values: [num(data)], type: 'decade', level: 2 })},
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},
