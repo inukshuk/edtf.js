@@ -89,6 +89,9 @@ describe('parser', () => {
       expect(() => p('2016-05-02T12:00:00-14:00')).to.be.rejected
       expect(() => p('2016-05-02T12:00:00+14:01')).to.be.rejected
     })
+
+    it('YY', () =>
+      expect(p('19')).to.produce([19]).at.level(0).and.be.a.century)
   })
 
   describe('Level 1', () => {

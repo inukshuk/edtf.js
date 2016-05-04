@@ -140,4 +140,12 @@ chai.use(function (_, utils) {
   Assertion.addProperty('season', function () {
     expect(utils.flag(this, 'object')).to.have.type('season')
   })
+
+  Assertion.addProperty('century', function () {
+    expect(utils.flag(this, 'object')).to.have.type('century')
+  })
+
+  Assertion.addProperty('decade', function () {
+    expect(utils.flag(this, 'object')).to.have.type('decade')
+  })
 })

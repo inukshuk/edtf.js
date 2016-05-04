@@ -17,6 +17,7 @@ edtf -> L0 {% merge(0, { level: 0 }) %}
 
 L0 -> date      {% id %}
     | datetime  {% id %}
+    | century   {% id %}
 
 date -> year           {% data => ({ values: data }) %}
       | year_month     {% data => ({ values: data[0] }) %}
@@ -73,6 +74,7 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
         | "00:" d01_59       {% pick(1) %}
         | "12:00"            {% () => 720 %}
 
+century -> digit digit {% data => ({ values: [num(data)], type: 'century' }) %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
@@ -104,7 +106,7 @@ L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season' 
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-
+#decade -> digit digit {% data => ({ values: [num(data)], type: 'decade' }) %}
 #L1S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season' }) %}
 
 # --- Base Definitions ---
