@@ -81,10 +81,22 @@ var grammar = {
     {"name": "offset$string$2", "symbols": [{"literal":"1"}, {"literal":"2"}, {"literal":":"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "offset", "symbols": ["offset$string$2"], "postprocess": () => 720},
     {"name": "century", "symbols": ["digit", "digit"], "postprocess": data => ({ values: [num(data)], type: 'century', level: 0 })},
-    {"name": "L1", "symbols": ["date", "UA"], "postprocess": merge(0, 1, { level: 1 })},
+    {"name": "L1", "symbols": ["date_ua"], "postprocess": id},
     {"name": "L1", "symbols": ["L1X"], "postprocess": merge(0, { type: 'date', level: 1 })},
     {"name": "L1", "symbols": ["L1Y"], "postprocess": id},
     {"name": "L1", "symbols": ["L1S"], "postprocess": id},
+    {"name": "L1", "symbols": ["L1i"], "postprocess": id},
+    {"name": "date_ua", "symbols": ["date", "UA"], "postprocess": merge(0, 1, { level: 1 })},
+    {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "L1i_date"], "postprocess": 
+        data => ({
+          values: [data[0], data[2]],
+          type: 'interval',
+          level: 1
+        })
+          },
+    {"name": "L1i_date", "symbols": [], "postprocess": () => ({ type: 'unknown', level: 1 })},
+    {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
+    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": () => ({ type: 'open', level: 1 })},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},

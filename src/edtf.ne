@@ -94,10 +94,27 @@ century -> digit digit {% data => ({ values: [num(data)], type: 'century', level
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
-L1 -> date UA          {% merge(0, 1, { level: 1 }) %}
-    | L1X              {% merge(0, { type: 'date', level: 1 }) %}
-    | L1Y              {% id %}
-    | L1S              {% id %}
+L1 -> date_ua {% id %}
+    | L1X     {% merge(0, { type: 'date', level: 1 }) %}
+    | L1Y     {% id %}
+    | L1S     {% id %}
+    | L1i     {% id %}
+
+date_ua -> date UA  {% merge(0, 1, { level: 1 }) %}
+
+L1i -> L1i_date "/" L1i_date
+  {%
+    data => ({
+      values: [data[0], data[2]],
+      type: 'interval',
+      level: 1
+    })
+  %}
+
+L1i_date -> null     {% () => ({ type: 'unknown', level: 1 }) %}
+          | date_ua  {% id %}
+          | "*"      {% () => ({ type: 'open', level: 1 }) %}
+
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
      | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
