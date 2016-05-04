@@ -286,9 +286,16 @@ describe('parser', () => {
       expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade)
 
     it('YYY~', () =>
-      expect(p('197~')).to.produce([197])
-        .at.level(2)
-        .and.be.an.approximate().decade)
+      expect(p('197~')).to.produce([197]).at.level(2)
+        .and.be.an.approximate().decade.and.not.uncertain())
+
+    it('YYY?', () =>
+      expect(p('197?')).to.produce([197]).at.level(2)
+        .and.be.an.uncertain().decade.and.not.approximate())
+
+    it('YYY%', () =>
+      expect(p('197%')).to.produce([197]).at.level(2)
+        .and.be.an.uncertain().and.approximate().decade)
   })
 })
 
