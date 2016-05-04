@@ -7,7 +7,7 @@
 
 edtf -> L0 {% merge(0, { level: 0 }) %}
       | L1 {% merge(0, { level: 1 }) %}
-#     | L2 {% id %}
+#     | L2 {% merge(0, { level: 1 }) %}
 
 
 # --- EDTF Level 0 / ISO 8601-1 ---
@@ -79,7 +79,7 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 L1 -> date UA          {% merge(0, 1) %}
     | L1X              {% id %}
     | L1Y              {% id %}
-#    | L1S              {% id %}
+    | L1S              {% merge(0, { type: 'season' }) %}
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
      | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
@@ -100,8 +100,12 @@ UA -> "?" {% () => ({ uncertain: true }) %}
     | "%" {% () => ({ approximate: true, uncertain: true }) %}
 
 
+L1S -> year "-" d21_24 {% pick(0, 2) %}
+
 # --- EDTF / ISO 8601-2 Level 2 ---
 
+
+#L2S -> year "-" d25_39 {% pick(0, 2) %}
 
 # --- Base Definitions ---
 
@@ -146,3 +150,8 @@ d00_59 -> "00"   {% zero %}
 
 d01_59 -> d01_29      {% id %}
         | [345] digit {% num %}
+
+d21_24 -> "2" [1-4] {% num %}
+
+d25_39 -> "2" [5-9] {% num %}
+        | "3" digit {% num %}

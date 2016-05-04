@@ -68,6 +68,7 @@ var grammar = {
     {"name": "L1", "symbols": ["date", "UA"], "postprocess": merge(0, 1)},
     {"name": "L1", "symbols": ["L1X"], "postprocess": id},
     {"name": "L1", "symbols": ["L1Y"], "postprocess": id},
+    {"name": "L1", "symbols": ["L1S"], "postprocess": merge(0, { type: 'season' })},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
@@ -90,6 +91,7 @@ var grammar = {
     {"name": "UA", "symbols": [{"literal":"?"}], "postprocess": () => ({ uncertain: true })},
     {"name": "UA", "symbols": [{"literal":"~"}], "postprocess": () => ({ approximate: true })},
     {"name": "UA", "symbols": [{"literal":"%"}], "postprocess": () => ({ approximate: true, uncertain: true })},
+    {"name": "L1S", "symbols": ["year", {"literal":"-"}, "d21_24"], "postprocess": pick(0, 2)},
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},
     {"name": "digit", "symbols": [{"literal":"0"}], "postprocess": zero},
     {"name": "digits", "symbols": ["digit"], "postprocess": id},
@@ -145,7 +147,10 @@ var grammar = {
     {"name": "d00_59", "symbols": ["d00_59$string$1"], "postprocess": zero},
     {"name": "d00_59", "symbols": ["d01_59"], "postprocess": id},
     {"name": "d01_59", "symbols": ["d01_29"], "postprocess": id},
-    {"name": "d01_59", "symbols": [/[345]/, "digit"], "postprocess": num}
+    {"name": "d01_59", "symbols": [/[345]/, "digit"], "postprocess": num},
+    {"name": "d21_24", "symbols": [{"literal":"2"}, /[1-4]/], "postprocess": num},
+    {"name": "d25_39", "symbols": [{"literal":"2"}, /[5-9]/], "postprocess": num},
+    {"name": "d25_39", "symbols": [{"literal":"3"}, "digit"], "postprocess": num}
 ]
   , ParserStart: "edtf"
 }
