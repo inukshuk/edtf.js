@@ -48,7 +48,7 @@ describe('parser', () => {
       expect(() => p('2016-11-31')).to.be.rejected
     })
 
-    it('YYYY-MM-DDTHH:MM:SS', () => {
+    it('YYYY-MM-DDThh:mm:ss', () => {
       expect(p('2016-05-02T16:54:59'))
         .to.produce([2016, 4, 2, 16, 54, 59]).at.level(0)
       expect(p('2016-05-02T16:54:59.042'))
@@ -61,14 +61,18 @@ describe('parser', () => {
       expect(() => p('2016-05-02T01:01:60')).to.be.rejected
     })
 
-    it('YYYY-MM-DDTHH:MM:SSZ', () => {
+    it('YYYY-MM-DDThh:mm:ss.sss', () =>
+      expect(p('2016-05-02T16:54:59.042'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0))
+
+    it('YYYY-MM-DDThh:mm:ssZ', () => {
       expect(p('2016-05-02T16:54:59Z'))
         .to.produce([2016, 4, 2, 16, 54, 59]).at.level(0)
       expect(p('2016-05-02T16:54:59.042Z'))
         .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
     })
 
-    it('YYYY-MM-DDTHH:MM:SS[+-]HH:MM', () => {
+    it('YYYY-MM-DDThh:mm:ss[+-]hh:mm', () => {
       expect(p('2016-05-02T16:54:59+02:30'))
         .to.produce([2016, 4, 2, 16, 54, 59])
         .at.level(0)
@@ -92,6 +96,30 @@ describe('parser', () => {
 
     it('YY', () =>
       expect(p('19')).to.produce([19]).at.level(0).and.be.a.century)
+
+    it('YYYY/YYYY', () =>
+      expect(p('1980/1994'))
+        .to.be.an.interval.from([1980]).until([1994]).at.level(0))
+
+    it('YYYY-MM/YYYY', () =>
+      expect(p('1980-08/1994'))
+        .to.be.an.interval.from([1980, 7]).until([1994]).at.level(0))
+
+    it('YYYY-MM-DD/YYYY', () =>
+      expect(p('2004-02-01/2005'))
+        .to.be.an.interval.from([2004, 1, 1]).until([2005]).at.level(0))
+
+    it('YYYY-MM/YYYY-MM', () =>
+      expect(p('2004-06/2006-08'))
+        .to.be.an.interval.from([2004, 5]).until([2006, 7]).at.level(0))
+
+    it('YYYY-MM-DD/YYYY-MM-DD', () =>
+      expect(p('2004-02-01/2005-02-08'))
+        .to.be.an.interval.from([2004, 1, 1]).until([2005, 1, 8]).at.level(0))
+
+    it('YYYY-MM-DDThh:mm:ss/YYYY-MM-DD', () =>
+      expect(p('2004-02-01/2005-02-08'))
+        .to.be.an.interval.from([2004, 1, 1]).until([2005, 1, 8]).at.level(0))
   })
 
   describe('Level 1', () => {

@@ -115,8 +115,18 @@ chai.use(function (_, utils) {
   Assertion.addChainableMethod('hms', hms)
 
   Assertion.addChainableMethod('produce', function (expected) {
-    const res = utils.flag(this, 'object')
-    expect(res).to.have.property('values').and.eql(expected)
+    expect(utils.flag(this, 'object'))
+      .to.have.property('values').and.eql(expected)
+  })
+
+  Assertion.addChainableMethod('from', function (expected) {
+    expect(utils.flag(this, 'object'))
+      .to.have.deep.property('values[0].values').and.eql(expected)
+  })
+
+  Assertion.addChainableMethod('until', function (expected) {
+    expect(utils.flag(this, 'object'))
+      .to.have.deep.property('values[1].values').and.eql(expected)
   })
 
   Assertion.addProperty('rejected', function () {
@@ -147,5 +157,9 @@ chai.use(function (_, utils) {
 
   Assertion.addProperty('decade', function () {
     expect(utils.flag(this, 'object')).to.have.type('decade')
+  })
+
+  Assertion.addProperty('interval', function () {
+    expect(utils.flag(this, 'object')).to.have.type('interval')
   })
 })

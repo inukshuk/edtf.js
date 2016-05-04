@@ -20,14 +20,14 @@ L0 -> date_time {% id %}
 L0i -> date_time "/" date_time
   {%
     data => ({
-      values: [data[0], data[1]],
+      values: [data[0], data[2]],
       type: 'interval',
       level: 0
     })
   %}
 
 
-date_time -> date {% id %}
+date_time -> date     {% id %}
            | datetime {% id %}
 
 date -> year           {% data => ({ values: data , type: 'date', level: 0 }) %}

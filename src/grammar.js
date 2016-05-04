@@ -14,7 +14,7 @@ var grammar = {
     {"name": "L0", "symbols": ["L0i"], "postprocess": id},
     {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": 
         data => ({
-          values: [data[0], data[1]],
+          values: [data[0], data[2]],
           type: 'interval',
           level: 0
         })
