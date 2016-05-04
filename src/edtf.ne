@@ -5,8 +5,8 @@
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 %}
 
-edtf -> L0 {% id %}
-      | L1 {% id %}
+edtf -> L0 {% merge(0, { level: 0 }) %}
+      | L1 {% merge(0, { level: 1 }) %}
 #     | L2 {% id %}
 
 
@@ -79,6 +79,7 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 L1 -> date UA          {% merge(0, 1) %}
     | L1X              {% id %}
     | L1Y              {% id %}
+#    | L1S              {% id %}
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
      | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}

@@ -1,5 +1,7 @@
 'use strict'
 
+const { assign } = Object
+
 const util = {
 
   num(data) { return Number(data.join('')) },
@@ -22,7 +24,11 @@ const util = {
   },
 
   merge(...args) {
-    return data => args.reduce((a, i) => Object.assign(a, data[i]), {})
+    if (typeof args[args.length - 1] === 'object') {
+      var extra = args.pop()
+    }
+
+    return data => assign(args.reduce((a, i) => assign(a, data[i]), {}), extra)
   }
 }
 

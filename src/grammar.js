@@ -7,8 +7,8 @@ function id(x) {return x[0]; }
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 var grammar = {
     ParserRules: [
-    {"name": "edtf", "symbols": ["L0"], "postprocess": id},
-    {"name": "edtf", "symbols": ["L1"], "postprocess": id},
+    {"name": "edtf", "symbols": ["L0"], "postprocess": merge(0, { level: 0 })},
+    {"name": "edtf", "symbols": ["L1"], "postprocess": merge(0, { level: 1 })},
     {"name": "L0", "symbols": ["date"], "postprocess": id},
     {"name": "L0", "symbols": ["datetime"], "postprocess": id},
     {"name": "date", "symbols": ["year"], "postprocess": data => ({ values: data })},

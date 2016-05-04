@@ -7,36 +7,36 @@ describe('parser', () => {
   it('returns a parser instance', () =>
     expect(parser()).to.be.instanceof(Parser))
 
-  describe('recognizes', () => {
+  describe('Level 0', () => {
     it('YYYY', () => {
-      expect(p('2016')).to.produce([2016])
-      expect(p('0409')).to.produce([409])
-      expect(p('0023')).to.produce([23])
-      expect(p('0007')).to.produce([7])
-      expect(p('0000')).to.produce([0])
-      expect(p('9999')).to.produce([9999])
-      expect(p('-0002')).to.produce([-2])
-      expect(p('-9999')).to.produce([-9999])
+      expect(p('2016')).to.produce([2016]).at.level(0)
+      expect(p('0409')).to.produce([409]).at.level(0)
+      expect(p('0023')).to.produce([23]).at.level(0)
+      expect(p('0007')).to.produce([7]).at.level(0)
+      expect(p('0000')).to.produce([0]).at.level(0)
+      expect(p('9999')).to.produce([9999]).at.level(0)
+      expect(p('-0002')).to.produce([-2]).at.level(0)
+      expect(p('-9999')).to.produce([-9999]).at.level(0)
 
       expect(() => p('-0000')).to.be.rejected
       expect(() => p('12345')).to.be.rejected
     })
 
     it('YYYY-MM', () => {
-      expect(p('2016-05')).to.produce([2016, 4])
-      expect(p('2016-01')).to.produce([2016, 0])
-      expect(p('2016-12')).to.produce([2016, 11])
+      expect(p('2016-05')).to.produce([2016, 4]).at.level(0)
+      expect(p('2016-01')).to.produce([2016, 0]).at.level(0)
+      expect(p('2016-12')).to.produce([2016, 11]).at.level(0)
 
       expect(() => p('2016-13')).to.be.rejected
       expect(() => p('2016-00')).to.be.rejected
     })
 
     it('YYYY-MM-DD', () => {
-      expect(p('2016-05-01')).to.produce([2016, 4, 1])
-      expect(p('2016-05-13')).to.produce([2016, 4, 13])
-      expect(p('2016-05-29')).to.produce([2016, 4, 29])
-      expect(p('2016-05-30')).to.produce([2016, 4, 30])
-      expect(p('2016-05-31')).to.produce([2016, 4, 31])
+      expect(p('2016-05-01')).to.produce([2016, 4, 1]).at.level(0)
+      expect(p('2016-05-13')).to.produce([2016, 4, 13]).at.level(0)
+      expect(p('2016-05-29')).to.produce([2016, 4, 29]).at.level(0)
+      expect(p('2016-05-30')).to.produce([2016, 4, 30]).at.level(0)
+      expect(p('2016-05-31')).to.produce([2016, 4, 31]).at.level(0)
 
       expect(() => p('2016-05-00')).to.be.rejected
       expect(() => p('2016-05-32')).to.be.rejected
@@ -50,11 +50,11 @@ describe('parser', () => {
 
     it('YYYY-MM-DDTHH:MM:SS', () => {
       expect(p('2016-05-02T16:54:59'))
-        .to.produce([2016, 4, 2, 16, 54, 59])
+        .to.produce([2016, 4, 2, 16, 54, 59]).at.level(0)
       expect(p('2016-05-02T16:54:59.042'))
-        .to.produce([2016, 4, 2, 16, 54, 59, 42])
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
       expect(p('2016-05-02T24:00:00'))
-        .to.produce([2016, 4, 2, 24, 0, 0])
+        .to.produce([2016, 4, 2, 24, 0, 0]).at.level(0)
 
       expect(() => p('2016-05-02T24:00:01')).to.be.rejected
       expect(() => p('2016-05-02T00:61:00')).to.be.rejected
@@ -63,14 +63,15 @@ describe('parser', () => {
 
     it('YYYY-MM-DDTHH:MM:SSZ', () => {
       expect(p('2016-05-02T16:54:59Z'))
-        .to.produce([2016, 4, 2, 16, 54, 59])
+        .to.produce([2016, 4, 2, 16, 54, 59]).at.level(0)
       expect(p('2016-05-02T16:54:59.042Z'))
-        .to.produce([2016, 4, 2, 16, 54, 59, 42])
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
     })
 
     it('YYYY-MM-DDTHH:MM:SS[+-]HH:MM', () => {
       expect(p('2016-05-02T16:54:59+02:30'))
         .to.produce([2016, 4, 2, 16, 54, 59])
+        .at.level(0)
         .and.have.property('offset', 150)
 
       expect(p('2016-05-02T16:54:59+00:00')).to.have.property('offset', 0)
@@ -88,24 +89,44 @@ describe('parser', () => {
       expect(() => p('2016-05-02T12:00:00-14:00')).to.be.rejected
       expect(() => p('2016-05-02T12:00:00+14:01')).to.be.rejected
     })
+  })
 
-    it('YYYY[?~%]', () => {
-      expect(p('2016?')).to.produce([2016]).and.be.uncertain.and.not.approximate
-      expect(p('2016~')).to.produce([2016]).and.be.approximate.and.not.uncertain
-      expect(p('2016%')).to.be.approximate.and.uncertain
-    })
+  describe('Level 1', () => {
+    it('YYYY?', () =>
+      expect(p('2016?'))
+        .to.produce([2016]).at.level(1).and.be.uncertain.and.not.approximate)
 
-    it('YYYY-MM[?~%]', () => {
-      expect(p('2016-05?')).to.produce([2016, 4]).and.be.uncertain
-      expect(p('2016-05~')).to.produce([2016, 4]).and.be.approximate
-      expect(p('2016-05%')).to.approximate.and.uncertain
-    })
+    it('YYYY~', () =>
+      expect(p('2016~'))
+        .to.produce([2016]).at.level(1).and.be.approximate.and.not.uncertain)
 
-    it('YYYY-MM-DD[?~%]', () => {
-      expect(p('2016-05-03?')).to.produce([2016, 4, 3]).and.be.uncertain
-      expect(p('2016-05-03~')).to.produce([2016, 4, 3]).and.be.approximate
-      expect(p('2016-05-03%')).to.approximate.and.uncertain
-    })
+    it('YYYY%', () =>
+      expect(p('2016%'))
+        .to.produce([2016]).at.level(1).to.be.approximate.and.uncertain)
+
+    it('YYYY-MM?', () =>
+      expect(p('2016-05?'))
+        .to.produce([2016, 4]).at.level(1).and.be.uncertain)
+
+    it('YYYY-MM~', () =>
+      expect(p('2016-05~'))
+        .to.produce([2016, 4]).at.level(1).and.be.approximate)
+
+    it('YYYY-MM%', () =>
+      expect(p('2016-05%'))
+        .to.produce([2016, 4]).at.level(1).and.be.approximate.and.uncertain)
+
+    it('YYYY-MM-DD?', () =>
+      expect(p('2016-05-03?'))
+        .to.produce([2016, 4, 3]).at.level(1).and.be.uncertain)
+
+    it('YYYY-MM-DD~', () =>
+      expect(p('2016-05-03~'))
+        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate)
+
+    it('YYYY-MM-DD%', () =>
+      expect(p('2016-05-03%'))
+        .to.produce([2016, 4, 3]).at.level(1).and.be.approximate.and.uncertain)
 
     it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
@@ -169,7 +190,6 @@ describe('parser', () => {
       expect(() => p('Y-9999')).to.be.rejected
       expect(() => p('Y-00001')).to.be.rejected
     })
-
   })
 })
 
