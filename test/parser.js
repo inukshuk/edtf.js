@@ -94,6 +94,23 @@ describe('parser', () => {
       expect(() => p('2016-05-02T12:00:00+14:01')).to.be.rejected
     })
 
+    it('YYYY-MM-DDThh:mm:ss[+-]hh', () => {
+      expect(p('2016-05-02T16:54:59+14'))
+        .to.produce([2016, 4, 2, 16, 54, 59])
+        .at.level(0)
+        .and.have.property('offset', 840)
+
+      expect(p('2016-05-02T16:54:59-12'))
+        .to.produce([2016, 4, 2, 16, 54, 59])
+        .at.level(0)
+        .and.have.property('offset', -720)
+
+      expect(() => p('2016-05-02T12:00:00-00')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00-13')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00-14')).to.be.rejected
+      expect(() => p('2016-05-02T12:00:00+15')).to.be.rejected
+    })
+
     it('YY', () =>
       expect(p('19')).to.produce([19]).at.level(0).and.be.a.century)
 

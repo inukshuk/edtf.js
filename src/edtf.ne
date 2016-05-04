@@ -15,7 +15,7 @@
 
 edtf -> L0 {% id %}
       | L1 {% id %}
-#     | L2 {% id %}
+      | L2 {% id %}
 
 
 # --- EDTF Level 0 / ISO 8601-1 ---
@@ -85,10 +85,12 @@ positive_offset -> offset                  {% id %}
                  | "00:00"                 {% zero %}
                  | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
                  | "14:00"                 {% () => 840 %}
+                 | d00_14                  {% data => data[0] * 60 %}
 
 offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
         | "00:" d01_59       {% pick(1) %}
         | "12:00"            {% () => 720 %}
+        | d01_12             {% data => data[0] * 60 %}
 
 century -> digit digit {% data => ({ values: [num(data)], type: 'century', level: 0 }) %}
 
@@ -159,6 +161,10 @@ d01_12 -> d01_11 {% id %}
 
 d01_13 -> d01_12 {% id %}
         | "13"   {% () => 13 %}
+
+d00_14 -> "00"   {% zero %}
+        | d01_13 {% id %}
+        | "14"   {% () => 14 %}
 
 d00_23 -> "00"   {% zero %}
         | d01_23 {% id %}
