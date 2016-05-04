@@ -5,8 +5,24 @@ const MONTH = /^months?$/i
 const YEAR = /^years?$/i
 const SYMBOL = /^[xX~?]$/
 const PATTERN = /^[yYxX~?]{4}[mMxX~?]{2}[dDxX~?]{2}$/
+const YYYYMMDD = 'YYYYMMDD'.split('')
+
+const { pow } = Math
 
 
+/**
+ * Bitmasks are used to set Unspecified, Uncertain and
+ * Approximate flags for a Date. The bitmask for one
+ * feature corresponds to a numeric value based on the
+ * following pattern:
+ *
+ *           YYYYMMDD
+ *           --------
+ *   Day     00000011
+ *   Month   00001100
+ *   Year    11110000
+ *
+ */
 class Bitmask {
 
   static test(a, b) {
@@ -35,8 +51,9 @@ class Bitmask {
 
   static compute(value) {
     return value.split('').reduce((memo, c, idx) =>
-        (memo | (SYMBOL.test(c) ? Math.pow(2, idx) : 0)), 0)
+        (memo | (SYMBOL.test(c) ? pow(2, idx) : 0)), 0)
   }
+
 
   constructor(value = 0) {
     this.value = Bitmask.convert(value)
@@ -46,6 +63,12 @@ class Bitmask {
     return this.value & Bitmask.convert(value)
   }
 
+  get day() { return this.test(Bitmask.DAY) }
+
+  get month() { return this.test(Bitmask.MONTH) }
+
+  get year() { return this.test(Bitmask.YEAR) }
+
 
   add(value) {
     return (this.value = this.value | Bitmask.convert(value)), this
@@ -53,6 +76,10 @@ class Bitmask {
 
   set(value = 0) {
     return (this.value = Bitmask.convert(value)), this
+  }
+
+  mask(input = YYYYMMDD, offset = 0, symbol = 'X') {
+    return input.map((c, idx) => this.test(pow(2, offset + idx)) ? symbol : c)
   }
 
   toJSON() {
