@@ -4,8 +4,10 @@ const DAY = /^days?$/i
 const MONTH = /^months?$/i
 const YEAR = /^years?$/i
 const SYMBOL = /^[xX~?]$/
-const PATTERN = /^[yYxX~?]{4}[mMxX~?]{2}[dDxX~?]{2}$/
+const SYMBOLS = /[xX~?]/g
+const PATTERN = /^[0-9xX~?]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
+const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 const { pow } = Math
 
@@ -41,7 +43,7 @@ class Bitmask {
         if (DAY.test(value)) return Bitmask.DAY
         if (MONTH.test(value)) return Bitmask.MONTH
         if (YEAR.test(value)) return Bitmask.YEAR
-        if (PATTERN.test(value)) return this.compute(value)
+        if (PATTERN.test(value)) return Bitmask.compute(value)
         // fall through!
 
       default:
@@ -54,6 +56,20 @@ class Bitmask {
         (memo | (SYMBOL.test(c) ? pow(2, idx) : 0)), 0)
   }
 
+  static values(mask, digit = 0) {
+    let num = Bitmask.numbers(mask, digit).split('')
+    let val = [Number(num.slice(0, 4).join(''))]
+
+    if (num.length > 4) val.push(Number(num.slice(4, 6).join('')) - 1)
+    if (num.length > 6) val.push(Number(num.slice(6, 8).join('')))
+
+    return normalize(val)
+  }
+
+  static numbers(mask, digit = 0) {
+    return mask.replace(SYMBOLS, digit)
+  }
+
 
   constructor(value = 0) {
     this.value = Bitmask.convert(value)
@@ -61,6 +77,10 @@ class Bitmask {
 
   test(value = 0) {
     return this.value & Bitmask.convert(value)
+  }
+
+  bit(k) {
+    return this.value & pow(2, k)
   }
 
   get day() { return this.test(Bitmask.DAY) }
@@ -79,7 +99,7 @@ class Bitmask {
   }
 
   mask(input = YYYYMMDD, offset = 0, symbol = 'X') {
-    return input.map((c, idx) => this.test(pow(2, offset + idx)) ? symbol : c)
+    return input.map((c, idx) => this.bit(offset + idx) ? symbol : c)
   }
 
   toJSON() {
@@ -111,3 +131,15 @@ Bitmask.YYYX = Bitmask.compute('yyyxmmdd')
 Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
 
 module.exports = Bitmask
+
+function normalize(values) {
+  if (values.length > 1) {
+    values[1] = Math.min(11, Math.max(0, values[1]))
+  }
+
+  if (values.length > 2) {
+    values[2] = Math.min(MAXDAYS[values[1]] || NaN, Math.max(1, values[2]))
+  }
+
+  return values
+}

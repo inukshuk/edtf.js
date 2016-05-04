@@ -3,16 +3,14 @@
 (function () {
 function id(x) {return x[0]; }
 
-  const { num, zero, pick, join, concat, merge } = require('./util')
-  const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
+  const {
+    num, zero, pick, join, concat, merge, interval, masked
+  } = require('./util')
 
-  function interval(level) {
-    return data => ({
-      values: [data[0], data[2]],
-      type: 'interval',
-      level
-    })
-  }
+  const {
+    DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
+  } = require('./bitmask')
+
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
@@ -99,20 +97,20 @@ var grammar = {
     {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
     {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": () => ({ values: [], type: 'open', level: 1 })},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
+    {"name": "L1X", "symbols": ["d4", {"literal":"-"}, "d2", "L1X$string$1"], "postprocess": masked()},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year", "L1X$string$2"], "postprocess": data => ({ values: [data[0]], unspecified: MD })},
+    {"name": "L1X", "symbols": ["d4", "L1X$string$2"], "postprocess": masked()},
     {"name": "L1X$string$3", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$3"], "postprocess": data => ({ values: [], unspecified: YMD })},
+    {"name": "L1X", "symbols": ["L1X$string$3"], "postprocess": masked()},
     {"name": "L1X$string$4", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year", "L1X$string$4"], "postprocess": data => ({ values: [data[0]], unspecified: MONTH })},
+    {"name": "L1X", "symbols": ["d4", "L1X$string$4"], "postprocess": masked()},
     {"name": "L1X$string$5", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$5"], "postprocess": data => ({ values: [], unspecified: YM })},
+    {"name": "L1X", "symbols": ["L1X$string$5"], "postprocess": masked()},
     {"name": "L1X$string$6", "symbols": [{"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["digit", "digit", "L1X$string$6"], "postprocess": data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: YYXX })},
-    {"name": "L1X", "symbols": ["digit", "digit", "digit", {"literal":"X"}], "postprocess": data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX })},
+    {"name": "L1X", "symbols": ["d2", "L1X$string$6"], "postprocess": masked()},
+    {"name": "L1X", "symbols": ["d3", {"literal":"X"}], "postprocess": masked()},
     {"name": "L1X$string$7", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": data => ({ values: [], unspecified: XXXX })},
+    {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": masked()},
     {"name": "L1Y", "symbols": [{"literal":"Y"}, "d5+"], "postprocess": data => ({ values: [data[1]], type: 'date', level: 1 })},
     {"name": "L1Y$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": data => ({ values: [-data[1]], type: 'date', level: 1 })},
@@ -122,9 +120,17 @@ var grammar = {
     {"name": "UA", "symbols": [{"literal":"%"}], "postprocess": () => ({ approximate: true, uncertain: true })},
     {"name": "L1S", "symbols": ["year", {"literal":"-"}, "d21_24"], "postprocess": data => ({ values: [data[0], data[2]], type: 'season', level: 1 })},
     {"name": "L2", "symbols": ["L2Y"], "postprocess": id},
+    {"name": "L2", "symbols": ["L2X"], "postprocess": merge(0, { type: 'date', level: 2 })},
     {"name": "L2", "symbols": ["L2S"], "postprocess": id},
     {"name": "L2", "symbols": ["decade"], "postprocess": id},
     {"name": "L2", "symbols": ["decade", "UA"], "postprocess": merge(0, 1)},
+    {"name": "L2X", "symbols": ["masked_year"], "postprocess": masked()},
+    {"name": "L2X", "symbols": ["masked_year_month"], "postprocess": masked()},
+    {"name": "L2X", "symbols": ["masked_year_month_day"], "postprocess": masked()},
+    {"name": "masked_year", "symbols": ["masked_digits", "masked_digits"], "postprocess": join},
+    {"name": "masked_year_month", "symbols": ["masked_year", {"literal":"-"}, "masked_digits"], "postprocess": join},
+    {"name": "masked_year_month_day", "symbols": ["masked_year_month", {"literal":"-"}, "masked_digits"], "postprocess": join},
+    {"name": "masked_digits", "symbols": [/[0-9X]/, /[0-9X]/], "postprocess": join},
     {"name": "L2Y", "symbols": [{"literal":"Y"}, "exp_year"], "postprocess": data => ({ values: [data[1]], type: 'date', level: 2 })},
     {"name": "L2Y$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L2Y", "symbols": ["L2Y$string$1", "exp_year"], "postprocess": data => ({ values: [-data[1]], type: 'date', level: 2 })},
@@ -135,6 +141,9 @@ var grammar = {
     {"name": "digit", "symbols": [{"literal":"0"}], "postprocess": zero},
     {"name": "digits", "symbols": ["digit"], "postprocess": id},
     {"name": "digits", "symbols": ["digit", "digits"], "postprocess": join},
+    {"name": "d4", "symbols": ["d2", "d2"], "postprocess": join},
+    {"name": "d3", "symbols": ["d2", /[0-9]/], "postprocess": join},
+    {"name": "d2", "symbols": [/[0-9]/, /[0-9]/], "postprocess": join},
     {"name": "positive_digit", "symbols": [/[1-9]/], "postprocess": num},
     {"name": "m31$subexpression$1$string$1", "symbols": [{"literal":"0"}, {"literal":"1"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$1"]},

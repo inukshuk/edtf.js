@@ -182,21 +182,21 @@ describe('parser', () => {
 
     it('YYYY-MM-XX', () =>
       expect(p('2016-05-XX'))
-        .to.produce([2016, 4]).at.level(1)
+        .to.produce([2016, 4, 1]).at.level(1)
         .and.have.unspecified('day')
         .and.not.have.unspecified('month')
         .and.not.have.unspecified('year'))
 
     it('YYYY-XX', () =>
       expect(p('2016-XX'))
-        .to.produce([2016]).at.level(1)
+        .to.produce([2016, 0]).at.level(1)
         .and.have.unspecified('month')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('year'))
 
     it('XXXX', () =>
       expect(p('XXXX'))
-        .to.produce([]).at.level(1)
+        .to.produce([0]).at.level(1)
         .and.have.unspecified('year')
         .and.not.have.unspecified('day')
         .and.not.have.unspecified('month'))
@@ -217,14 +217,14 @@ describe('parser', () => {
 
     it('XXXX-XX', () =>
       expect(p('XXXX-XX'))
-        .to.produce([]).at.level(1)
+        .to.produce([0, 0]).at.level(1)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
         .and.not.have.unspecified('day'))
 
     it('XXXX-XX-XX', () =>
       expect(p('XXXX-XX-XX'))
-        .to.produce([]).at.level(1)
+        .to.produce([0, 0, 1]).at.level(1)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
         .and.have.unspecified('day'))

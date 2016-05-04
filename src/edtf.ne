@@ -1,17 +1,16 @@
 # http://www.loc.gov/standards/datetime
 
 @{%
-  const { num, zero, pick, join, concat, merge } = require('./util')
-  const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
+  const {
+    num, zero, pick, join, concat, merge, interval, masked
+  } = require('./util')
 
-  function interval(level) {
-    return data => ({
-      values: [data[0], data[2]],
-      type: 'interval',
-      level
-    })
-  }
+  const {
+    DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
+  } = require('./bitmask')
+
 %}
+
 
 edtf -> L0 {% id %}
       | L1 {% id %}
@@ -114,14 +113,14 @@ L1i_date -> null     {% () => ({ values: [], type: 'unknown', level: 1 }) %}
           | "*"      {% () => ({ values: [], type: 'open', level: 1 }) %}
 
 
-L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
-     | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
-     | "XXXX-XX-XX"          {% data => ({ values: [], unspecified: YMD }) %}
-     | year "-XX"            {% data => ({ values: [data[0]], unspecified: MONTH }) %}
-     | "XXXX-XX"             {% data => ({ values: [], unspecified: YM }) %}
-     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: YYXX }) %}
-     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX }) %}
-     | "XXXX"                {% data => ({ values: [], unspecified: XXXX }) %}
+L1X -> d4 "-" d2 "-XX" {% masked() %}
+     | d4 "-XX-XX"     {% masked() %}
+     | "XXXX-XX-XX"    {% masked() %}
+     | d4 "-XX"        {% masked() %}
+     | "XXXX-XX"       {% masked() %}
+     | d2 "XX"         {% masked() %}
+     | d3 "X"          {% masked() %}
+     | "XXXX"          {% masked() %}
 
 L1Y -> "Y" d5+  {% data => ({ values: [data[1]], type: 'date', level: 1 }) %}
      | "Y-" d5+ {% data => ({ values: [-data[1]], type: 'date', level: 1 }) %}
@@ -138,9 +137,22 @@ L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season',
 # --- EDTF / ISO 8601-2 Level 2 ---
 
 L2 -> L2Y       {% id %}
+    | L2X       {% merge(0, { type: 'date', level: 2 }) %}
     | L2S       {% id %}
     | decade    {% id %}
     | decade UA {% merge(0, 1) %}
+
+# NB: slow!
+L2X -> masked_year           {% masked() %}
+     | masked_year_month     {% masked() %}
+     | masked_year_month_day {% masked() %}
+
+masked_year           -> masked_digits masked_digits         {% join %}
+masked_year_month     -> masked_year "-" masked_digits       {% join %}
+masked_year_month_day -> masked_year_month "-" masked_digits {% join %}
+
+masked_digits -> [0-9X] [0-9X] {% join %}
+
 
 L2Y -> "Y" exp_year  {% data => ({ values: [data[1]], type: 'date', level: 2 }) %}
      | "Y-" exp_year {% data => ({ values: [-data[1]], type: 'date', level: 2 }) %}
@@ -159,6 +171,11 @@ digit -> positive_digit {% id %}
 
 digits -> digit        {% id %}
         | digit digits {% join %}
+
+# NB: these return strings!
+d4 -> d2 d2       {% join %}
+d3 -> d2 [0-9]    {% join %}
+d2 -> [0-9] [0-9] {% join %}
 
 positive_digit -> [1-9] {% num %}
 
