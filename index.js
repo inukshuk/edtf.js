@@ -1,13 +1,15 @@
 'use strict'
 
 const ExtDate = require('./src/date')
-const X = require('./src/x')
+const Bitmask = require('./src/bitmask')
+
 
 function edtf(...args) {
   return new ExtDate(...args)
 }
 
 
-module.exports = edtf
-module.exports.Date = ExtDate
-module.exports.X = X
+module.exports = Object.assign(edtf, {
+  Date: ExtDate,
+  Bitmask
+})

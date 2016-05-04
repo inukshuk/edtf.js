@@ -3,7 +3,7 @@
 const edtf = require('../..')
 const chai = require('chai')
 
-const { X } = edtf
+const { Bitmask } = edtf
 const { expect, Assertion } = chai
 
 global.expect = expect
@@ -72,51 +72,22 @@ chai.use(function (_, utils) {
     expect(date.getUTCSeconds()).to.eql(expected[2])
   }
 
-  function uncertain(expected = true) {
-    let neg = utils.flag(this, 'negate')
-    let obj = utils.flag(this, 'object')
+  function bitmask(name) {
+    return function (expected = true) {
+      let neg = utils.flag(this, 'negate')
+      let obj = utils.flag(this, 'object')
 
-    if (neg) {
-      if (obj.hasOwnProperty('uncertain')) {
-        expect(X.is(obj.uncertain, expected)).to.be.eql(0)
+      if (neg) {
+        if (obj.hasOwnProperty(name)) {
+          expect(Bitmask.test(obj[name], expected)).to.eql(0)
+        }
+
+      } else {
+        expect(obj).to.have.property(name)
+        expect(Bitmask.test(obj[name], expected)).to.be.above(0)
       }
-    } else {
-      expect(obj)
-        .to.have.property('uncertain')
-        .and.satisfy(x => X.is(x, expected) !== 0)
     }
   }
-
-  function approximate(expected = true) {
-    let neg = utils.flag(this, 'negate')
-    let obj = utils.flag(this, 'object')
-
-    if (neg) {
-      if (obj.hasOwnProperty('approximate')) {
-        expect(X.is(obj.approximate, expected)).to.be.eql(0)
-      }
-    } else {
-      expect(obj)
-        .to.have.property('approximate')
-        .and.satisfy(x => X.is(x, expected) !== 0)
-    }
-  }
-
-  function unspecified(expected) {
-    let neg = utils.flag(this, 'negate')
-    let obj = utils.flag(this, 'object')
-
-    if (neg) {
-      if (obj.hasOwnProperty('unspecified')) {
-        expect(X.is(obj.unspecified, expected)).to.be.eql(0)
-      }
-    } else {
-      expect(obj)
-        .to.have.property('unspecified')
-        .and.satisfy(x => X.is(x, expected) !== 0)
-    }
-  }
-
 
   Assertion.addChainableMethod('year', year)
   Assertion.addChainableMethod('years', year)
@@ -152,9 +123,9 @@ chai.use(function (_, utils) {
     expect(utils.flag(this, 'object')).to.throw('No possible parsings')
   })
 
-  Assertion.addChainableMethod('uncertain', uncertain, uncertain)
-  Assertion.addChainableMethod('approximate', approximate)
-  Assertion.addChainableMethod('unspecified', unspecified)
+  Assertion.addChainableMethod('uncertain', bitmask('uncertain'))
+  Assertion.addChainableMethod('approximate', bitmask('approximate'))
+  Assertion.addChainableMethod('unspecified', bitmask('unspecified'))
 
   Assertion.addChainableMethod('level', function (expected) {
     expect(utils.flag(this, 'object'))

@@ -4,7 +4,7 @@
 function id(x) {return x[0]; }
 
   const { num, zero, pick, concat, merge } = require('./util')
-  const X = require('./x')
+  const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
@@ -68,20 +68,20 @@ var grammar = {
     {"name": "L1", "symbols": ["date", "UA"], "postprocess": merge(0, 1)},
     {"name": "L1", "symbols": ["L1X"], "postprocess": id},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: X.d })},
+    {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year", "L1X$string$2"], "postprocess": data => ({ values: [data[0]], unspecified: X.md })},
+    {"name": "L1X", "symbols": ["year", "L1X$string$2"], "postprocess": data => ({ values: [data[0]], unspecified: MD })},
     {"name": "L1X$string$3", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$3"], "postprocess": data => ({ values: [], unspecified: X.ymd })},
+    {"name": "L1X", "symbols": ["L1X$string$3"], "postprocess": data => ({ values: [], unspecified: YMD })},
     {"name": "L1X$string$4", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["year", "L1X$string$4"], "postprocess": data => ({ values: [data[0]], unspecified: X.m })},
+    {"name": "L1X", "symbols": ["year", "L1X$string$4"], "postprocess": data => ({ values: [data[0]], unspecified: MONTH })},
     {"name": "L1X$string$5", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$5"], "postprocess": data => ({ values: [], unspecified: X.ym })},
+    {"name": "L1X", "symbols": ["L1X$string$5"], "postprocess": data => ({ values: [], unspecified: YM })},
     {"name": "L1X$string$6", "symbols": [{"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["digit", "digit", "L1X$string$6"], "postprocess": data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: X.yyxx })},
-    {"name": "L1X", "symbols": ["digit", "digit", "digit", {"literal":"X"}], "postprocess": data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: X.yyyx })},
+    {"name": "L1X", "symbols": ["digit", "digit", "L1X$string$6"], "postprocess": data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: YYXX })},
+    {"name": "L1X", "symbols": ["digit", "digit", "digit", {"literal":"X"}], "postprocess": data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX })},
     {"name": "L1X$string$7", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": data => ({ values: [], unspecified: X.xxxx })},
+    {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": data => ({ values: [], unspecified: XXXX })},
     {"name": "UA", "symbols": [{"literal":"?"}], "postprocess": () => ({ uncertain: true })},
     {"name": "UA", "symbols": [{"literal":"~"}], "postprocess": () => ({ approximate: true })},
     {"name": "UA", "symbols": [{"literal":"%"}], "postprocess": () => ({ approximate: true, uncertain: true })},

@@ -2,7 +2,7 @@
 
 @{%
   const { num, zero, pick, concat, merge } = require('./util')
-  const X = require('./x')
+  const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 %}
 
 edtf -> L0 {% id %}
@@ -79,14 +79,14 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 L1 -> date UA          {% merge(0, 1) %}
     | L1X              {% id %}
 
-L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: X.d }) %}
-     | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: X.md }) %}
-     | "XXXX-XX-XX"          {% data => ({ values: [], unspecified: X.ymd }) %}
-     | year "-XX"            {% data => ({ values: [data[0]], unspecified: X.m }) %}
-     | "XXXX-XX"             {% data => ({ values: [], unspecified: X.ym }) %}
-     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: X.yyxx }) %}
-     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: X.yyyx }) %}
-     | "XXXX"                {% data => ({ values: [], unspecified: X.xxxx }) %}
+L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
+     | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
+     | "XXXX-XX-XX"          {% data => ({ values: [], unspecified: YMD }) %}
+     | year "-XX"            {% data => ({ values: [data[0]], unspecified: MONTH }) %}
+     | "XXXX-XX"             {% data => ({ values: [], unspecified: YM }) %}
+     | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: YYXX }) %}
+     | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX }) %}
+     | "XXXX"                {% data => ({ values: [], unspecified: XXXX }) %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
