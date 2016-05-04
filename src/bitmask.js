@@ -86,8 +86,12 @@ class Bitmask {
     return this.value
   }
 
-  toString() {
-    return this.value.toString(2)
+  toString(symbol = 'X') {
+    return [
+      this.mask(['Y', 'Y', 'Y', 'Y'], 0, symbol).join(''),
+      this.mask(['M', 'M'], 4, symbol).join(''),
+      this.mask(['D', 'D'], 6, symbol).join('')
+    ].join('-')
   }
 }
 

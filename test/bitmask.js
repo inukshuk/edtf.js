@@ -16,7 +16,7 @@ describe('Bitmask', () => {
       expect(bm.test('year')).to.be.zero
     })
 
-    describe('.mask', () => {
+    describe('.mask()', () => {
       it('YYYYMMXX', () =>
         expect(bm.set('day').mask().join('')).to.eql('YYYYMMXX'))
 
@@ -26,9 +26,17 @@ describe('Bitmask', () => {
       it('XXXXMMDD', () =>
         expect(bm.set('year').mask().join('')).to.eql('XXXXMMDD'))
     })
+
+    describe('.toString()', () => {
+      it('YYYY-MM-DD', () =>
+        expect(bm.toString()).to.eql('YYYY-MM-DD'))
+
+      it('YYYY-MM-XX', () =>
+        expect(bm.set('day').toString()).to.eql('YYYY-MM-XX'))
+    })
   })
 
-  describe('.test', () => {
+  describe('.test()', () => {
     it('true', () => {
       expect(Bitmask.test(true, true)).to.be.ok
       expect(Bitmask.test(true, 'day')).to.be.ok
