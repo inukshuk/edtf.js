@@ -1,15 +1,9 @@
 'use strict'
 
-const parser = require('../src/parser')
+const { parse: p, parser } = require('../src/parser')
 const { Parser } = require('nearley')
 
 describe('parser', () => {
-  function p(input) {
-    let res = parser().feed(input).results[0]
-    if (res === undefined) throw new Error('No possible parsings (END)')
-    return res
-  }
-
   it('returns a parser instance', () =>
     expect(parser()).to.be.instanceof(Parser))
 

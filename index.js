@@ -3,6 +3,8 @@
 const ExtDate = require('./src/date')
 const Bitmask = require('./src/bitmask')
 
+const { parse } = require('./src/parser')
+
 
 function edtf(...args) {
   return new ExtDate(...args)
@@ -11,5 +13,6 @@ function edtf(...args) {
 
 module.exports = Object.assign(edtf, {
   Date: ExtDate,
-  Bitmask
+  Bitmask,
+  parse
 })
