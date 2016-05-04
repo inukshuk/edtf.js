@@ -269,5 +269,21 @@ describe('parser', () => {
       expect(p('/2016-05'))
         .to.be.an.interval.from([]).until([2016, 4]).at.level(1))
   })
+
+  describe('Level 2', () => {
+    it('YYYY-SS', () => {
+      expect(p('2001-25'))
+        .to.produce([2001, 25]).at.level(2).and.be.a.season
+
+      expect(p('2001-36'))
+        .to.produce([2001, 36]).at.level(2).and.be.a.season
+
+      expect(p('2001-39'))
+        .to.produce([2001, 39]).at.level(2).and.be.a.season
+    })
+
+    it('YYY', () =>
+      expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade)
+  })
 })
 

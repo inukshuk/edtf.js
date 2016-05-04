@@ -137,8 +137,12 @@ L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season',
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-#decade -> digit digit {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
-#L1S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
+L2 -> L2S    {% id %}
+    | decade {% id %}
+
+L2S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
+
+decade -> digit digit digit {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
 
 # --- Base Definitions ---
 
