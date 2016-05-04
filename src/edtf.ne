@@ -79,7 +79,7 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 L1 -> date UA          {% merge(0, 1) %}
     | L1X              {% id %}
     | L1Y              {% id %}
-    | L1S              {% merge(0, { type: 'season' }) %}
+    | L1S              {% id %}
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
      | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
@@ -100,12 +100,12 @@ UA -> "?" {% () => ({ uncertain: true }) %}
     | "%" {% () => ({ approximate: true, uncertain: true }) %}
 
 
-L1S -> year "-" d21_24 {% pick(0, 2) %}
+L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season' }) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
 
-#L2S -> year "-" d25_39 {% pick(0, 2) %}
+#L1S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season' }) %}
 
 # --- Base Definitions ---
 

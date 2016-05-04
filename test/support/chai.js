@@ -131,4 +131,13 @@ chai.use(function (_, utils) {
     expect(utils.flag(this, 'object'))
       .to.have.property('level', expected)
   })
+
+  Assertion.addChainableMethod('type', function (expected) {
+    expect(utils.flag(this, 'object'))
+      .to.have.property('type', expected)
+  })
+
+  Assertion.addProperty('season', function () {
+    expect(utils.flag(this, 'object')).to.have.type('season')
+  })
 })

@@ -190,6 +190,20 @@ describe('parser', () => {
       expect(() => p('Y-9999')).to.be.rejected
       expect(() => p('Y-00001')).to.be.rejected
     })
+
+    it('YYYY-SS', () => {
+      expect(p('2001-21'))
+        .to.produce([2001, 21]).at.level(1).and.be.a.season
+
+      expect(p('2001-22'))
+        .to.produce([2001, 22]).at.level(1).and.be.a.season
+
+      expect(p('2001-23'))
+        .to.produce([2001, 23]).at.level(1).and.be.a.season
+
+      expect(p('2001-24'))
+        .to.produce([2001, 24]).at.level(1).and.be.a.season
+    })
   })
 })
 
