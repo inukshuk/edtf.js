@@ -3,7 +3,7 @@
 (function () {
 function id(x) {return x[0]; }
 
-  const { num, zero, pick, concat, merge } = require('./util')
+  const { num, zero, pick, join, concat, merge } = require('./util')
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 var grammar = {
     ParserRules: [
@@ -67,6 +67,7 @@ var grammar = {
     {"name": "offset", "symbols": ["offset$string$2"], "postprocess": () => 720},
     {"name": "L1", "symbols": ["date", "UA"], "postprocess": merge(0, 1)},
     {"name": "L1", "symbols": ["L1X"], "postprocess": id},
+    {"name": "L1", "symbols": ["L1Y"], "postprocess": id},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["year_month", "L1X$string$1"], "postprocess": data => ({ values: data[0], unspecified: DAY })},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
@@ -82,11 +83,17 @@ var grammar = {
     {"name": "L1X", "symbols": ["digit", "digit", "digit", {"literal":"X"}], "postprocess": data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX })},
     {"name": "L1X$string$7", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": data => ({ values: [], unspecified: XXXX })},
+    {"name": "L1Y", "symbols": [{"literal":"Y"}, "d5+"], "postprocess": data => ({ values: [data[1]] })},
+    {"name": "L1Y$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": data => ({ values: [-data[1]] })},
+    {"name": "d5+", "symbols": ["positive_digit", "digit", "digit", "digit", "digits"], "postprocess": num},
     {"name": "UA", "symbols": [{"literal":"?"}], "postprocess": () => ({ uncertain: true })},
     {"name": "UA", "symbols": [{"literal":"~"}], "postprocess": () => ({ approximate: true })},
     {"name": "UA", "symbols": [{"literal":"%"}], "postprocess": () => ({ approximate: true, uncertain: true })},
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},
     {"name": "digit", "symbols": [{"literal":"0"}], "postprocess": zero},
+    {"name": "digits", "symbols": ["digit"], "postprocess": id},
+    {"name": "digits", "symbols": ["digit", "digits"], "postprocess": join},
     {"name": "positive_digit", "symbols": [/[1-9]/], "postprocess": num},
     {"name": "m31$subexpression$1$string$1", "symbols": [{"literal":"0"}, {"literal":"1"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$1"]},

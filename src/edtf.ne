@@ -1,7 +1,7 @@
 # http://www.loc.gov/standards/datetime
 
 @{%
-  const { num, zero, pick, concat, merge } = require('./util')
+  const { num, zero, pick, join, concat, merge } = require('./util')
   const { DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX } = require('./bitmask')
 %}
 
@@ -78,6 +78,7 @@ offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
 
 L1 -> date UA          {% merge(0, 1) %}
     | L1X              {% id %}
+    | L1Y              {% id %}
 
 L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) %}
      | year "-XX-XX"         {% data => ({ values: [data[0]], unspecified: MD }) %}
@@ -87,6 +88,11 @@ L1X -> year_month "-XX"      {% data => ({ values: data[0], unspecified: DAY }) 
      | digit digit "XX"      {% data => ({ values: [num(data.slice(0, 2)) * 100], unspecified: YYXX }) %}
      | digit digit digit "X" {% data => ({ values: [num(data.slice(0, 3)) * 10], unspecified: YYYX }) %}
      | "XXXX"                {% data => ({ values: [], unspecified: XXXX }) %}
+
+L1Y -> "Y" d5+  {% data => ({ values: [data[1]] }) %}
+L1Y -> "Y-" d5+ {% data => ({ values: [-data[1]] }) %}
+
+d5+ -> positive_digit digit digit digit digits {% num %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
@@ -100,6 +106,9 @@ UA -> "?" {% () => ({ uncertain: true }) %}
 
 digit -> positive_digit {% id %}
        | "0"            {% zero %}
+
+digits -> digit        {% id %}
+        | digit digits {% join %}
 
 positive_digit -> [1-9] {% num %}
 

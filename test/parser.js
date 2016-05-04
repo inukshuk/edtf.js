@@ -4,7 +4,11 @@ const parser = require('../src/parser')
 const { Parser } = require('nearley')
 
 describe('parser', () => {
-  function p(input) { return parser().feed(input).results[0] }
+  function p(input) {
+    let res = parser().feed(input).results[0]
+    if (res === undefined) throw new Error('No possible parsings (END)')
+    return res
+  }
 
   it('returns a parser instance', () =>
     expect(parser()).to.be.instanceof(Parser))
@@ -157,6 +161,20 @@ describe('parser', () => {
         .and.have.unspecified('year')
         .and.have.unspecified('month')
         .and.have.unspecified('day'))
+
+    it('"Y"YYYYY...', () => {
+      expect(p('Y170002')).to.produce([170002])
+      expect(p('Y10000')).to.produce([10000])
+      expect(() => p('Y9999')).to.be.rejected
+      expect(() => p('Y00001')).to.be.rejected
+    })
+
+    it('"Y"-YYYYY...', () => {
+      expect(p('Y-170002')).to.produce([-170002])
+      expect(p('Y-10000')).to.produce([-10000])
+      expect(() => p('Y-9999')).to.be.rejected
+      expect(() => p('Y-00001')).to.be.rejected
+    })
 
   })
 })

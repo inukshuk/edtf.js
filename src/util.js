@@ -4,6 +4,10 @@ const util = {
 
   num(data) { return Number(data.join('')) },
 
+  join(data) {
+    return data.join('')
+  },
+
   zero() { return 0 },
 
   pick(...args) {
