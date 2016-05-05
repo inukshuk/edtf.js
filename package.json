@@ -1,12 +1,13 @@
 {
   "name": "edtf",
   "version": "0.0.1",
-  "description": "Extended Date Time Format (EDTF) Parser and Library",
+  "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "main": "index.js",
   "scripts": {
     "lint": "eslint src test",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
     "sample": "nearley-unparse -s edtf -n 20 src/grammar.js && echo || true",
+    "coverage": "istanbul cover _mocha",
     "test": "npm run lint && mocha"
   },
   "repository": {
@@ -32,6 +33,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.9.0",
+    "istanbul": "^0.4.3",
     "mocha": "^2.4.5"
   }
 }

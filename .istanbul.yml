@@ -1,0 +1,8 @@
+instrumentation:
+  root: .
+  excludes:
+    - test
+reporting:
+  reports:
+    - lcov
+    - html
