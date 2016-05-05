@@ -2,7 +2,7 @@
 
 @{%
   const {
-    num, zero, pick, pluck, join, concat, merge, unknown, open,
+    num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
     interval, masked, date, datetime, season, qualify
   } = require('./util')
 
@@ -142,6 +142,7 @@ L2 -> ua_date            {% id %}
     | decade             {% id %}
     | decade UA          {% merge(0, 1) %}
     | L2i                {% id %}
+    | list               {% id %}
 
 
 # NB: these are slow because they match almost everything!
@@ -198,12 +199,40 @@ exp -> digits "E" digits
   {% data => num(data[0]) * Math.pow(10, num(data[2])) %}
 
 
-L2S -> year "-" d25_39 {% data => season(data, 2) %}
+L2S -> year "-" d25_41 {% data => season(data, 2) %}
 
 decade -> d3 {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
 
 
+list -> LB OL RB
+  {%
+    data => assign({ values: data[1], level: 2 }, data[0], data[2])
+  %}
+
+
+LB -> "["   {% () => ({ type: 'list' }) %}
+    | "[.." {% () => ({ type: 'list', earlier: true }) %}
+    | "{"   {% () => ({ type: 'set' }) %}
+
+RB -> "]"   {% nothing %}
+    | "..]" {% () => ({ type: 'list', later: true }) %}
+    | "}"   {% nothing %}
+
+OL -> LI            {% pluck(0) %}
+    | OL _ "," _ LI {% pick(0, 4) %}
+
+LI -> date         {% id %}
+    | ua_date      {% id %}
+    | L2X          {% id %}
+    | consecutives {% id %}
+
+consecutives -> year_month_day ".." year_month_day {% data => [date([data[0]]), date([data[2]])] %}
+              | year_month ".." year_month         {% data => [date(data[0]), date(data[2])] %}
+              | year ".." year                     {% data => [date(data[0]), date(data[2])] %}
+
 # --- Base Definitions ---
+
+_ -> " ":*
 
 digit -> positive_digit {% id %}
        | "0"            {% id %}
@@ -286,5 +315,6 @@ d01_59 -> d01_29      {% id %}
 
 d21_24 -> "2" [1-4] {% join %}
 
-d25_39 -> "2" [5-9] {% join %}
+d25_41 -> "2" [5-9] {% join %}
         | "3" digit {% join %}
+        | "4" [01]  {% join %}

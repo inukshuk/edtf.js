@@ -15,6 +15,8 @@ const util = {
 
   zero() { return 0 },
 
+  nothing() { return null },
+
   pick(...args) {
     return args.length === 1 ?
       data => data[args[0]] :
