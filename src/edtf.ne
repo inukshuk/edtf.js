@@ -3,14 +3,12 @@
 @{%
   const {
     num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
-    interval, masked, date, datetime, season, qualify
+    interval, list, masked, date, datetime, season, qualify
   } = require('./util')
 
   const {
     DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
   } = require('./bitmask')
-
-  const { assign } = Object
 %}
 
 
@@ -145,7 +143,7 @@ L2 -> ua_date            {% id %}
     | decade             {% id %}
     | decade UA          {% merge(0, 1) %}
     | L2i                {% id %}
-    | list               {% id %}
+    | dates              {% id %}
 
 
 # NB: these are slow because they match almost everything!
@@ -156,6 +154,8 @@ ua_date -> ua_year           {% qualify %}
          | ua_year_month_day {% qualify %}
 
 ua[X] -> UA:? $X UA:?
+
+# TODO: how to handle negative years? ?-1900 or -?1900
 
 ua_year -> UA year {% data => [data] %}
 
@@ -210,19 +210,17 @@ decade -> d3
   {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
 
 
-list -> LB OL RB
-  {%
-    data => assign({ values: data[1], level: 2 }, data[0], data[2])
-  %}
+dates -> LSB OL RSB {% list %}
+       | LLB OL RLB {% list %}
 
 
-LB -> "["   {% () => ({ type: 'set' }) %}
-    | "[.." {% () => ({ type: 'set', earlier: true }) %}
-    | "{"   {% () => ({ type: 'list' }) %}
+LSB -> "["   {% () => ({ type: 'set' }) %}
+     | "[.." {% () => ({ type: 'set', earlier: true }) %}
+LLB -> "{"   {% () => ({ type: 'list' }) %}
 
-RB -> "]"   {% nothing %}
-    | "..]" {% () => ({ later: true }) %}
-    | "}"   {% nothing %}
+RSB -> "]"   {% nothing %}
+     | "..]" {% () => ({ later: true }) %}
+RLB -> "}"   {% nothing %}
 
 OL -> LI            {% pluck(0) %}
     | OL _ "," _ LI {% pick(0, 4) %}

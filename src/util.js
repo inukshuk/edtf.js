@@ -92,6 +92,10 @@ const util = {
     return { type: 'open', level: 1, values: [] }
   },
 
+  list(data) {
+    return assign({ values: data[1], level: 2 }, data[0], data[2])
+  },
+
   qualify([parts], _, reject) {
     let q = {
       uncertain: new Bitmask(), approximate: new Bitmask()

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src test",
-    "grammar": "nearleyc -o src/grammar.js src/edtf.ne || true",
+    "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
+    "sample": "nearley-unparse -s edtf -n 20 src/grammar.js && echo || true",
     "test": "npm run lint && mocha"
   },
   "repository": {

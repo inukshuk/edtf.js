@@ -5,14 +5,12 @@ function id(x) {return x[0]; }
 
   const {
     num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
-    interval, masked, date, datetime, season, qualify
+    interval, list, masked, date, datetime, season, qualify
   } = require('./util')
 
   const {
     DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
   } = require('./bitmask')
-
-  const { assign } = Object
 var grammar = {
     ParserRules: [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
@@ -120,7 +118,7 @@ var grammar = {
     {"name": "L2", "symbols": ["decade"], "postprocess": id},
     {"name": "L2", "symbols": ["decade", "UA"], "postprocess": merge(0, 1)},
     {"name": "L2", "symbols": ["L2i"], "postprocess": id},
-    {"name": "L2", "symbols": ["list"], "postprocess": id},
+    {"name": "L2", "symbols": ["dates"], "postprocess": id},
     {"name": "ua_date", "symbols": ["ua_year"], "postprocess": qualify},
     {"name": "ua_date", "symbols": ["ua_year_month"], "postprocess": qualify},
     {"name": "ua_date", "symbols": ["ua_year_month_day"], "postprocess": qualify},
@@ -210,17 +208,16 @@ var grammar = {
     {"name": "exp", "symbols": ["digits", {"literal":"E"}, "digits"], "postprocess": data => num(data[0]) * Math.pow(10, num(data[2]))},
     {"name": "L2S", "symbols": ["year", {"literal":"-"}, "d25_41"], "postprocess": data => season(data, 2)},
     {"name": "decade", "symbols": ["d3"], "postprocess": data => ({ values: [num(data)], type: 'decade', level: 2 })},
-    {"name": "list", "symbols": ["LB", "OL", "RB"], "postprocess": 
-        data => assign({ values: data[1], level: 2 }, data[0], data[2])
-          },
-    {"name": "LB", "symbols": [{"literal":"["}], "postprocess": () => ({ type: 'set' })},
-    {"name": "LB$string$1", "symbols": [{"literal":"["}, {"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "LB", "symbols": ["LB$string$1"], "postprocess": () => ({ type: 'set', earlier: true })},
-    {"name": "LB", "symbols": [{"literal":"{"}], "postprocess": () => ({ type: 'list' })},
-    {"name": "RB", "symbols": [{"literal":"]"}], "postprocess": nothing},
-    {"name": "RB$string$1", "symbols": [{"literal":"."}, {"literal":"."}, {"literal":"]"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "RB", "symbols": ["RB$string$1"], "postprocess": () => ({ later: true })},
-    {"name": "RB", "symbols": [{"literal":"}"}], "postprocess": nothing},
+    {"name": "dates", "symbols": ["LSB", "OL", "RSB"], "postprocess": list},
+    {"name": "dates", "symbols": ["LLB", "OL", "RLB"], "postprocess": list},
+    {"name": "LSB", "symbols": [{"literal":"["}], "postprocess": () => ({ type: 'set' })},
+    {"name": "LSB$string$1", "symbols": [{"literal":"["}, {"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "LSB", "symbols": ["LSB$string$1"], "postprocess": () => ({ type: 'set', earlier: true })},
+    {"name": "LLB", "symbols": [{"literal":"{"}], "postprocess": () => ({ type: 'list' })},
+    {"name": "RSB", "symbols": [{"literal":"]"}], "postprocess": nothing},
+    {"name": "RSB$string$1", "symbols": [{"literal":"."}, {"literal":"."}, {"literal":"]"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "RSB", "symbols": ["RSB$string$1"], "postprocess": () => ({ later: true })},
+    {"name": "RLB", "symbols": [{"literal":"}"}], "postprocess": nothing},
     {"name": "OL", "symbols": ["LI"], "postprocess": pluck(0)},
     {"name": "OL", "symbols": ["OL", "_", {"literal":","}, "_", "LI"], "postprocess": pick(0, 4)},
     {"name": "LI", "symbols": ["date"], "postprocess": id},

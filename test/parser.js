@@ -441,6 +441,11 @@ describe('parser', () => {
       expect(set.values[1]).to.produce([1668])
       expect(set.values[2]).to.have.length(2)
       expect(set.values[2][0]).to.produce([1670])
+
+      expect(() => p('[1999}')).to.be.rejected
+      expect(() => p('{1999]')).to.be.rejected
+      expect(() => p('[1999')).to.be.rejected
+      expect(() => p('{1999')).to.be.rejected
     })
 
     it('[..YYYY-MM-DD]', () =>
