@@ -32,6 +32,8 @@ L0 -> date_time {% id %}
 
 L0i -> date_time "/" date_time {% interval(0) %}
 
+century -> d2 {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
+
 date_time -> date     {% id %}
            | datetime {% id %}
 
@@ -52,15 +54,18 @@ negative_year -> "-" positive_year {% join %}
 
 year_month -> year "-" month {% pick(0, 2) %}
 
-month -> d01_12 {% id %}
-
 year_month_day -> year "-" month_day {% pick(0, 2) %}
+
+month -> d01_12 {% id %}
 
 month_day -> m31 "-" day     {% pick(0, 2) %}
            | m30 "-" d01_30  {% pick(0, 2) %}
            | "02" "-" d01_29 {% pick(0, 2) %}
 
 day -> d01_31 {% id %}
+
+
+# --- ISO 8601-1 Date / Time ---
 
 datetime -> date "T" time (timezone {% id %}):? {% datetime %}
 
@@ -89,7 +94,6 @@ offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
         | "12:00"            {% () => 720 %}
         | d01_12             {% data => num(data[0]) * 60 %}
 
-century -> d2 {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
@@ -111,7 +115,7 @@ L1i_date -> null     {% () => ({ values: [], type: 'unknown', level: 1 }) %}
           | "*"      {% () => ({ values: [], type: 'open', level: 1 }) %}
 
 
-L1X -> d4 "-" d2 "-XX" {% masked() %}
+L1X -> d4 "-" md "-XX" {% masked() %}
      | d4 "-XX-XX"     {% masked() %}
      | "XXXX-XX-XX"    {% masked() %}
      | d4 "-XX"        {% masked() %}
@@ -123,7 +127,6 @@ L1X -> d4 "-" d2 "-XX" {% masked() %}
 L1Y -> "Y" d5+  {% data => date([num(data[1])], 1) %}
      | "Y-" d5+ {% data => date([-num(data[1])], 1) %}
 
-d5+ -> positive_digit d3 digits {% num %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
@@ -161,16 +164,13 @@ pua_month_day -> pua[m31] "-" pua[day]
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of unspecified
 # dates, excluding those covered by level 1. (use macros!)
-L2X -> masked_year           {% masked() %}
-     | masked_year_month     {% masked() %}
-     | masked_year_month_day {% masked() %}
+L2X -> dx4         {% masked() %}
+     | dx4 "-" mx  {% masked() %}
+     | dx4 "-" mdx {% masked() %}
 
-masked_year           -> masked_digits masked_digits         {% join %}
-masked_year_month     -> masked_year "-" masked_digits       {% join %}
-masked_year_month_day -> masked_year_month "-" masked_digits {% join %}
-
-masked_digits -> [0-9X] [0-9X] {% join %}
-
+mdx -> m31x "-" d31x {% join %}
+     | m30x "-" d30x {% join %}
+     | "02-" d29x    {% join %}
 
 L2Y -> "Y" exp_year  {% data => date([data[1]], 2) %}
      | "Y-" exp_year {% data => date([-data[1]], 2) %}
@@ -192,10 +192,38 @@ digit -> positive_digit {% id %}
 digits -> digit        {% id %}
         | digit digits {% join %}
 
-# NB: these return strings!
 d4 -> d2 d2       {% join %}
 d3 -> d2 digit    {% join %}
 d2 -> digit digit {% join %}
+
+d5+ -> positive_digit d3 digits {% num %}
+
+d1x -> [1-9X]  {% id %}
+dx  -> d1x     {% id %}
+     | "0"     {% id %}
+dx2 -> dx dx   {% join %}
+dx4 -> dx2 dx2 {% join %}
+
+md  -> m31  {% id %}
+     | m30  {% id %}
+     | "02" {% id %}
+
+mx  -> "0" d1x      {% join %}
+     | [1X] [012X]  {% join %}
+
+m31x -> [0X] [13578X] {% join %}
+      | [1X] [02]     {% join %}
+      | "1X"          {% id %}
+
+m30x -> [0X] [469]    {% join %}
+      | "11"          {% join %}
+
+d29x -> [0-2X] dx     {% join %}
+d30x -> d29x          {% join %}
+      | "30"          {% id %}
+d31x -> d30x          {% id %}
+      | "3" [1X]      {% join %}
+
 
 positive_digit -> [1-9] {% id %}
 

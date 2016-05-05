@@ -180,12 +180,15 @@ describe('parser', () => {
         .to.produce([2016, 4, 3]).at.level(1)
         .and.be.approximate().and.uncertain)
 
-    it('YYYY-MM-XX', () =>
+    it('YYYY-MM-XX', () => {
       expect(p('2016-05-XX'))
         .to.produce([2016, 4, 1]).at.level(1)
         .and.have.unspecified('day')
         .and.not.have.unspecified('month')
-        .and.not.have.unspecified('year'))
+        .and.not.have.unspecified('year')
+
+      expect(() => p('2016-13-XX')).to.be.rejected
+    })
 
     it('YYYY-XX', () =>
       expect(p('2016-XX'))
@@ -276,12 +279,16 @@ describe('parser', () => {
 
   describe('Level 2', () => {
 
-    it('YYYX-MM-DD', () =>
-      expect(p('156X-12-25'))
-        .to.produce([1560, 11, 25]).at.level(2)
+    it('YYYX-MM-DD', () => {
+      expect(p('156X-12-31'))
+        .to.produce([1560, 11, 31]).at.level(2)
         .and.have.unspecified('year')
         .and.not.unspecified('month')
-        .and.not.unspecified('day'))
+        .and.not.unspecified('day')
+
+      expect(() => p('156X-09-31')).to.be.rejected
+      expect(() => p('156X-11-31')).to.be.rejected
+    })
 
     it('YYXX-MM-DD', () =>
       expect(p('15XX-12-25'))
@@ -290,25 +297,35 @@ describe('parser', () => {
         .and.not.unspecified('month')
         .and.not.unspecified('day'))
 
-    it('YYXX-MM-XX', () => {
+    it('YYXX-MM-XX', () =>
       expect(p('15XX-12-XX'))
         .to.produce([1500, 11, 1]).at.level(2)
         .and.have.unspecified('year')
         .and.have.unspecified('day')
-        .and.not.unspecified('month')
+        .and.not.unspecified('month'))
 
-      //expect(() => p('15XX-10-31')).to.be.rejected
-      //expect(() => p('15XX-02-3X')).to.be.rejected
+    it('YYXX-MM-XX', () => {
+      expect(() => p('15XX-02-3X')).to.be.rejected
     })
 
-    it('YYXX-XX-DD', () => {
+    it('YYXX-XX-DD', () =>
       expect(p('15XX-XX-25'))
         .to.produce([1500, 0, 25]).at.level(2)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
-        .and.not.unspecified('day')
+        .and.not.unspecified('day'))
 
-      //expect(() => p('15XX-2X-25')).to.be.rejected
+    it('YYYY-MX-DD', () => {
+      expect(p('1500-1X-25'))
+        .to.produce([1500, 9, 25]).at.level(2)
+        .and.have.unspecified('month')
+        .and.not.unspecified('year')
+        .and.unspecified('day')
+
+      expect(p('15XX-0X-25'))
+        .to.produce([1500, 0, 25]).at.level(2)
+
+      expect(() => p('15XX-2X-25')).to.be.rejected
     })
 
     it('YYXX-XM', () =>
