@@ -72,10 +72,10 @@ chai.use(function (_, utils) {
     expect(date.getUTCSeconds()).to.eql(expected[2])
   }
 
-  function bitmask(name) {
+  function bitmask(name, negate = false) {
     return function (expected = true) {
-      let neg = utils.flag(this, 'negate')
       let obj = utils.flag(this, 'object')
+      let neg = negate ^ utils.flag(this, 'negate')
 
       if (neg) {
         if (obj.hasOwnProperty(name)) {
@@ -134,8 +134,11 @@ chai.use(function (_, utils) {
   })
 
   Assertion.addChainableMethod('uncertain', bitmask('uncertain'))
+  Assertion.addChainableMethod('certain', bitmask('uncertain', true))
   Assertion.addChainableMethod('approximate', bitmask('approximate'))
+  Assertion.addChainableMethod('precise', bitmask('approximate', true))
   Assertion.addChainableMethod('unspecified', bitmask('unspecified'))
+  Assertion.addChainableMethod('specified', bitmask('unspecified', true))
 
   Assertion.addChainableMethod('level', function (expected) {
     expect(utils.flag(this, 'object'))
