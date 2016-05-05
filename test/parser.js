@@ -282,10 +282,20 @@ describe('parser', () => {
       expect(p('?2001')).to.produce([2001]).at.level(2)
         .and.have.uncertain('year'))
 
-    it.only('YYYY~-MM', () =>
+    it('YYYY~-MM', () =>
       expect(p('2001~-09')).to.produce([2001, 8]).at.level(2)
         .and.have.approximate('year')
         .not.approximate('month'))
+
+    it('YYYY-?MM~-DD', () =>
+      expect(p('2001-?09~-09')).to.produce([2001, 8, 9]).at.level(2)
+        .and.have.approximate('year').and.approximate('month')
+        .and.uncertain('month')
+        .not.uncertain('year').uncertain('day'))
+
+    it('YYYY?-MM-~DD', () =>
+      expect(p('2004?-06-~11')).to.produce([2004, 5, 11]).at.level(2)
+        .and.have.uncertain('year').and.approximate('day'))
 
     it('YYYX-MM-DD', () => {
       expect(p('156X-12-31'))

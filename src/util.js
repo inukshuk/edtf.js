@@ -83,8 +83,6 @@ const util = {
   },
 
   qualify([parts], _, reject) {
-    console.log(parts)
-
     let q = {
       uncertain: new Bitmask(), approximate: new Bitmask()
     }
