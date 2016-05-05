@@ -82,6 +82,14 @@ const util = {
     }
   },
 
+  unknown() {
+    return { type: 'unknown', level: 1, values: [] }
+  },
+
+  open() {
+    return { type: 'open', level: 1, values: [] }
+  },
+
   qualify([parts], _, reject) {
     let q = {
       uncertain: new Bitmask(), approximate: new Bitmask()

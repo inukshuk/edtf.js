@@ -2,7 +2,7 @@
 
 @{%
   const {
-    num, zero, pick, pluck, join, concat, merge,
+    num, zero, pick, pluck, join, concat, merge, unknown, open,
     interval, masked, date, datetime, season, qualify
   } = require('./util')
 
@@ -107,9 +107,9 @@ L1i -> L1i_date "/" L1i_date  {% interval(1) %}
      | date_time "/" L1i_date {% interval(1) %}
      | L1i_date "/" date_time {% interval(1) %}
 
-L1i_date -> null     {% () => ({ values: [], type: 'unknown', level: 1 }) %}
+L1i_date -> null     {% unknown %}
           | date_ua  {% id %}
-          | "*"      {% () => ({ values: [], type: 'open', level: 1 }) %}
+          | "*"      {% open %}
 
 
 L1X -> d4 "-" md "-XX" {% masked() %}
@@ -141,6 +141,7 @@ L2 -> pua_date  {% id %}
     | L2S       {% id %}
     | decade    {% id %}
     | decade UA {% merge(0, 1) %}
+    | L2i       {% id %}
 
 
 # NB: these are slow because they match almost everything!
@@ -172,6 +173,15 @@ L2X -> dx4         {% masked() %}
 mdx -> m31x "-" d31x {% join %}
      | m30x "-" d30x {% join %}
      | "02-" d29x    {% join %}
+
+
+L2i -> L2i_date "/" L2i_date  {% interval(2) %}
+     | date_time "/" L2i_date {% interval(2) %}
+     | L2i_date "/" date_time {% interval(2) %}
+
+L2i_date -> null     {% unknown %}
+          | pua_date {% id %}
+          | "*"      {% open %}
 
 L2Y -> "Y" exp_year  {% data => date([data[1]], 2) %}
      | "Y-" exp_year {% data => date([-data[1]], 2) %}

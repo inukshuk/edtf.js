@@ -4,7 +4,7 @@
 function id(x) {return x[0]; }
 
   const {
-    num, zero, pick, pluck, join, concat, merge,
+    num, zero, pick, pluck, join, concat, merge, unknown, open,
     interval, masked, date, datetime, season, qualify
   } = require('./util')
 
@@ -87,9 +87,9 @@ var grammar = {
     {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
     {"name": "L1i", "symbols": ["date_time", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
     {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "date_time"], "postprocess": interval(1)},
-    {"name": "L1i_date", "symbols": [], "postprocess": () => ({ values: [], type: 'unknown', level: 1 })},
+    {"name": "L1i_date", "symbols": [], "postprocess": unknown},
     {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
-    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": () => ({ values: [], type: 'open', level: 1 })},
+    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": open},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["d4", {"literal":"-"}, "md", "L1X$string$1"], "postprocess": masked()},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
@@ -118,6 +118,7 @@ var grammar = {
     {"name": "L2", "symbols": ["L2S"], "postprocess": id},
     {"name": "L2", "symbols": ["decade"], "postprocess": id},
     {"name": "L2", "symbols": ["decade", "UA"], "postprocess": merge(0, 1)},
+    {"name": "L2", "symbols": ["L2i"], "postprocess": id},
     {"name": "pua_date", "symbols": ["pua_year"], "postprocess": qualify},
     {"name": "pua_date", "symbols": ["pua_year_month"], "postprocess": qualify},
     {"name": "pua_date", "symbols": ["pua_year_month_day"], "postprocess": qualify},
@@ -189,6 +190,12 @@ var grammar = {
     {"name": "mdx", "symbols": ["m30x", {"literal":"-"}, "d30x"], "postprocess": join},
     {"name": "mdx$string$1", "symbols": [{"literal":"0"}, {"literal":"2"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "mdx", "symbols": ["mdx$string$1", "d29x"], "postprocess": join},
+    {"name": "L2i", "symbols": ["L2i_date", {"literal":"/"}, "L2i_date"], "postprocess": interval(2)},
+    {"name": "L2i", "symbols": ["date_time", {"literal":"/"}, "L2i_date"], "postprocess": interval(2)},
+    {"name": "L2i", "symbols": ["L2i_date", {"literal":"/"}, "date_time"], "postprocess": interval(2)},
+    {"name": "L2i_date", "symbols": [], "postprocess": unknown},
+    {"name": "L2i_date", "symbols": ["pua_date"], "postprocess": id},
+    {"name": "L2i_date", "symbols": [{"literal":"*"}], "postprocess": open},
     {"name": "L2Y", "symbols": [{"literal":"Y"}, "exp_year"], "postprocess": data => date([data[1]], 2)},
     {"name": "L2Y$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L2Y", "symbols": ["L2Y$string$1", "exp_year"], "postprocess": data => date([-data[1]], 2)},
