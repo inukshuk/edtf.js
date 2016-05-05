@@ -114,6 +114,10 @@ class Bitmask {
     return input.map((c, idx) => this.bit(offset + idx) ? symbol : c)
   }
 
+  qualify(idx) {
+    return (this.value = this.value | Bitmask.UA[idx]), this
+  }
+
   toJSON() {
     return this.value
   }
@@ -141,5 +145,20 @@ Bitmask.YM  = Bitmask.Y | Bitmask.M
 Bitmask.YYXX = Bitmask.compute('yyxxmmdd')
 Bitmask.YYYX = Bitmask.compute('yyyxmmdd')
 Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
+
+/*
+ * Map each UA symbol position to a mask.
+ *
+ *   ~YYYY~-2MM3-4DD5
+ *   0    1 2  3 4  5
+ */
+Bitmask.UA = [
+  Bitmask.YEAR,
+  Bitmask.YEAR,
+  Bitmask.MONTH,
+  Bitmask.YM,
+  Bitmask.DAY,
+  Bitmask.YMD
+]
 
 module.exports = Bitmask

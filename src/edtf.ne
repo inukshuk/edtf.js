@@ -2,7 +2,8 @@
 
 @{%
   const {
-    num, zero, pick, join, concat, merge, interval, masked, date, datetime, season, qualify
+    num, zero, pick, pluck, join, concat, merge,
+    interval, masked, date, datetime, season, qualify
   } = require('./util')
 
   const {
@@ -149,17 +150,17 @@ pua_date -> pua_year           {% qualify %}
           | pua_year_month     {% qualify %}
           | pua_year_month_day {% qualify %}
 
-pua[X] -> (UA {% id %}):? $X (UA {% id %}):?
+pua[X] -> UA:? $X UA:?
 
-pua_year -> UA year
+pua_year -> UA year {% data => [data] %}
 
-pua_year_month -> pua[year] "-" pua[month] {% pick(0, 2) %}
+pua_year_month -> pua[year] "-" pua[month] {% pluck(0, 2) %}
 
 pua_year_month_day -> pua[year] "-" pua_month_day {% data => [data[0], ...data[2]] %}
 
-pua_month_day -> pua[m31] "-" pua[day]     {% pick(0, 2) %}
-               | pua[m30] "-" pua[d01_30]  {% pick(0, 2) %}
-               | pua["02"] "-" pua[d01_29] {% pick(0, 2) %}
+pua_month_day -> pua[m31] "-" pua[day]     {% pluck(0, 2) %}
+               | pua[m30] "-" pua[d01_30]  {% pluck(0, 2) %}
+               | pua["02"] "-" pua[d01_29] {% pluck(0, 2) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of unspecified

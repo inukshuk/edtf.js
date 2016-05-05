@@ -21,6 +21,10 @@ const util = {
       data => util.concat(data, args)
   },
 
+  pluck(...args) {
+    return data => args.map(i => data[i])
+  },
+
   concat(data, idx = data.keys()) {
     return Array.from(idx)
       .reduce((memo, i) => data[i] !== null ? memo.concat(data[i]) : memo, [])
@@ -78,10 +82,28 @@ const util = {
     }
   },
 
-  qualify([data]) {
-    //console.log(data)
-    return util.date([data], 2)
+  qualify([parts], _, reject) {
+    console.log(parts)
+
+    let q = {
+      uncertain: new Bitmask(), approximate: new Bitmask()
+    }
+
+    let values = parts
+      .map(([lhs, part, rhs], idx) => {
+        for (let ua in lhs) q[ua].qualify(idx * 2)
+        for (let ua in rhs) q[ua].qualify(1 + idx * 2)
+        return part
+      })
+
+    return (!q.uncertain.value && !q.approximate.value) ?
+      reject :
+      assign(util.date(values, 2), {
+        uncertain: q.uncertain.value,
+        approximate: q.approximate.value
+      })
   }
+
 }
 
 module.exports = util

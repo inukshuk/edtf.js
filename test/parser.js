@@ -278,9 +278,14 @@ describe('parser', () => {
   })
 
   describe('Level 2', () => {
-    it.only('?YYYY', () =>
+    it('?YYYY', () =>
       expect(p('?2001')).to.produce([2001]).at.level(2)
         .and.have.uncertain('year'))
+
+    it.only('YYYY~-MM', () =>
+      expect(p('2001~-09')).to.produce([2001, 8]).at.level(2)
+        .and.have.approximate('year')
+        .not.approximate('month'))
 
     it('YYYX-MM-DD', () => {
       expect(p('156X-12-31'))
