@@ -153,6 +153,7 @@ ua_date -> ua_year           {% qualify %}
          | ua_year_month     {% qualify %}
          | ua_year_month_day {% qualify %}
 
+# TODO: do not allow the same symbol on both sides!
 ua[X] -> UA:? $X UA:?
 
 # TODO: how to handle negative years? ?-1900 or -?1900
