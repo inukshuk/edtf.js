@@ -195,6 +195,7 @@ var grammar = {
     {"name": "L2i", "symbols": ["L2i_date", {"literal":"/"}, "date_time"], "postprocess": interval(2)},
     {"name": "L2i_date", "symbols": [], "postprocess": unknown},
     {"name": "L2i_date", "symbols": ["ua_date"], "postprocess": id},
+    {"name": "L2i_date", "symbols": ["L2X"], "postprocess": id},
     {"name": "L2i_date", "symbols": [{"literal":"*"}], "postprocess": open},
     {"name": "L2Y", "symbols": ["exp_year"], "postprocess": id},
     {"name": "L2Y", "symbols": ["exp_year", "significant_digits"], "postprocess": merge(0, 1)},

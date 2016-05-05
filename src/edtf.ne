@@ -180,7 +180,8 @@ L2i -> L2i_date "/" L2i_date  {% interval(2) %}
      | L2i_date "/" date_time {% interval(2) %}
 
 L2i_date -> null     {% unknown %}
-          | ua_date {% id %}
+          | ua_date  {% id %}
+          | L2X      {% id %}
           | "*"      {% open %}
 
 L2Y -> exp_year                    {% id %}

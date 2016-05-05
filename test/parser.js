@@ -425,6 +425,10 @@ describe('parser', () => {
     it('YYYY-MM-~DD/YYYY-MM-~DD', () =>
       expect(p('2004-06-~01/2004-06-~20'))
         .to.be.an.interval.from([2004, 5, 1]).until([2004, 5, 20]).at.level(2))
+
+    it('YYYY-MM-XX/YYYY-MM-DD', () =>
+      expect(p('2004-06-XX/2004-07-03'))
+        .to.be.an.interval.from([2004, 5, 1]).until([2004, 6, 3]).at.level(2))
   })
 })
 
