@@ -135,21 +135,21 @@ L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> ua_date  {% id %}
-    | L2Y       {% id %}
-    | L2X       {% merge(0, { type: 'date', level: 2 }) %}
-    | L2S       {% id %}
-    | decade    {% id %}
-    | decade UA {% merge(0, 1) %}
-    | L2i       {% id %}
+L2 -> ua_date            {% id %}
+    | L2Y                {% id %}
+    | L2X                {% merge(0, { type: 'date', level: 2 }) %}
+    | L2S                {% id %}
+    | decade             {% id %}
+    | decade UA          {% merge(0, 1) %}
+    | L2i                {% id %}
 
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified
 # dates, excluding those covered by level 1.
 ua_date -> ua_year           {% qualify %}
-          | ua_year_month     {% qualify %}
-          | ua_year_month_day {% qualify %}
+         | ua_year_month     {% qualify %}
+         | ua_year_month_day {% qualify %}
 
 ua[X] -> UA:? $X UA:?
 
@@ -160,8 +160,8 @@ ua_year_month -> ua[year] "-" ua[month] {% pluck(0, 2) %}
 ua_year_month_day -> ua[year] "-" ua_month_day {% data => [data[0], ...data[2]] %}
 
 ua_month_day -> ua[m31] "-" ua[day]     {% pluck(0, 2) %}
-               | ua[m30] "-" ua[d01_30]  {% pluck(0, 2) %}
-               | ua["02"] "-" ua[d01_29] {% pluck(0, 2) %}
+              | ua[m30] "-" ua[d01_30]  {% pluck(0, 2) %}
+              | ua["02"] "-" ua[d01_29] {% pluck(0, 2) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of unspecified
@@ -183,10 +183,17 @@ L2i_date -> null     {% unknown %}
           | ua_date {% id %}
           | "*"      {% open %}
 
-L2Y -> "Y" exp_year  {% data => date([data[1]], 2) %}
-     | "Y-" exp_year {% data => date([-data[1]], 2) %}
+L2Y -> exp_year                    {% id %}
+     | exp_year significant_digits {% merge(0, 1) %}
+     | L1Y significant_digits      {% merge(0, 1, { level: 2 }) %}
+     | year significant_digits     {% data => date([data[0]], 2, data[1]) %}
 
-exp_year -> digits "E" digits
+significant_digits -> "S" positive_digit {% data => ({ significant: num(data[1]) }) %}
+
+exp_year -> "Y" exp  {% data => date([data[1]], 2) %}
+          | "Y-" exp {% data => date([-data[1]], 2) %}
+
+exp -> digits "E" digits
   {% data => num(data[0]) * Math.pow(10, num(data[2])) %}
 
 

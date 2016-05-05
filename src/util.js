@@ -57,12 +57,12 @@ const util = {
     }
   },
 
-  date(values, level = 0) {
-    return {
+  date(values, level = 0, extra = null) {
+    return assign({
       type: 'date',
       level,
       values: Bitmask.normalize(values.map(Number))
-    }
+    }, extra)
   },
 
   datetime(data) {
