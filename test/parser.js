@@ -421,6 +421,10 @@ describe('parser', () => {
     it('YYY%', () =>
       expect(p('197%')).to.produce([197]).at.level(2)
         .and.be.an.uncertain().and.approximate().decade)
+
+    it('YYYY-MM-~DD/YYYY-MM-~DD', () =>
+      expect(p('2004-06-~01/2004-06-~20'))
+        .to.be.an.interval.from([2004, 5, 1]).until([2004, 5, 20]).at.level(2))
   })
 })
 
