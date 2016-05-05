@@ -58,16 +58,28 @@ class Bitmask {
 
   static values(mask, digit = 0) {
     let num = Bitmask.numbers(mask, digit).split('')
-    let val = [Number(num.slice(0, 4).join(''))]
+    let values = [Number(num.slice(0, 4).join(''))]
 
-    if (num.length > 4) val.push(Number(num.slice(4, 6).join('')) - 1)
-    if (num.length > 6) val.push(Number(num.slice(6, 8).join('')))
+    if (num.length > 4) values.push(Number(num.slice(4, 6).join('')))
+    if (num.length > 6) values.push(Number(num.slice(6, 8).join('')))
 
-    return normalize(val)
+    return Bitmask.normalize(values)
   }
 
   static numbers(mask, digit = 0) {
     return mask.replace(SYMBOLS, digit)
+  }
+
+  static normalize(values) {
+    if (values.length > 1) {
+      values[1] = Math.min(11, Math.max(0, values[1] - 1))
+    }
+
+    if (values.length > 2) {
+      values[2] = Math.min(MAXDAYS[values[1]] || NaN, Math.max(1, values[2]))
+    }
+
+    return values
   }
 
 
@@ -131,15 +143,3 @@ Bitmask.YYYX = Bitmask.compute('yyyxmmdd')
 Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
 
 module.exports = Bitmask
-
-function normalize(values) {
-  if (values.length > 1) {
-    values[1] = Math.min(11, Math.max(0, values[1]))
-  }
-
-  if (values.length > 2) {
-    values[2] = Math.min(MAXDAYS[values[1]] || NaN, Math.max(1, values[2]))
-  }
-
-  return values
-}

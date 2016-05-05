@@ -2,7 +2,7 @@
 
 @{%
   const {
-    num, zero, pick, join, concat, merge, interval, masked
+    num, zero, pick, join, concat, merge, interval, masked, date, datetime, season
   } = require('./util')
 
   const {
@@ -35,52 +35,44 @@ L0i -> date_time "/" date_time {% interval(0) %}
 date_time -> date     {% id %}
            | datetime {% id %}
 
-date -> year           {% data => ({ values: data , type: 'date', level: 0 }) %}
-      | year_month     {% data => ({ values: data[0], type: 'date', level: 0 }) %}
-      | year_month_day {% data => ({ values: data[0], type: 'date', level: 0 }) %}
+date -> year           {% data => date(data) %}
+      | year_month     {% data => date(data[0]) %}
+      | year_month_day {% data => date(data[0]) %}
 
 year -> positive_year {% id %}
       | negative_year {% id %}
-      | "0000"        {% zero %}
+      | "0000"        {% join %}
 
-positive_year -> positive_digit digit digit digit {% num  %}
-               | "0" positive_digit digit digit   {% data => num(data.slice(1)) %}
-               | "00" positive_digit digit        {% data => num(data.slice(1)) %}
-               | "000" positive_digit             {% pick(1) %}
+positive_year -> positive_digit digit digit digit {% join %}
+               | "0" positive_digit digit digit   {% join %}
+               | "00" positive_digit digit        {% join %}
+               | "000" positive_digit             {% join %}
 
-negative_year -> "-" positive_year {% data => -data[1] %}
+negative_year -> "-" positive_year {% join %}
 
 year_month -> year "-" month {% pick(0, 2) %}
 
-month -> d01_12 {% data => data[0] - 1 %}
+month -> d01_12 {% id %}
 
 year_month_day -> year "-" month_day {% pick(0, 2) %}
 
-month_day -> m31 "-" day    {% pick(0, 2) %}
-           | m30 "-" d01_30 {% pick(0, 2) %}
-           | "02-" d01_29   {% data => [1, data[1]] %}
+month_day -> m31 "-" day     {% pick(0, 2) %}
+           | m30 "-" d01_30  {% pick(0, 2) %}
+           | "02" "-" d01_29 {% pick(0, 2) %}
 
 day -> d01_31 {% id %}
 
-datetime -> date "T" time (timezone {% id %}):?
-  {%
-    data => ({
-      values: data[0].values.concat(data[2]),
-      offset: data[3],
-      type: 'datetime',
-      level: 0
-    })
-  %}
+datetime -> date "T" time (timezone {% id %}):? {% datetime %}
 
 time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}
-      | "24:00:00"                                 {% () => [24, 0, 0] %}
+      | "24:00:00"                                 {% () => [24, 00, 00] %}
 
-hours   -> d00_23 {% id %}
-minutes -> d00_59 {% id %}
-seconds -> d00_59 {% id %}
+hours   -> d00_23 {% num %}
+minutes -> d00_59 {% num %}
+seconds -> d00_59 {% num %}
 
 milliseconds -> null
-              | "." digit digit digit {% data => num(data.slice(1)) %}
+              | "." d3 {% data => num(data.slice(1)) %}
 
 timezone -> "Z"                 {% zero %}
           | "-" offset          {% data => -data[1] %}
@@ -90,14 +82,14 @@ positive_offset -> offset                  {% id %}
                  | "00:00"                 {% zero %}
                  | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
                  | "14:00"                 {% () => 840 %}
-                 | d00_14                  {% data => data[0] * 60 %}
+                 | d00_14                  {% data => num(data[0]) * 60 %}
 
-offset -> d01_11 ":" minutes {% data => data[0] * 60 + data[2] %}
-        | "00:" d01_59       {% pick(1) %}
+offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
+        | "00:" d01_59       {% data => num(data[1]) %}
         | "12:00"            {% () => 720 %}
-        | d01_12             {% data => data[0] * 60 %}
+        | d01_12             {% data => num(data[0]) * 60 %}
 
-century -> digit digit {% data => ({ values: [num(data)], type: 'century', level: 0 }) %}
+century -> d2 {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
@@ -128,17 +120,17 @@ L1X -> d4 "-" d2 "-XX" {% masked() %}
      | d3 "X"          {% masked() %}
      | "XXXX"          {% masked() %}
 
-L1Y -> "Y" d5+  {% data => ({ values: [data[1]], type: 'date', level: 1 }) %}
-     | "Y-" d5+ {% data => ({ values: [-data[1]], type: 'date', level: 1 }) %}
+L1Y -> "Y" d5+  {% data => date([num(data[1])], 1) %}
+     | "Y-" d5+ {% data => date([-num(data[1])], 1) %}
 
-d5+ -> positive_digit digit digit digit digits {% num %}
+d5+ -> positive_digit d3 digits {% num %}
 
 UA -> "?" {% () => ({ uncertain: true }) %}
     | "~" {% () => ({ approximate: true }) %}
     | "%" {% () => ({ approximate: true, uncertain: true }) %}
 
 
-L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season', level: 1 }) %}
+L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 
 # --- EDTF / ISO 8601-2 Level 2 ---
@@ -180,71 +172,72 @@ masked_year_month_day -> masked_year_month "-" masked_digits {% join %}
 masked_digits -> [0-9X] [0-9X] {% join %}
 
 
-L2Y -> "Y" exp_year  {% data => ({ values: [data[1]], type: 'date', level: 2 }) %}
-     | "Y-" exp_year {% data => ({ values: [-data[1]], type: 'date', level: 2 }) %}
+L2Y -> "Y" exp_year  {% data => date([data[1]], 2) %}
+     | "Y-" exp_year {% data => date([-data[1]], 2) %}
 
-exp_year -> digits "E" digits {% data => data[0] * Math.pow(10, data[2]) %}
+exp_year -> digits "E" digits
+  {% data => num(data[0]) * Math.pow(10, num(data[2])) %}
 
 
-L2S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
+L2S -> year "-" d25_39 {% data => season(data, 2) %}
 
-decade -> digit digit digit {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
+decade -> d3 {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
 
 
 # --- Base Definitions ---
 
 digit -> positive_digit {% id %}
-       | "0"            {% zero %}
+       | "0"            {% id %}
 
 digits -> digit        {% id %}
         | digit digits {% join %}
 
 # NB: these return strings!
 d4 -> d2 d2       {% join %}
-d3 -> d2 [0-9]    {% join %}
-d2 -> [0-9] [0-9] {% join %}
+d3 -> d2 digit    {% join %}
+d2 -> digit digit {% join %}
 
-positive_digit -> [1-9] {% num %}
+positive_digit -> [1-9] {% id %}
 
-m31 -> ("01"|"03"|"05"|"07"|"08"|"10"|"12") {% data => num(data) - 1 %}
-m30 -> ("04"|"06"|"09"|"11")                {% data => num(data) - 1 %}
+m31 -> ("01"|"03"|"05"|"07"|"08"|"10"|"12") {% id %}
+m30 -> ("04"|"06"|"09"|"11")                {% id %}
 
-d01_11 -> "0" positive_digit {% pick(1) %}
-        | "1" [0-1]          {% num %}
+d01_11 -> "0" positive_digit {% join %}
+        | "1" [0-1]          {% join %}
 
 d01_12 -> d01_11 {% id %}
-        | "12"   {% () => 12 %}
+        | "12"   {% id %}
 
 d01_13 -> d01_12 {% id %}
-        | "13"   {% () => 13 %}
+        | "13"   {% id %}
 
-d00_14 -> "00"   {% zero %}
+d00_14 -> "00"   {% id %}
         | d01_13 {% id %}
-        | "14"   {% () => 14 %}
+        | "14"   {% id %}
 
-d00_23 -> "00"   {% zero %}
+d00_23 -> "00"   {% id %}
         | d01_23 {% id %}
 
-d01_23 -> "0" positive_digit {% pick(1) %}
-        | "1" digit          {% num %}
-        | "2" [0-3]          {% num %}
+d01_23 -> "0" positive_digit {% join %}
+        | "1" digit          {% join %}
+        | "2" [0-3]          {% join %}
 
-d01_29 -> "0" positive_digit {% pick(1) %}
-        | [1-2] digit        {% num %}
+d01_29 -> "0" positive_digit {% join %}
+        | [1-2] digit        {% join %}
 
 d01_30 -> d01_29 {% id  %}
-        | "30"   {% () => 30 %}
+        | "30"   {% id %}
 
 d01_31 -> d01_30 {% id  %}
-        | "31"   {% () => 31 %}
+        | "31"   {% id %}
 
-d00_59 -> "00"   {% zero %}
+d00_59 -> "00"   {% id %}
         | d01_59 {% id %}
 
 d01_59 -> d01_29      {% id %}
-        | [345] digit {% num %}
+        | [345] digit {% join %}
 
-d21_24 -> "2" [1-4] {% num %}
+d21_24 -> "2" [1-4] {% join %}
 
-d25_39 -> "2" [5-9] {% num %}
-        | "3" digit {% num %}
+d25_39 -> "2" [5-9] {% join %}
+        | "3" digit {% join %}

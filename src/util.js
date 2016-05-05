@@ -5,7 +5,9 @@ const { assign } = Object
 
 const util = {
 
-  num(data) { return Number(data.join('')) },
+  num(data) {
+    return Number(Array.isArray(data) ? data.join('') : data)
+  },
 
   join(data) {
     return data.join('')
@@ -48,6 +50,31 @@ const util = {
         values: Bitmask.values(mask),
         [type]: Bitmask.compute(mask)
       }
+    }
+  },
+
+  date(values, level = 0) {
+    return {
+      type: 'date',
+      level,
+      values: Bitmask.normalize(values.map(Number))
+    }
+  },
+
+  datetime(data) {
+    return {
+      values: data[0].values.concat(data[2]),
+      offset: data[3],
+      type: 'datetime',
+      level: 0
+    }
+  },
+
+  season(data, level = 1) {
+    return {
+      type: 'season',
+      level,
+      values: [Number(data[0]), Number(data[2])]
     }
   }
 }

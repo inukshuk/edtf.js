@@ -290,19 +290,26 @@ describe('parser', () => {
         .and.not.unspecified('month')
         .and.not.unspecified('day'))
 
-    it('YYXX-MM-XX', () =>
+    it('YYXX-MM-XX', () => {
       expect(p('15XX-12-XX'))
         .to.produce([1500, 11, 1]).at.level(2)
         .and.have.unspecified('year')
         .and.have.unspecified('day')
-        .and.not.unspecified('month'))
+        .and.not.unspecified('month')
 
-    it('YYXX-XX-DD', () =>
+      //expect(() => p('15XX-10-31')).to.be.rejected
+      //expect(() => p('15XX-02-3X')).to.be.rejected
+    })
+
+    it('YYXX-XX-DD', () => {
       expect(p('15XX-XX-25'))
         .to.produce([1500, 0, 25]).at.level(2)
         .and.have.unspecified('year')
         .and.have.unspecified('month')
-        .and.not.unspecified('day'))
+        .and.not.unspecified('day')
+
+      //expect(() => p('15XX-2X-25')).to.be.rejected
+    })
 
     it('YYXX-XM', () =>
       expect(p('15XX-X2'))
