@@ -135,7 +135,7 @@ L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> pua_date  {% id %}
+L2 -> ua_date  {% id %}
     | L2Y       {% id %}
     | L2X       {% merge(0, { type: 'date', level: 2 }) %}
     | L2S       {% id %}
@@ -147,21 +147,21 @@ L2 -> pua_date  {% id %}
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified
 # dates, excluding those covered by level 1.
-pua_date -> pua_year           {% qualify %}
-          | pua_year_month     {% qualify %}
-          | pua_year_month_day {% qualify %}
+ua_date -> ua_year           {% qualify %}
+          | ua_year_month     {% qualify %}
+          | ua_year_month_day {% qualify %}
 
-pua[X] -> UA:? $X UA:?
+ua[X] -> UA:? $X UA:?
 
-pua_year -> UA year {% data => [data] %}
+ua_year -> UA year {% data => [data] %}
 
-pua_year_month -> pua[year] "-" pua[month] {% pluck(0, 2) %}
+ua_year_month -> ua[year] "-" ua[month] {% pluck(0, 2) %}
 
-pua_year_month_day -> pua[year] "-" pua_month_day {% data => [data[0], ...data[2]] %}
+ua_year_month_day -> ua[year] "-" ua_month_day {% data => [data[0], ...data[2]] %}
 
-pua_month_day -> pua[m31] "-" pua[day]     {% pluck(0, 2) %}
-               | pua[m30] "-" pua[d01_30]  {% pluck(0, 2) %}
-               | pua["02"] "-" pua[d01_29] {% pluck(0, 2) %}
+ua_month_day -> ua[m31] "-" ua[day]     {% pluck(0, 2) %}
+               | ua[m30] "-" ua[d01_30]  {% pluck(0, 2) %}
+               | ua["02"] "-" ua[d01_29] {% pluck(0, 2) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of unspecified
@@ -180,7 +180,7 @@ L2i -> L2i_date "/" L2i_date  {% interval(2) %}
      | L2i_date "/" date_time {% interval(2) %}
 
 L2i_date -> null     {% unknown %}
-          | pua_date {% id %}
+          | ua_date {% id %}
           | "*"      {% open %}
 
 L2Y -> "Y" exp_year  {% data => date([data[1]], 2) %}
