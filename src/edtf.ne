@@ -11,6 +11,12 @@
 
 %}
 
+# --- Macros ---
+
+pua[X]    -> UA:? $X UA:?
+
+
+# --- EDTF / ISO 8601-2 ---
 
 edtf -> L0 {% id %}
       | L1 {% id %}
@@ -134,15 +140,35 @@ UA -> "?" {% () => ({ uncertain: true }) %}
 
 L1S -> year "-" d21_24 {% data => ({ values: [data[0], data[2]], type: 'season', level: 1 }) %}
 
+
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> L2Y       {% id %}
+L2 -> pua_date  {% () => ({ type: 'date', level: 2 }) %}
+    | L2Y       {% id %}
     | L2X       {% merge(0, { type: 'date', level: 2 }) %}
     | L2S       {% id %}
     | decade    {% id %}
     | decade UA {% merge(0, 1) %}
 
-# NB: slow!
+
+# NB: these are slow because they match almost everything!
+# We could enumerate all possible combinations of qualified
+# dates, excluding those covered by level 1. (use macros!)
+pua_date -> UA year UA:?
+          | pua_year_month
+          | pua_year_month_day
+
+pua_year_month -> pua[year] "-" pua[month]
+
+pua_year_month_day -> pua[year] "-" pua_month_day
+
+pua_month_day -> pua[m31] "-" pua[day]
+               | pua[m30] "-" pua[d01_30]
+               | pua["02"] "-" pua[d01_29]
+
+# NB: these are slow because they match almost everything!
+# We could enumerate all possible combinations of unspecified
+# dates, excluding those covered by level 1. (use macros!)
 L2X -> masked_year           {% masked() %}
      | masked_year_month     {% masked() %}
      | masked_year_month_day {% masked() %}
@@ -163,6 +189,7 @@ exp_year -> digits "E" digits {% data => data[0] * Math.pow(10, data[2]) %}
 L2S -> year "-" d25_39 {% data => ({ values: [data[0], data[2]], type: 'season', level: 2 }) %}
 
 decade -> digit digit digit {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
+
 
 # --- Base Definitions ---
 
