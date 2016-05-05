@@ -76,6 +76,11 @@ const util = {
       level,
       values: [Number(data[0]), Number(data[2])]
     }
+  },
+
+  qualify([data]) {
+    //console.log(data)
+    return util.date([data], 2)
   }
 }
 

@@ -2,7 +2,7 @@
 
 @{%
   const {
-    num, zero, pick, join, concat, merge, interval, masked, date, datetime, season
+    num, zero, pick, join, concat, merge, interval, masked, date, datetime, season, qualify
   } = require('./util')
 
   const {
@@ -10,10 +10,6 @@
   } = require('./bitmask')
 
 %}
-
-# --- Macros ---
-
-pua[X]    -> UA:? $X UA:?
 
 
 # --- EDTF / ISO 8601-2 ---
@@ -138,7 +134,7 @@ L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> pua_date  {% () => ({ type: 'date', level: 2 }) %}
+L2 -> pua_date  {% id %}
     | L2Y       {% id %}
     | L2X       {% merge(0, { type: 'date', level: 2 }) %}
     | L2S       {% id %}
@@ -148,22 +144,26 @@ L2 -> pua_date  {% () => ({ type: 'date', level: 2 }) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified
-# dates, excluding those covered by level 1. (use macros!)
-pua_date -> UA year UA:?
-          | pua_year_month
-          | pua_year_month_day
+# dates, excluding those covered by level 1.
+pua_date -> pua_year           {% qualify %}
+          | pua_year_month     {% qualify %}
+          | pua_year_month_day {% qualify %}
 
-pua_year_month -> pua[year] "-" pua[month]
+pua[X] -> (UA {% id %}):? $X (UA {% id %}):?
 
-pua_year_month_day -> pua[year] "-" pua_month_day
+pua_year -> UA year
 
-pua_month_day -> pua[m31] "-" pua[day]
-               | pua[m30] "-" pua[d01_30]
-               | pua["02"] "-" pua[d01_29]
+pua_year_month -> pua[year] "-" pua[month] {% pick(0, 2) %}
+
+pua_year_month_day -> pua[year] "-" pua_month_day {% data => [data[0], ...data[2]] %}
+
+pua_month_day -> pua[m31] "-" pua[day]     {% pick(0, 2) %}
+               | pua[m30] "-" pua[d01_30]  {% pick(0, 2) %}
+               | pua["02"] "-" pua[d01_29] {% pick(0, 2) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of unspecified
-# dates, excluding those covered by level 1. (use macros!)
+# dates, excluding those covered by level 1.
 L2X -> dx4         {% masked() %}
      | dx4 "-" mx  {% masked() %}
      | dx4 "-" mdx {% masked() %}

@@ -3,9 +3,9 @@
 const DAY = /^days?$/i
 const MONTH = /^months?$/i
 const YEAR = /^years?$/i
-const SYMBOL = /^[xX~?]$/
-const SYMBOLS = /[xX~?]/g
-const PATTERN = /^[0-9xX~?]{8}$/
+const SYMBOL = /^[xX]$/
+const SYMBOLS = /[xX]/g
+const PATTERN = /^[0-9xX]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
 const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
