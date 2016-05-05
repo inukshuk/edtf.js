@@ -8,7 +8,9 @@
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
     "sample": "nearley-unparse -s edtf -n 20 src/grammar.js && echo || true",
     "coverage": "istanbul cover _mocha",
-    "test": "npm run lint && mocha"
+    "prepublish": "npm run compile",
+    "pretest": "npm run lint",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
