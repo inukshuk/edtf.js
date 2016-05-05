@@ -381,6 +381,21 @@ describe('parser', () => {
     it('Y-KEK', () =>
       expect(p('Y-17E7')).to.produce([-170000000]).at.level(2))
 
+    it('YYYYS2', () =>
+      expect(p('1950S2'))
+        .to.produce([1950]).at.level(2)
+        .and.have.property('significant', 2))
+
+    it('YYYYYYS3', () =>
+      expect(p('Y17101000S3'))
+        .to.produce([17101000]).at.level(2)
+        .and.have.property('significant', 3))
+
+    it('Y-YYYYE3S3', () =>
+      expect(p('Y-17101E3S3'))
+        .to.produce([-17101000]).at.level(2)
+        .and.have.property('significant', 3))
+
     it('YYYY-SS', () => {
       expect(p('2001-25'))
         .to.produce([2001, 25]).at.level(2).and.be.a.season
