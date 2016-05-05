@@ -69,7 +69,7 @@ const util = {
 
   datetime(data) {
     return {
-      values: data[0].values.concat(data[2]),
+      values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),
       offset: data[3],
       type: 'datetime',
       level: 0

@@ -66,7 +66,7 @@ day -> d01_31 {% id %}
 
 # --- ISO 8601-1 Date / Time ---
 
-datetime -> date "T" time (timezone {% id %}):? {% datetime %}
+datetime -> year_month_day "T" time (timezone {% id %}):? {% datetime %}
 
 time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}
       | "24:00:00"                                 {% () => [24, 00, 00] %}
