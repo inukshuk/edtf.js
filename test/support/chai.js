@@ -165,4 +165,12 @@ chai.use(function (_, utils) {
   Assertion.addProperty('interval', function () {
     expect(utils.flag(this, 'object')).to.have.type('interval')
   })
+
+  Assertion.addProperty('list', function () {
+    expect(utils.flag(this, 'object')).to.have.type('list')
+  })
+
+  Assertion.addProperty('set', function () {
+    expect(utils.flag(this, 'object')).to.have.type('set')
+  })
 })

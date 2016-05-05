@@ -10,6 +10,7 @@
     DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
   } = require('./bitmask')
 
+  const { assign } = Object
 %}
 
 
@@ -210,12 +211,12 @@ list -> LB OL RB
   %}
 
 
-LB -> "["   {% () => ({ type: 'list' }) %}
-    | "[.." {% () => ({ type: 'list', earlier: true }) %}
-    | "{"   {% () => ({ type: 'set' }) %}
+LB -> "["   {% () => ({ type: 'set' }) %}
+    | "[.." {% () => ({ type: 'set', earlier: true }) %}
+    | "{"   {% () => ({ type: 'list' }) %}
 
 RB -> "]"   {% nothing %}
-    | "..]" {% () => ({ type: 'list', later: true }) %}
+    | "..]" {% () => ({ later: true }) %}
     | "}"   {% nothing %}
 
 OL -> LI            {% pluck(0) %}
@@ -224,15 +225,14 @@ OL -> LI            {% pluck(0) %}
 LI -> date         {% id %}
     | ua_date      {% id %}
     | L2X          {% id %}
-    | consecutives {% id %}
+    | consecutives
 
-consecutives -> year_month_day ".." year_month_day {% data => [date([data[0]]), date([data[2]])] %}
+consecutives -> year_month_day ".." year_month_day {% data => [date(data[0]), date(data[2])] %}
               | year_month ".." year_month         {% data => [date(data[0]), date(data[2])] %}
-              | year ".." year                     {% data => [date(data[0]), date(data[2])] %}
+              | year ".." year                     {% data => [date([data[0]]), date([data[2]])] %}
+
 
 # --- Base Definitions ---
-
-_ -> " ":*
 
 digit -> positive_digit {% id %}
        | "0"            {% id %}
@@ -318,3 +318,5 @@ d21_24 -> "2" [1-4] {% join %}
 d25_41 -> "2" [5-9] {% join %}
         | "3" digit {% join %}
         | "4" [01]  {% join %}
+
+_ -> " ":*

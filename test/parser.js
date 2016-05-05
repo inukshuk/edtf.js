@@ -429,6 +429,17 @@ describe('parser', () => {
     it('YYYY-MM-XX/YYYY-MM-DD', () =>
       expect(p('2004-06-XX/2004-07-03'))
         .to.be.an.interval.from([2004, 5, 1]).until([2004, 6, 3]).at.level(2))
+
+    it('[YYYY,YYYY..YYYY]', () => {
+      let set = p('[1667,1668, 1670..1672]')
+
+      expect(set).to.be.a.set.at.level(2)
+      expect(set.values).to.have.length(3)
+      expect(set.values[0]).to.produce([1667])
+      expect(set.values[1]).to.produce([1668])
+      expect(set.values[2]).to.have.length(2)
+      expect(set.values[2][0]).to.produce([1670])
+    })
   })
 })
 
