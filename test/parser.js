@@ -424,11 +424,13 @@ describe('parser', () => {
 
     it('YYYY-MM-~DD/YYYY-MM-~DD', () =>
       expect(p('2004-06-~01/2004-06-~20'))
-        .to.be.an.interval.from([2004, 5, 1]).until([2004, 5, 20]).at.level(2))
+        .to.be.an.interval.at.level(2)
+        .from([2004, 5, 1]).until([2004, 5, 20]))
 
     it('YYYY-MM-XX/YYYY-MM-DD', () =>
       expect(p('2004-06-XX/2004-07-03'))
-        .to.be.an.interval.from([2004, 5, 1]).until([2004, 6, 3]).at.level(2))
+        .to.be.an.interval.at.level(2)
+        .from([2004, 5, 1]).until([2004, 6, 3]))
 
     it('[YYYY,YYYY..YYYY]', () => {
       let set = p('[1667,1668, 1670..1672]')
@@ -448,6 +450,18 @@ describe('parser', () => {
     it('[YYYY-MM..]', () =>
       expect(p('[1760-12..]'))
         .to.be.a.set.at.level(2).and.have.property('later', true))
+
+    it('[YYYY,YYYY-MM]', () =>
+      expect(p('[1667, 1672-12]'))
+        .to.be.a.set.at.level(2).from([1667]).until([1672, 11]))
+
+    it('{YYYY,YYYY..YYYY}', () =>
+      expect(p('{1667, 1670..1672}'))
+        .to.be.a.list.at.level(2).from([1667]))
+    it('{YYYY,YYYY-MM}', () =>
+      expect(p('{1960 ,  1961-12}'))
+        .to.be.a.list.at.level(2)
+        .from([1960]).until([1961, 11]))
   })
 })
 
