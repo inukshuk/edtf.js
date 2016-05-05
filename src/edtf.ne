@@ -30,7 +30,8 @@ L0 -> date_time {% id %}
 
 L0i -> date_time "/" date_time {% interval(0) %}
 
-century -> d2 {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
+century -> d2
+  {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
 
 date_time -> date     {% id %}
            | datetime {% id %}
@@ -81,11 +82,12 @@ timezone -> "Z"                 {% zero %}
           | "-" offset          {% data => -data[1] %}
           | "+" positive_offset {% pick(1) %}
 
-positive_offset -> offset                  {% id %}
-                 | "00:00"                 {% zero %}
-                 | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
-                 | "14:00"                 {% () => 840 %}
-                 | d00_14                  {% data => num(data[0]) * 60 %}
+positive_offset
+  -> offset                  {% id %}
+   | "00:00"                 {% zero %}
+   | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
+   | "14:00"                 {% () => 840 %}
+   | d00_14                  {% data => num(data[0]) * 60 %}
 
 offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
         | "00:" d01_59       {% data => num(data[1]) %}
@@ -159,7 +161,8 @@ ua_year -> UA year {% data => [data] %}
 
 ua_year_month -> ua[year] "-" ua[month] {% pluck(0, 2) %}
 
-ua_year_month_day -> ua[year] "-" ua_month_day {% data => [data[0], ...data[2]] %}
+ua_year_month_day -> ua[year] "-" ua_month_day
+  {% data => [data[0], ...data[2]] %}
 
 ua_month_day -> ua[m31] "-" ua[day]     {% pluck(0, 2) %}
               | ua[m30] "-" ua[d01_30]  {% pluck(0, 2) %}
@@ -191,7 +194,8 @@ L2Y -> exp_year                    {% id %}
      | L1Y significant_digits      {% merge(0, 1, { level: 2 }) %}
      | year significant_digits     {% data => date([data[0]], 2, data[1]) %}
 
-significant_digits -> "S" positive_digit {% data => ({ significant: num(data[1]) }) %}
+significant_digits -> "S" positive_digit
+  {% data => ({ significant: num(data[1]) }) %}
 
 exp_year -> "Y" exp  {% data => date([data[1]], 2) %}
           | "Y-" exp {% data => date([-data[1]], 2) %}
@@ -202,7 +206,8 @@ exp -> digits "E" digits
 
 L2S -> year "-" d25_41 {% data => season(data, 2) %}
 
-decade -> d3 {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
+decade -> d3
+  {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
 
 
 list -> LB OL RB
@@ -228,9 +233,9 @@ LI -> date         {% id %}
     | consecutives
 
 consecutives
-  -> year_month_day ".." year_month_day {% data => [date(data[0]), date(data[2])] %}
-   | year_month ".." year_month         {% data => [date(data[0]), date(data[2])] %}
-   | year ".." year                     {% data => [date([data[0]]), date([data[2]])] %}
+  -> year_month_day ".." year_month_day {% d => [date(d[0]), date(d[2])] %}
+   | year_month ".." year_month         {% d => [date(d[0]), date(d[2])] %}
+   | year ".." year                     {% d => [date([d[0]]), date([d[2]])] %}
 
 
 # --- Base Definitions ---
