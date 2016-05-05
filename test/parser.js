@@ -440,6 +440,14 @@ describe('parser', () => {
       expect(set.values[2]).to.have.length(2)
       expect(set.values[2][0]).to.produce([1670])
     })
+
+    it('[..YYYY-MM-DD]', () =>
+      expect(p('[..1760-12-03]'))
+        .to.be.a.set.at.level(2).and.have.property('earlier', true))
+
+    it('[YYYY-MM..]', () =>
+      expect(p('[1760-12..]'))
+        .to.be.a.set.at.level(2).and.have.property('later', true))
   })
 })
 
