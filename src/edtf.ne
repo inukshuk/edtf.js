@@ -227,9 +227,10 @@ LI -> date         {% id %}
     | L2X          {% id %}
     | consecutives
 
-consecutives -> year_month_day ".." year_month_day {% data => [date(data[0]), date(data[2])] %}
-              | year_month ".." year_month         {% data => [date(data[0]), date(data[2])] %}
-              | year ".." year                     {% data => [date([data[0]]), date([data[2]])] %}
+consecutives
+  -> year_month_day ".." year_month_day {% data => [date(data[0]), date(data[2])] %}
+   | year_month ".." year_month         {% data => [date(data[0]), date(data[2])] %}
+   | year ".." year                     {% data => [date([data[0]]), date([data[2]])] %}
 
 
 # --- Base Definitions ---
