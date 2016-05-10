@@ -233,15 +233,27 @@ describe('parser', () => {
         .and.have.unspecified('day'))
 
     it('"Y"YYYYY...', () => {
-      expect(p('Y170002')).to.produce([170002]).at.level(1)
-      expect(p('Y10000')).to.produce([10000]).at.level(1)
+      expect(p('Y170002'))
+        .to.produce([170002]).at.level(1)
+        .and.have.type('Year')
+
+      expect(p('Y10000'))
+        .to.produce([10000]).at.level(1)
+        .and.have.type('Year')
+
       expect(() => p('Y9999')).to.be.rejected
       expect(() => p('Y00001')).to.be.rejected
     })
 
     it('"Y"-YYYYY...', () => {
-      expect(p('Y-170002')).to.produce([-170002]).at.level(1)
-      expect(p('Y-10000')).to.produce([-10000]).at.level(1)
+      expect(p('Y-170002'))
+        .to.produce([-170002]).at.level(1)
+        .and.have.type('Year')
+
+      expect(p('Y-10000'))
+        .to.produce([-10000]).at.level(1)
+        .and.have.type('Year')
+
       expect(() => p('Y-9999')).to.be.rejected
       expect(() => p('Y-00001')).to.be.rejected
     })
@@ -377,23 +389,31 @@ describe('parser', () => {
         .and.specified('day'))
 
     it('YKEK', () =>
-      expect(p('Y17E7')).to.produce([170000000]).at.level(2))
+      expect(p('Y17E7'))
+        .to.produce([170000000]).at.level(2)
+        .and.have.type('Year'))
+
     it('Y-KEK', () =>
-      expect(p('Y-17E7')).to.produce([-170000000]).at.level(2))
+      expect(p('Y-17E7'))
+        .to.produce([-170000000]).at.level(2)
+        .and.have.type('Year'))
 
     it('YYYYS2', () =>
       expect(p('1950S2'))
         .to.produce([1950]).at.level(2)
+        .and.have.type('Year')
         .and.have.property('significant', 2))
 
     it('YYYYYYS3', () =>
       expect(p('Y17101000S3'))
         .to.produce([17101000]).at.level(2)
+        .and.have.type('Year')
         .and.have.property('significant', 3))
 
     it('Y-YYYYE3S3', () =>
       expect(p('Y-17101E3S3'))
         .to.produce([-17101000]).at.level(2)
+        .and.have.type('Year')
         .and.have.property('significant', 3))
 
     it('YYYY-SS', () => {

@@ -66,6 +66,14 @@ const util = {
     }, extra)
   },
 
+  year(values, level = 1, extra = null) {
+    return assign({
+      type: 'Year',
+      level,
+      values: values.map(Number)
+    }, extra)
+  },
+
   datetime(data) {
     return {
       values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),

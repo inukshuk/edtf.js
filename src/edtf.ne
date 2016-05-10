@@ -3,7 +3,7 @@
 @{%
   const {
     num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
-    interval, list, masked, date, datetime, season, qualify
+    interval, list, masked, date, datetime, season, qualify, year
   } = require('./util')
 
   const {
@@ -124,8 +124,8 @@ L1X -> d4 "-" md "-XX" {% masked() %}
      | d3 "X"          {% masked() %}
      | "XXXX"          {% masked() %}
 
-L1Y -> "Y" d5+  {% data => date([num(data[1])], 1) %}
-     | "Y-" d5+ {% data => date([-num(data[1])], 1) %}
+L1Y -> "Y" d5+  {% data => year([num(data[1])], 1) %}
+     | "Y-" d5+ {% data => year([-num(data[1])], 1) %}
 
 
 UA -> "?" {% () => ({ uncertain: true }) %}
@@ -199,13 +199,13 @@ L2i_date -> null     {% unknown %}
 L2Y -> exp_year                    {% id %}
      | exp_year significant_digits {% merge(0, 1) %}
      | L1Y significant_digits      {% merge(0, 1, { level: 2 }) %}
-     | year significant_digits     {% data => date([data[0]], 2, data[1]) %}
+     | year significant_digits     {% data => year([data[0]], 2, data[1]) %}
 
 significant_digits -> "S" positive_digit
   {% data => ({ significant: num(data[1]) }) %}
 
-exp_year -> "Y" exp  {% data => date([data[1]], 2) %}
-          | "Y-" exp {% data => date([-data[1]], 2) %}
+exp_year -> "Y" exp  {% data => year([data[1]], 2) %}
+          | "Y-" exp {% data => year([-data[1]], 2) %}
 
 exp -> digits "E" digits
   {% data => num(data[0]) * Math.pow(10, num(data[2])) %}

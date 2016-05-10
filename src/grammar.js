@@ -5,7 +5,7 @@ function id(x) {return x[0]; }
 
   const {
     num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
-    interval, list, masked, date, datetime, season, qualify
+    interval, list, masked, date, datetime, season, qualify, year
   } = require('./util')
 
   const {
@@ -105,9 +105,9 @@ var grammar = {
     {"name": "L1X", "symbols": ["d3", {"literal":"X"}], "postprocess": masked()},
     {"name": "L1X$string$7", "symbols": [{"literal":"X"}, {"literal":"X"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["L1X$string$7"], "postprocess": masked()},
-    {"name": "L1Y", "symbols": [{"literal":"Y"}, "d5+"], "postprocess": data => date([num(data[1])], 1)},
+    {"name": "L1Y", "symbols": [{"literal":"Y"}, "d5+"], "postprocess": data => year([num(data[1])], 1)},
     {"name": "L1Y$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": data => date([-num(data[1])], 1)},
+    {"name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": data => year([-num(data[1])], 1)},
     {"name": "UA", "symbols": [{"literal":"?"}], "postprocess": () => ({ uncertain: true })},
     {"name": "UA", "symbols": [{"literal":"~"}], "postprocess": () => ({ approximate: true })},
     {"name": "UA", "symbols": [{"literal":"%"}], "postprocess": () => ({ approximate: true, uncertain: true })},
@@ -204,11 +204,11 @@ var grammar = {
     {"name": "L2Y", "symbols": ["exp_year"], "postprocess": id},
     {"name": "L2Y", "symbols": ["exp_year", "significant_digits"], "postprocess": merge(0, 1)},
     {"name": "L2Y", "symbols": ["L1Y", "significant_digits"], "postprocess": merge(0, 1, { level: 2 })},
-    {"name": "L2Y", "symbols": ["year", "significant_digits"], "postprocess": data => date([data[0]], 2, data[1])},
+    {"name": "L2Y", "symbols": ["year", "significant_digits"], "postprocess": data => year([data[0]], 2, data[1])},
     {"name": "significant_digits", "symbols": [{"literal":"S"}, "positive_digit"], "postprocess": data => ({ significant: num(data[1]) })},
-    {"name": "exp_year", "symbols": [{"literal":"Y"}, "exp"], "postprocess": data => date([data[1]], 2)},
+    {"name": "exp_year", "symbols": [{"literal":"Y"}, "exp"], "postprocess": data => year([data[1]], 2)},
     {"name": "exp_year$string$1", "symbols": [{"literal":"Y"}, {"literal":"-"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "exp_year", "symbols": ["exp_year$string$1", "exp"], "postprocess": data => date([-data[1]], 2)},
+    {"name": "exp_year", "symbols": ["exp_year$string$1", "exp"], "postprocess": data => year([-data[1]], 2)},
     {"name": "exp", "symbols": ["digits", {"literal":"E"}, "digits"], "postprocess": data => num(data[0]) * Math.pow(10, num(data[2]))},
     {"name": "L2S", "symbols": ["year", {"literal":"-"}, "d25_41"], "postprocess": data => season(data, 2)},
     {"name": "decade", "symbols": ["d3"], "postprocess": data => ({ values: [num(data)], type: 'Decade', level: 2 })},
