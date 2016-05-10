@@ -17,7 +17,8 @@ class ExtDate extends Date {
   }
 
   constructor(...args) { // eslint-disable-line complexity
-    let precision, uncertain, approximate, unspecified
+    let precision = 0
+    let uncertain, approximate, unspecified
 
     switch (args.length) {
     case 0:
@@ -33,6 +34,9 @@ class ExtDate extends Date {
         // eslint-disable-line no-fallthrough
 
       case 'object':
+        if (Array.isArray(args[0]))
+          args[0] = { type: 'Date', values: args[0] }
+
         {
           let obj = args[0]
 
@@ -86,7 +90,7 @@ class ExtDate extends Date {
 
 
   set precision(value) {
-    P[this] = Number(value)
+    P[this] = Number(value) % 4
   }
 
   get precision() {
@@ -117,22 +121,84 @@ class ExtDate extends Date {
     return X[this]
   }
 
+  get type() {
+    return 'Date'
+  }
+
   get edtf() {
     return this.toEDTF()
   }
 
+  get min() {
+    return this.getTime()
+  }
+
+  get year() {
+    return this.getUTCFullYear()
+  }
+
+  get month() {
+    return this.getUTCMonth()
+  }
+
+  get date() {
+    return this.getUTCDate()
+  }
+
+  get hours() {
+    return this.getUTCHours()
+  }
+
+  get minutes() {
+    return this.getUTCMinutes()
+  }
+
+  get seconds() {
+    return this.getUTCSeconds()
+  }
+
+  get values() {
+    switch (this.precision) {
+    case 1:
+      return [this.year]
+    case 2:
+      return [this.year, this.month]
+    case 3:
+      return [this.year, this.month, this.date]
+    default:
+      return [
+        this.year, this.month, this.date, this.hours, this.minutes, this.seconds
+      ]
+    }
+  }
+
   toEDTF() {
-    //return super()
+    if (!this.precision) return this.toISOString()
+
+    return this.values.map(pad).join('-')
   }
 }
 
-ExtDate.prototype.toString = ExtDate.prototype.toEDTF
-ExtDate.prototype.toISOString = ExtDate.prototype.toEDTF
 ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
 
 function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
   return date.getTime()
+}
+
+function pad(number, idx = 0) {
+  if (!idx) {
+    let abs = Math.abs(number)
+    let sign = (abs === number) ? '' : '-'
+
+    if (abs < 10)   return `${sign}000${abs}`
+    if (abs < 100)  return `${sign}00${abs}`
+    if (abs < 1000) return `${sign}0${abs}`
+
+    return `${number}`
+  }
+
+  return (number < 10) ? `0${number}` : `${number}`
 }
 
 module.exports = ExtDate
