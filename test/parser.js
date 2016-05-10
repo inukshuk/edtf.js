@@ -456,6 +456,10 @@ describe('parser', () => {
       expect(p('[1760-12..]'))
         .to.be.a.set.at.level(2).and.have.property('later', true))
 
+    it('[YYYY..]', () =>
+      expect(p('[1760..]'))
+        .to.be.a.set.at.level(2).and.have.property('later', true))
+
     it('[YYYY,YYYY-MM]', () =>
       expect(p('[1667, 1672-12]'))
         .to.be.a.set.at.level(2).from([1667]).until([1672, 11]))
@@ -467,6 +471,33 @@ describe('parser', () => {
       expect(p('{1960 ,  1961-12}'))
         .to.be.a.list.at.level(2)
         .from([1960]).until([1961, 11]))
+  })
+
+  describe('constrain', () => {
+    it('by type', () => {
+      expect(p('[1760..]', { types: ['list', 'set'] }))
+        .to.be.a.set.at.level(2).and.have.property('later', true)
+
+      expect(() => p('[1760..]', { types: [] })).to.be.rejected
+      expect(() => p('[1760..]', { types: ['list'] })).to.be.rejected
+    })
+
+    it('by level', () => {
+      expect(p('[1760..]', { level: 2 }))
+        .to.be.a.set.at.level(2).and.have.property('later', true)
+
+      expect(() => p('[1760..]', { level: 1 })).to.be.rejected
+      expect(() => p('[1760..]', { level: 0 })).to.be.rejected
+    })
+
+    it('by level and type', () => {
+      expect(p('1800/1X01', { level: 2, types: ['interval'] }))
+        .to.be.an.interval.at.level(2)
+
+      expect(() => p('1800/1X01', { level: 2, types: ['date'] })).to.be.rejected
+      expect(() => p('1800/1X01', { level: 1, types: ['interval'] }))
+        .to.be.rejected
+    })
   })
 })
 

@@ -7,16 +7,16 @@ function byLevel(a, b) {
   return a.level < b.level ? -1 : a.level > b.level ? 1 : 0
 }
 
-function limit(results, level, types) {
-  if (!results || !results.length) return undefined
+function limit(results, { level, types }) {
+  if (!results.length) return results
+  if (typeof level !== 'number') level = 2
 
   return results.filter(res =>
-    (res.level <= level) && (!types || types.includes(res.type)))
+    (level >= res.level) && (!types || types.includes(res.type)))
 }
 
 function best(results) {
-  if (!results || !results.length) return undefined
-  if (results.length === 1) return results[0]
+  if (results.length < 2) return results[0]
 
   // If there are multiple results, pick the first
   // one on the lowest level!
@@ -25,15 +25,9 @@ function best(results) {
 
 module.exports = {
 
-  parse(input, constraints) {
+  parse(input, constraints = {}) {
     let nep = module.exports.parser()
-    let res = nep.feed(input).results
-
-    if (constraints) {
-      res = limit(res, constraints.level || 0, constraints.types)
-    }
-
-    res = best(res)
+    let res = best(limit(nep.feed(input).results, constraints))
 
     if (!res) throw new Error('edtf: No possible parsings (@EOS)')
 
