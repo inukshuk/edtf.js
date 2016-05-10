@@ -42,7 +42,7 @@ const util = {
   interval(level) {
     return data => ({
       values: [data[0], data[2]],
-      type: 'interval',
+      type: 'Interval',
       level
     })
   },
@@ -60,7 +60,7 @@ const util = {
 
   date(values, level = 0, extra = null) {
     return assign({
-      type: 'date',
+      type: 'Date',
       level,
       values: Bitmask.normalize(values.map(Number))
     }, extra)
@@ -70,25 +70,25 @@ const util = {
     return {
       values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),
       offset: data[3],
-      type: 'datetime',
+      type: 'Date',
       level: 0
     }
   },
 
   season(data, level = 1) {
     return {
-      type: 'season',
+      type: 'Season',
       level,
       values: [Number(data[0]), Number(data[2])]
     }
   },
 
   unknown() {
-    return { type: 'unknown', level: 1, values: [] }
+    return { type: 'Unknown', level: 1, values: [] }
   },
 
   open() {
-    return { type: 'open', level: 1, values: [] }
+    return { type: 'Open', level: 1, values: [] }
   },
 
   list(data) {

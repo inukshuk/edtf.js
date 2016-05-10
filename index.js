@@ -6,7 +6,7 @@ const Bitmask = require('./src/bitmask')
 const { parse } = require('./src/parser')
 
 const types = [
-  'Date', 'Year', 'Season', 'Interval', 'Set', 'List'
+  'Date', 'Year', 'Season', 'Interval', 'Set', 'List', 'Century', 'Decade'
 ]
 
 function edtf(...args) {

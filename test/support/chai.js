@@ -150,26 +150,26 @@ chai.use(function (_, utils) {
   })
 
   Assertion.addProperty('season', function () {
-    expect(utils.flag(this, 'object')).to.have.type('season')
+    expect(utils.flag(this, 'object')).to.have.type('Season')
   })
 
   Assertion.addProperty('century', function () {
-    expect(utils.flag(this, 'object')).to.have.type('century')
+    expect(utils.flag(this, 'object')).to.have.type('Century')
   })
 
   Assertion.addProperty('decade', function () {
-    expect(utils.flag(this, 'object')).to.have.type('decade')
+    expect(utils.flag(this, 'object')).to.have.type('Decade')
   })
 
   Assertion.addProperty('interval', function () {
-    expect(utils.flag(this, 'object')).to.have.type('interval')
+    expect(utils.flag(this, 'object')).to.have.type('Interval')
   })
 
   Assertion.addProperty('list', function () {
-    expect(utils.flag(this, 'object')).to.have.type('list')
+    expect(utils.flag(this, 'object')).to.have.type('List')
   })
 
   Assertion.addProperty('set', function () {
-    expect(utils.flag(this, 'object')).to.have.type('set')
+    expect(utils.flag(this, 'object')).to.have.type('Set')
   })
 })

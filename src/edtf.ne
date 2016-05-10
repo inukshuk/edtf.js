@@ -29,7 +29,7 @@ L0 -> date_time {% id %}
 L0i -> date_time "/" date_time {% interval(0) %}
 
 century -> d2
-  {% data => ({ values: [num(data[0])], type: 'century', level: 0 }) %}
+  {% data => ({ values: [num(data[0])], type: 'Century', level: 0 }) %}
 
 date_time -> date     {% id %}
            | datetime {% id %}
@@ -96,7 +96,7 @@ offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
 # --- EDTF / ISO 8601-2 Level 1 ---
 
 L1 -> date_ua {% id %}
-    | L1X     {% merge(0, { type: 'date', level: 1 }) %}
+    | L1X     {% merge(0, { type: 'Date', level: 1 }) %}
     | L1Y     {% id %}
     | L1S     {% id %}
     | L1i     {% id %}
@@ -138,7 +138,7 @@ L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 L2 -> ua_date            {% id %}
     | L2Y                {% id %}
-    | L2X                {% merge(0, { type: 'date', level: 2 }) %}
+    | L2X                {% merge(0, { type: 'Date', level: 2 }) %}
     | L2S                {% id %}
     | decade             {% id %}
     | decade UA          {% merge(0, 1) %}
@@ -208,16 +208,16 @@ exp -> digits "E" digits
 L2S -> year "-" d25_41 {% data => season(data, 2) %}
 
 decade -> d3
-  {% data => ({ values: [num(data)], type: 'decade', level: 2 }) %}
+  {% data => ({ values: [num(data)], type: 'Decade', level: 2 }) %}
 
 
 dates -> LSB OL RSB {% list %}
        | LLB OL RLB {% list %}
 
 
-LSB -> "["   {% () => ({ type: 'set' }) %}
-     | "[.." {% () => ({ type: 'set', earlier: true }) %}
-LLB -> "{"   {% () => ({ type: 'list' }) %}
+LSB -> "["   {% () => ({ type: 'Set' }) %}
+     | "[.." {% () => ({ type: 'Set', earlier: true }) %}
+LLB -> "{"   {% () => ({ type: 'List' }) %}
 
 RSB -> "]"   {% nothing %}
      | "..]" {% () => ({ later: true }) %}
