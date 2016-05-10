@@ -26,12 +26,18 @@ function best(results) {
 module.exports = {
 
   parse(input, constraints = {}) {
-    let nep = module.exports.parser()
-    let res = best(limit(nep.feed(input).results, constraints))
+    try {
+      let nep = module.exports.parser()
+      let res = best(limit(nep.feed(input).results, constraints))
 
-    if (!res) throw new Error('edtf: No possible parsings (@EOS)')
+      if (!res) throw new Error('edtf: No possible parsings (@EOS)')
 
-    return res
+      return res
+
+    } catch (error) {
+      error.message += ` for "${input}"`
+      throw error
+    }
   },
 
   parser() {
