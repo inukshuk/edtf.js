@@ -11,10 +11,10 @@ rules:
   comma-spacing: 2
   complexity: [1, 8]
   constructor-super: 0
-  curly: [2, multi-line]
+  curly: [2, multi-or-nest]
   dot-location: [2, property]
   eqeqeq: [2, smart]
-  indent: [2, 2, { SwitchCase: 1 }]
+  indent: [2, 2]
   key-spacing: [1, { beforeColon: false, afterColon: true }]
   keyword-spacing: 2
   linebreak-style: [2, unix]

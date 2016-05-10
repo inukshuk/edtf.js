@@ -33,9 +33,8 @@ const util = {
   },
 
   merge(...args) {
-    if (typeof args[args.length - 1] === 'object') {
+    if (typeof args[args.length - 1] === 'object')
       var extra = args.pop()
-    }
 
     return data => assign(args.reduce((a, i) => assign(a, data[i]), {}), extra)
   },

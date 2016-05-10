@@ -35,19 +35,19 @@ class Bitmask {
     value = value || 0
 
     switch (typeof value) {
-      case 'number': return value
+    case 'number': return value
 
-      case 'boolean': return value ? Bitmask.YMD : 0
+    case 'boolean': return value ? Bitmask.YMD : 0
 
-      case 'string':
-        if (DAY.test(value)) return Bitmask.DAY
-        if (MONTH.test(value)) return Bitmask.MONTH
-        if (YEAR.test(value)) return Bitmask.YEAR
-        if (PATTERN.test(value)) return Bitmask.compute(value)
-        // fall through!
+    case 'string':
+      if (DAY.test(value)) return Bitmask.DAY
+      if (MONTH.test(value)) return Bitmask.MONTH
+      if (YEAR.test(value)) return Bitmask.YEAR
+      if (PATTERN.test(value)) return Bitmask.compute(value)
+      // fall through!
 
-      default:
-        throw new Error(`invalid value: ${value}`)
+    default:
+      throw new Error(`invalid value: ${value}`)
     }
   }
 
@@ -71,13 +71,11 @@ class Bitmask {
   }
 
   static normalize(values) {
-    if (values.length > 1) {
+    if (values.length > 1)
       values[1] = Math.min(11, Math.max(0, values[1] - 1))
-    }
 
-    if (values.length > 2) {
+    if (values.length > 2)
       values[2] = Math.min(MAXDAYS[values[1]] || NaN, Math.max(1, values[2]))
-    }
 
     return values
   }

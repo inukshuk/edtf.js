@@ -78,9 +78,8 @@ chai.use(function (_, utils) {
       let neg = negate ^ utils.flag(this, 'negate')
 
       if (neg) {
-        if (obj.hasOwnProperty(name)) {
+        if (obj.hasOwnProperty(name))
           expect(Bitmask.test(obj[name], expected)).to.eql(0)
-        }
 
       } else {
         expect(obj).to.have.property(name)
