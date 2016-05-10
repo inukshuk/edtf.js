@@ -29,7 +29,7 @@ module.exports = {
   *sample({ count = Infinity, level, type }) {
     let name = 'edtf'
 
-    assert(count > 0)
+    assert(count > 0, `invalid count ${count}`)
 
     if (typeof level !== 'undefined') {
       assert([0, 1, 2].includes(level), `invalid level ${level}`)
