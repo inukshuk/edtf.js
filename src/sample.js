@@ -26,8 +26,11 @@ const NAMES = [
 
 module.exports = {
 
-  *sample({ count = Infinity, level, type }) {
+  *sample({ count, level, type }) {
     let name = 'edtf'
+
+    if (typeof count !== 'number')
+      count = Infinity
 
     assert(count > 0, `invalid count ${count}`)
 
