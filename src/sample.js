@@ -11,18 +11,27 @@ const randexp = require('randexp')
 const { ParserRules: Rules } = require('./grammar')
 const types = require('./types')
 
-const NAMES = []
+const NAMES = [
+  { any: 'L0' },
+  { any: 'L1' },
+  { any: 'L2' }
+]
 
 module.exports = {
 
-  *sample({ count = Infinity, level = 0, type }) {
+  *sample({ count = Infinity, level, type }) {
+    let name = 'edtf'
+
     assert(count > 0)
-    assert([0, 1, 2].include(level))
 
-    if (typeof type !== 'undefined')
-      assert(types.include(type))
+    if (typeof level !== 'undefined') {
+      assert([0, 1, 2].includes(level))
 
-    let name = NAMES[level][type || 'any']
+      if (typeof type !== 'undefined')
+        assert(types.include(type))
+
+      name = NAMES[level][type || 'any']
+    }
 
     for (var i = 0; i < count; ++i) yield module.exports.gen(name)
   },
