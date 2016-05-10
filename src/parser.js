@@ -7,6 +7,13 @@ function byLevel(a, b) {
   return a.level < b.level ? -1 : a.level > b.level ? 1 : 0
 }
 
+function limit(results, level, types) {
+  if (!results || !results.length) return undefined
+
+  return results.filter(res =>
+    (res.level <= level) && (!types || types.includes(res.type)))
+}
+
 function best(results) {
   if (!results || !results.length) return undefined
   if (results.length === 1) return results[0]
@@ -18,9 +25,15 @@ function best(results) {
 
 module.exports = {
 
-  parse(input) {
+  parse(input, constraints) {
     let nep = module.exports.parser()
-    let res = best(nep.feed(input).results)
+    let res = nep.feed(input).results
+
+    if (constraints) {
+      res = limit(res, constraints.level || 0, constraints.types)
+    }
+
+    res = best(res)
 
     if (!res) throw new Error('edtf: No possible parsings (@EOS)')
 
