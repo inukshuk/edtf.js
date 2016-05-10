@@ -46,15 +46,22 @@ class ExtDate extends Date {
           // ECMA Date constructor needs at least two date parts!
           if (args.length < 2) args.push(0)
 
-          // TODO handle offset!
+          if (obj.offset) {
+            if (args.length < 3) args.push(1)
+            while (args.length < 5) args.push(0)
+
+            // ECMA Date constructor handles overflows so we
+            // simply add the offset!
+            args[4] = args[4] + obj.offset
+          }
 
           args = [Date.UTC(...args)]
 
-          // ECMA Date constructor converts 0-99 to 1900-1999
+          // ECMA Date constructor converts 0-99 to 1900-1999!
           if (obj.values[0] >= 0 && obj.values[0] < 100)
-            args[0] = adj(new Date(args[0]))
+            args[0] = adj(new Date(args[0]));
 
-          //;({ uncertain, approximate, unspecified, offset } = obj)
+          ({ uncertain, approximate, unspecified } = obj)
         }
         break
 
