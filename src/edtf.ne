@@ -277,7 +277,8 @@ m31x -> [0X] [13578X] {% join %}
 m30x -> [0X] [469]    {% join %}
       | "11"          {% join %}
 
-d29x -> [0-2X] dx     {% join %}
+d29x -> "0" d1x       {% join %}
+      | [1-2X] dx     {% join %}
 d30x -> d29x          {% join %}
       | "30"          {% id %}
 d31x -> d30x          {% id %}
