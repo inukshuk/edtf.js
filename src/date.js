@@ -46,10 +46,13 @@ class ExtDate extends Date {
           // ECMA Date constructor needs at least two date parts!
           if (args.length < 2) args.push(0)
 
-          // TODO handle 0-99 years ECMA Date constructor
           // TODO handle offset!
 
           args = [Date.UTC(...args)]
+
+          // ECMA Date constructor converts 0-99 to 1900-1999
+          if (obj.values[0] >= 0 && obj.values[0] < 100)
+            args[0] = adj(new Date(args[0]))
 
           //;({ uncertain, approximate, unspecified, offset } = obj)
         }
@@ -115,6 +118,11 @@ class ExtDate extends Date {
   toJSON() {
     return this.toISOString()
   }
+}
+
+function adj(date, by = 1900) {
+  date.setUTCFullYear(date.getUTCFullYear() - by)
+  return date.getTime()
 }
 
 module.exports = ExtDate
