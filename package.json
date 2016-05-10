@@ -33,7 +33,8 @@
   },
   "homepage": "https://github.com/inukshuk/edtf.js#readme",
   "dependencies": {
-    "nearley": "^2.4.1"
+    "nearley": "^2.4.1",
+    "randexp": "^0.4.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
