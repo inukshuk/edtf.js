@@ -25,7 +25,7 @@ describe('sample', () => {
       expect(Array.from(sample({ count: 10, level: 2 })))
         .to.satisfy(dates => dates.every(d => p(d).level <= 2)))
 
-    it.only('impossible combinations', () => {
+    it('impossible combinations', () => {
       expect(() => sample({ level: 0, type: 'Season' }).next())
         .to.throw('impossible')
 
