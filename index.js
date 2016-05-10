@@ -10,6 +10,8 @@ const types = [
 ]
 
 function edtf(...args) {
+  if (!args.length) return new ExtDate()
+
   const res = parse(...args)
   return new ExtDate(res)
   //return new this[res.type](res)
