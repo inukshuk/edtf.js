@@ -95,11 +95,13 @@ offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
 
 # --- EDTF / ISO 8601-2 Level 1 ---
 
-L1 -> date_ua {% id %}
-    | L1X     {% merge(0, { type: 'Date', level: 1 }) %}
-    | L1Y     {% id %}
-    | L1S     {% id %}
-    | L1i     {% id %}
+L1 -> L1d {% id %}
+    | L1Y {% id %}
+    | L1S {% id %}
+    | L1i {% id %}
+
+L1d -> date_ua {% id %}
+     | L1X     {% merge(0, { type: 'Date', level: 1 }) %}
 
 date_ua -> date UA  {% merge(0, 1, { level: 1 }) %}
 
@@ -136,15 +138,19 @@ L1S -> year "-" d21_24 {% data => season(data, 1) %}
 
 # --- EDTF / ISO 8601-2 Level 2 ---
 
-L2 -> ua_date            {% id %}
-    | L2Y                {% id %}
-    | L2X                {% merge(0, { type: 'Date', level: 2 }) %}
-    | L2S                {% id %}
-    | decade             {% id %}
-    | decade UA          {% merge(0, 1) %}
-    | L2i                {% id %}
-    | dates              {% id %}
+L2 -> L2d        {% id %}
+    | L2Y        {% id %}
+    | L2S        {% id %}
+    | L2D        {% id %}
+    | L2i        {% id %}
+    | set        {% id %}
+    | list       {% id %}
 
+L2d -> ua_date   {% id %}
+     | L2X       {% merge(0, { type: 'Date', level: 2 }) %}
+
+L2D -> decade    {% id %}
+     | decade UA {% merge(0, 1) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified
@@ -211,8 +217,8 @@ decade -> d3
   {% data => ({ values: [num(data)], type: 'Decade', level: 2 }) %}
 
 
-dates -> LSB OL RSB {% list %}
-       | LLB OL RLB {% list %}
+set  -> LSB OL RSB {% list %}
+list -> LLB OL RLB {% list %}
 
 
 LSB -> "["   {% () => ({ type: 'Set' }) %}

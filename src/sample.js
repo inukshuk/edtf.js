@@ -12,9 +12,16 @@ const { ParserRules: Rules } = require('./grammar')
 const types = require('./types')
 
 const NAMES = [
-  { any: 'L0' },
-  { any: 'L1' },
-  { any: 'L2' }
+  {
+    any: 'L0', Date: 'date_time', Century: 'century', Interval: 'L0i'
+  },
+  {
+    any: 'L1', Date: 'L1d', Year: 'L1Y', Season: 'L1S', Interval: 'L1i'
+  },
+  {
+    any: 'L2', Date: 'L2s', Year: 'L2Y', Season: 'L2S', Interval: 'L2i',
+    Decade: 'L2D', Set: 'set', List: 'list'
+  }
 ]
 
 module.exports = {
@@ -31,6 +38,9 @@ module.exports = {
         assert(types.include(type))
 
       name = NAMES[level][type || 'any']
+
+      if (!name)
+        throw new Error(`impossible to generate ${type} at level ${level}`)
     }
 
     for (var i = 0; i < count; ++i) yield module.exports.gen(name)
