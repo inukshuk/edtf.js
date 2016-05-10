@@ -32,10 +32,10 @@ module.exports = {
     assert(count > 0)
 
     if (typeof level !== 'undefined') {
-      assert([0, 1, 2].includes(level))
+      assert([0, 1, 2].includes(level), `invalid level ${level}`)
 
       if (typeof type !== 'undefined')
-        assert(types.includes(type))
+        assert(types.includes(type), `invalid type ${type}`)
 
       name = NAMES[level][type || 'any']
 
