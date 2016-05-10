@@ -186,7 +186,7 @@ function adj(date, by = 1900) {
   return date.getTime()
 }
 
-function pad(number, idx = 0) {
+function pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
   if (!idx) {
     let abs = Math.abs(number)
     let sign = (abs === number) ? '' : '-'
@@ -197,6 +197,8 @@ function pad(number, idx = 0) {
 
     return `${number}`
   }
+
+  if (idx === 1) number = number + 1
 
   return (number < 10) ? `0${number}` : `${number}`
 }
