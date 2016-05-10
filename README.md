@@ -6,7 +6,7 @@
 [![License AGPL-3.0](https://img.shields.io/npm/l/edtf.svg)](https://opensource.org/licenses/AGPL-3.0)
 
 An Extended Date Time Format (EDTF) / ISO 8601-2 parser and toolkit for
-date/time hackers.
+date/time hackers and enthusiasts.
 
 ## Compatibility
 
@@ -14,7 +14,12 @@ date/time hackers.
 EDTF.js fully implements [EDTF](http://www.loc.gov/standards/datetime)
 levels 0, 1, and 2 as specified by WD 2016-02-16 of ISO 8601-2.
 
+## Installation
+
 ### Node.js
+
+    $ npm install edtf
+
 EDTF.js is written in ES6 and therefore requires Node.js 6+. You should
 be able to use it in Node 4 or 5 when setting the appropriate
 `--harmony` flags or by using your favourite transpiler.
