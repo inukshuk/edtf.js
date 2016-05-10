@@ -36,7 +36,7 @@ class ExtDate extends Date {
         {
           let obj = args[0]
 
-          //assert.equal('date', obj.type)
+          assert.equal('Date', obj.type)
           assert(obj.values)
           assert(obj.values.length)
 
