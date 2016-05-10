@@ -117,15 +117,18 @@ class ExtDate extends Date {
     return X[this]
   }
 
+  get edtf() {
+    return this.toEDTF()
+  }
 
-  toISOString() {
+  toEDTF() {
     //return super()
   }
-
-  toJSON() {
-    return this.toISOString()
-  }
 }
+
+ExtDate.prototype.toString = ExtDate.prototype.toEDTF
+ExtDate.prototype.toISOString = ExtDate.prototype.toEDTF
+ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
 
 function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
