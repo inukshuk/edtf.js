@@ -178,6 +178,10 @@ class ExtDate extends Date {
 
     return this.values.map(pad).join('-')
   }
+
+  [Symbol.toPrimitive](hint) {
+    return (hint === 'number') ? this.valueOf() : this.toISOString()
+  }
 }
 
 ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
