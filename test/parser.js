@@ -278,15 +278,19 @@ describe('parser', () => {
 
     it('/', () =>
       expect(p('/'))
-        .to.be.an.interval.from([]).until([]).at.level(1))
+        .to.be.an.interval.at.level(1).and.produce([null, null]))
+
+    it('*/*', () =>
+      expect(p('*/*'))
+        .to.be.an.interval.at.level(1).and.produce([Infinity, Infinity]))
 
     it('YYYY-MM/*', () =>
       expect(p('2016-05/*'))
-        .to.be.an.interval.from([2016, 4]).until([]).at.level(1))
+        .to.be.an.interval.from([2016, 4]).at.level(1))
 
     it('/YYYY-MM', () =>
       expect(p('/2016-05'))
-        .to.be.an.interval.from([]).until([2016, 4]).at.level(1))
+        .to.be.an.interval.until([2016, 4]).at.level(1))
   })
 
   describe('Level 2', () => {
