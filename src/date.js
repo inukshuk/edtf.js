@@ -13,7 +13,7 @@ const X = new WeakMap()
 
 class ExtDate extends Date {
   static parse(input) {
-    return parse(input, { types: ['date'] })
+    return parse(input, { types: ['Date'] })
   }
 
   constructor(...args) { // eslint-disable-line complexity
@@ -40,7 +40,8 @@ class ExtDate extends Date {
         {
           let obj = args[0]
 
-          assert.equal('Date', obj.type)
+          if (obj.type) assert.equal('Date', obj.type)
+
           assert(obj.values)
           assert(obj.values.length)
 
