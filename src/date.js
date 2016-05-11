@@ -176,7 +176,12 @@ class ExtDate extends Date {
   toEDTF() {
     if (!this.precision) return this.toISOString()
 
-    return this.values.map(pad).join('-')
+    let values = this.values.map(pad)
+
+    if (this.unspecified.value)
+      values = this.unspecified.masks(values)
+
+    return values.join('-')
   }
 
   [Symbol.toPrimitive](hint) {

@@ -5,7 +5,7 @@ const MONTH = /^months?$/i
 const YEAR = /^years?$/i
 const SYMBOL = /^[xX]$/
 const SYMBOLS = /[xX]/g
-const PATTERN = /^[0-9xX]{8}$/
+const PATTERN = /^[0-9xXdDmMyY]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
 const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -112,6 +112,17 @@ class Bitmask {
     return input.map((c, idx) => this.bit(offset + idx) ? symbol : c)
   }
 
+  masks(values, symbol = 'X') {
+    let offset = 0
+
+    return values.map(value => {
+      let mask = this.mask(value.split(''), offset, symbol)
+      offset = offset + mask.length
+
+      return mask.join('')
+    })
+  }
+
   qualify(idx) {
     return (this.value = this.value | Bitmask.UA[idx]), this
   }
@@ -121,11 +132,7 @@ class Bitmask {
   }
 
   toString(symbol = 'X') {
-    return [
-      this.mask(['Y', 'Y', 'Y', 'Y'], 0, symbol).join(''),
-      this.mask(['M', 'M'], 4, symbol).join(''),
-      this.mask(['D', 'D'], 6, symbol).join('')
-    ].join('-')
+    return this.masks(['YYYY', 'MM', 'DD'], symbol).join('-')
   }
 }
 
