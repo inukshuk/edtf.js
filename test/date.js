@@ -4,7 +4,7 @@ const { Date } = require('..')
 
 describe('Date', () => {
 
-  describe.only('.edtf', () => {
+  describe('.edtf', () => {
     it('default', () =>
       expect(new Date().edtf)
         .to.match(/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ$/))
@@ -52,5 +52,35 @@ describe('Date', () => {
     it('YXYX-MX-DD', () =>
       expect(new Date({ values: [2014, 3, 15], unspecified: 'yxyxmxdd' }).edtf)
         .to.eql('2X1X-0X-15'))
+
+    it('YYYY-MM-DD?', () =>
+      expect(new Date({ values: [2014, 3, 15], uncertain: true }).edtf)
+        .to.eql('2014-04-15?'))
+
+    it('YYYY-MM-?DD', () =>
+      expect(new Date({ values: [2014, 3, 15], uncertain: 'day' }).edtf)
+        .to.eql('2014-04-?15'))
+
+    it('YYYY-MM?-DD', () =>
+      expect(new Date({ values: [2014, 3, 15], uncertain: 'xxxxxxdd' }).edtf)
+        .to.eql('2014-04?-15'))
+
+    it('YYYY-?MM-DD', () =>
+      expect(new Date({ values: [2014, 3, 15], uncertain: 'month' }).edtf)
+        .to.eql('2014-?04-15'))
+
+    it('YYYY?-MM-DD', () =>
+      expect(new Date({ values: [2014, 3, 15], uncertain: 'year' }).edtf)
+        .to.eql('2014?-04-15'))
+
+    it('YYYY-MM?-~DD', () =>
+      expect(new Date({
+        values: [2004, 5, 11], uncertain: 'xxxxxxdd', approximate: 'day'
+      }).edtf).to.eql('2004-06?-~11'))
+
+    it('YYYY-%MM-DD', () =>
+      expect(new Date({
+        values: [2004, 5, 11], uncertain: 'month', approximate: 'month'
+      }).edtf).to.eql('2004-%06-11'))
   })
 })

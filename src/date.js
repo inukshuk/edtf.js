@@ -179,7 +179,15 @@ class ExtDate extends Date {
     let values = this.values.map(pad)
 
     if (this.unspecified.value)
-      values = this.unspecified.masks(values)
+      return this.unspecified.masks(values).join('-')
+
+    if (this.uncertain.value)
+      values = this.uncertain.marks(values, '?')
+
+    if (this.approximate.value) {
+      values = this.approximate.marks(values, '~')
+        .map(value => value.replace(/~\?/, '%'))
+    }
 
     return values.join('-')
   }

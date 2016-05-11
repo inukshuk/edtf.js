@@ -123,6 +123,19 @@ class Bitmask {
     })
   }
 
+  marks(values, symbol = '?') {
+    return values
+      .map((value, idx) => [
+        this.qualified(idx * 2) ? symbol : '',
+        value,
+        this.qualified(idx * 2 + 1) ? symbol : ''
+      ].join(''))
+  }
+
+  qualified(idx) {
+    return !!(idx && this.value === Bitmask.UA[idx])
+  }
+
   qualify(idx) {
     return (this.value = this.value | Bitmask.UA[idx]), this
   }
