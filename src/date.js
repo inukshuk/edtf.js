@@ -35,7 +35,7 @@ class ExtDate extends Date {
 
       case 'object':
         if (Array.isArray(args[0]))
-          args[0] = { type: 'Date', values: args[0] }
+          args[0] = { values: args[0] }
 
         {
           let obj = args[0]
