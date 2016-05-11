@@ -30,7 +30,7 @@ class ExtDate extends Date {
         break
 
       case 'string':
-        args = [ExtDate.parse(args[0])]
+        args = ExtDate.parse(args[0])
         // eslint-disable-line no-fallthrough
 
       case 'object':
@@ -40,6 +40,7 @@ class ExtDate extends Date {
         {
           let obj = args[0]
 
+          assert(obj !== null)
           if (obj.type) assert.equal('Date', obj.type)
 
           assert(obj.values)

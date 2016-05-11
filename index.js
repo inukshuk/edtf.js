@@ -1,6 +1,7 @@
 'use strict'
 
 const ExtDate = require('./src/date')
+const Year = require('./src/year')
 const Bitmask = require('./src/bitmask')
 const types = require('./src/types')
 
@@ -18,6 +19,7 @@ function edtf(...args) {
 
 module.exports = Object.assign(edtf, {
   Date: ExtDate,
+  Year,
   Bitmask,
   parse,
   sample,
