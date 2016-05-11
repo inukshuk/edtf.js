@@ -4,7 +4,7 @@
 function id(x) {return x[0]; }
 
   const {
-    num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
+    num, zero, nothing, pick, pluck, join, concat, merge,
     interval, list, masked, date, datetime, season, qualify, year
   } = require('./util')
 
@@ -87,9 +87,10 @@ var grammar = {
     {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
     {"name": "L1i", "symbols": ["date_time", {"literal":"/"}, "L1i_date"], "postprocess": interval(1)},
     {"name": "L1i", "symbols": ["L1i_date", {"literal":"/"}, "date_time"], "postprocess": interval(1)},
-    {"name": "L1i_date", "symbols": [], "postprocess": unknown},
+    {"name": "L1i_date", "symbols": [], "postprocess": nothing},
     {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
-    {"name": "L1i_date", "symbols": [{"literal":"*"}], "postprocess": open},
+    {"name": "L1i_date", "symbols": ["INFINITY"], "postprocess": id},
+    {"name": "INFINITY", "symbols": [{"literal":"*"}], "postprocess": () => Infinity},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["d4", {"literal":"-"}, "md", "L1X$string$1"], "postprocess": masked()},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
@@ -197,10 +198,10 @@ var grammar = {
     {"name": "L2i", "symbols": ["L2i_date", {"literal":"/"}, "L2i_date"], "postprocess": interval(2)},
     {"name": "L2i", "symbols": ["date_time", {"literal":"/"}, "L2i_date"], "postprocess": interval(2)},
     {"name": "L2i", "symbols": ["L2i_date", {"literal":"/"}, "date_time"], "postprocess": interval(2)},
-    {"name": "L2i_date", "symbols": [], "postprocess": unknown},
+    {"name": "L2i_date", "symbols": [], "postprocess": nothing},
     {"name": "L2i_date", "symbols": ["ua_date"], "postprocess": id},
     {"name": "L2i_date", "symbols": ["L2X"], "postprocess": id},
-    {"name": "L2i_date", "symbols": [{"literal":"*"}], "postprocess": open},
+    {"name": "L2i_date", "symbols": ["INFINITY"], "postprocess": id},
     {"name": "L2Y", "symbols": ["exp_year"], "postprocess": id},
     {"name": "L2Y", "symbols": ["exp_year", "significant_digits"], "postprocess": merge(0, 1)},
     {"name": "L2Y", "symbols": ["L1Y", "significant_digits"], "postprocess": merge(0, 1, { level: 2 })},

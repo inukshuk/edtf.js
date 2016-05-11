@@ -2,7 +2,7 @@
 
 @{%
   const {
-    num, zero, nothing, pick, pluck, join, concat, merge, unknown, open,
+    num, zero, nothing, pick, pluck, join, concat, merge,
     interval, list, masked, date, datetime, season, qualify, year
   } = require('./util')
 
@@ -110,10 +110,11 @@ L1i -> L1i_date "/" L1i_date  {% interval(1) %}
      | date_time "/" L1i_date {% interval(1) %}
      | L1i_date "/" date_time {% interval(1) %}
 
-L1i_date -> null     {% unknown %}
+L1i_date -> null     {% nothing %}
           | date_ua  {% id %}
-          | "*"      {% open %}
+          | INFINITY {% id %}
 
+INFINITY -> "*" {% () => Infinity %}
 
 L1X -> d4 "-" md "-XX" {% masked() %}
      | d4 "-XX-XX"     {% masked() %}
@@ -191,10 +192,10 @@ L2i -> L2i_date "/" L2i_date  {% interval(2) %}
      | date_time "/" L2i_date {% interval(2) %}
      | L2i_date "/" date_time {% interval(2) %}
 
-L2i_date -> null     {% unknown %}
+L2i_date -> null     {% nothing %}
           | ua_date  {% id %}
           | L2X      {% id %}
-          | "*"      {% open %}
+          | INFINITY {% id %}
 
 L2Y -> exp_year                    {% id %}
      | exp_year significant_digits {% merge(0, 1) %}

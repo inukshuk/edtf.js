@@ -154,7 +154,7 @@ Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
 /*
  * Map each UA symbol position to a mask.
  *
- *   ~YYYY~-2MM3-4DD5
+ *   ~YYYY~-~MM~-~DD~
  *   0    1 2  3 4  5
  */
 Bitmask.UA = [

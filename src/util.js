@@ -91,14 +91,6 @@ const util = {
     }
   },
 
-  unknown() {
-    return { type: 'Unknown', level: 1, values: [] }
-  },
-
-  open() {
-    return { type: 'Open', level: 1, values: [] }
-  },
-
   list(data) {
     return assign({ values: data[1], level: 2 }, data[0], data[2])
   },
