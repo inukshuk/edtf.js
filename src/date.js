@@ -2,8 +2,9 @@
 
 const assert = require('assert')
 
-const { parse } = require('./parser')
 const Bitmask = require('./bitmask')
+const { parse } = require('./parser')
+const { abs } = Math
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -12,6 +13,7 @@ const X = new WeakMap()
 
 
 class ExtDate extends Date {
+
   static parse(input) {
     return parse(input, { types: ['Date'] })
   }
@@ -177,7 +179,7 @@ class ExtDate extends Date {
   toEDTF() {
     if (!this.precision) return this.toISOString()
 
-    let values = this.values.map(pad)
+    let values = this.values.map(ExtDate.pad)
 
     if (this.unspecified.value)
       return this.unspecified.masks(values).join('-')
@@ -196,6 +198,24 @@ class ExtDate extends Date {
   [Symbol.toPrimitive](hint) {
     return (hint === 'number') ? this.valueOf() : this.toISOString()
   }
+
+  static pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
+    if (!idx) {
+      let k = abs(number)
+      let sign = (k === number) ? '' : '-'
+
+      if (k < 10)   return `${sign}000${k}`
+      if (k < 100)  return `${sign}00${k}`
+      if (k < 1000) return `${sign}0${k}`
+
+      return `${number}`
+    }
+
+    if (idx === 1) number = number + 1
+
+    return (number < 10) ? `0${number}` : `${number}`
+  }
+
 }
 
 ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
@@ -203,23 +223,6 @@ ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
 function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
   return date.getTime()
-}
-
-function pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
-  if (!idx) {
-    let abs = Math.abs(number)
-    let sign = (abs === number) ? '' : '-'
-
-    if (abs < 10)   return `${sign}000${abs}`
-    if (abs < 100)  return `${sign}00${abs}`
-    if (abs < 1000) return `${sign}0${abs}`
-
-    return `${number}`
-  }
-
-  if (idx === 1) number = number + 1
-
-  return (number < 10) ? `0${number}` : `${number}`
 }
 
 module.exports = ExtDate

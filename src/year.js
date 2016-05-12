@@ -28,7 +28,6 @@ class Year {
         input = { values: input }
 
       {
-
         assert(input !== null)
         if (input.type) assert.equal('Year', input.type)
 
