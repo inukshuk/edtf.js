@@ -133,7 +133,22 @@ class Bitmask {
   }
 
   qualified(idx) {
-    return !!(idx && this.value === Bitmask.UA[idx])
+    switch (idx) {
+    case 1:
+      return this.value === Bitmask.YEAR ||
+        (this.value & Bitmask.YEAR) && !(this.value & Bitmask.MONTH)
+    case 2:
+      return this.value === Bitmask.MONTH
+    case 3:
+      return this.value === Bitmask.YM
+    case 4:
+      return this.value === Bitmask.DAY ||
+        (this.value & Bitmask.DAY) && !(this.value & Bitmask.MONTH)
+    case 5:
+      return this.value === Bitmask.YMD
+    default:
+      return false
+    }
   }
 
   qualify(idx) {
@@ -172,10 +187,10 @@ Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
  */
 Bitmask.UA = [
   Bitmask.YEAR,
-  Bitmask.YEAR,
+  Bitmask.YEAR,   // YEAR !DAY
   Bitmask.MONTH,
   Bitmask.YM,
-  Bitmask.DAY,
+  Bitmask.DAY,    // YEARDAY
   Bitmask.YMD
 ]
 

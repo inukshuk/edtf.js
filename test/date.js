@@ -82,5 +82,10 @@ describe('Date', () => {
       expect(new Date({
         values: [2004, 5, 11], uncertain: 'month', approximate: 'month'
       }).edtf).to.eql('2004-%06-11'))
+
+    it('YYYY?-MM-?DD', () =>
+      expect(new Date({
+        values: [2004, 5, 11], uncertain: 'xxxxmmxx'
+      }).edtf).to.eql('2004?-06-?11'))
   })
 })
