@@ -2,6 +2,8 @@
 
 const assert = require('assert')
 const { parse } = require('./parser')
+const { pad } = require('./date')
+const { abs } = Math
 
 const V = new WeakMap()
 const S = new WeakMap()
@@ -81,28 +83,15 @@ class Year {
   }
 
   toEDTF() {
-    let abs = Math.abs(this.year)
+    let y = abs(this.year)
     let s = this.significant ? `S${this.significant}` : ''
 
-    if (abs < 9999) return `${pad(this.year, 4)}${s}`
+    if (y < 9999) return `${pad(this.year)}${s}`
 
     // TODO exponential form for ending zeroes
 
-    return `Y${pad(this.year)}${s}`
+    return `Y${this.year}${s}`
   }
-}
-
-function pad(year, min = 5) {
-  let abs = Math.abs(year)
-  let sign = (abs === year) ? '' : '-'
-
-  if (abs < 10)    return `${sign}0000${abs}`
-  if (abs < 100)   return `${sign}000${abs}`
-  if (abs < 1000)  return `${sign}00${abs}`
-
-  if (min > 4 && abs < 10000) return `${sign}0${abs}`
-
-  return `${year}`
 }
 
 module.exports = Year
