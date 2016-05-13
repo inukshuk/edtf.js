@@ -29,7 +29,10 @@ L0 -> date_time {% id %}
 L0i -> date_time "/" date_time {% interval(0) %}
 
 century -> d2
-  {% data => ({ values: [num(data[0])], type: 'Century', level: 0 }) %}
+  {% data => ({ values: [num(data)], type: 'Century', level: 0 }) %}
+         | "-" d2
+  {% data => ({ values: [-num(data[1])], type: 'Century', level: 0 }) %}
+
 
 date_time -> date     {% id %}
            | datetime {% id %}
@@ -216,6 +219,8 @@ L2S -> year "-" d25_41 {% data => season(data, 2) %}
 
 decade -> d3
   {% data => ({ values: [num(data)], type: 'Decade', level: 2 }) %}
+        | "-" d3
+  {% data => ({ values: [-num(data[1])], type: 'Decade', level: 2 }) %}
 
 
 set  -> LSB OL RSB {% list %}

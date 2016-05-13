@@ -114,6 +114,9 @@ describe('parser', () => {
     it('YY', () =>
       expect(p('19')).to.produce([19]).at.level(0).and.be.a.century)
 
+    it('-YY', () =>
+      expect(p('-04')).to.produce([-4]).at.level(0).and.be.a.century)
+
     it('YYYY/YYYY', () =>
       expect(p('1980/1994'))
         .to.be.an.interval.from([1980]).until([1994]).at.level(0))
@@ -433,6 +436,9 @@ describe('parser', () => {
 
     it('YYY', () =>
       expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade)
+
+    it('-YYY', () =>
+      expect(p('-193')).to.produce([-193]).at.level(2).and.be.a.decade)
 
     it('YYY~', () =>
       expect(p('197~')).to.produce([197]).at.level(2)
