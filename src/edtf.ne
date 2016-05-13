@@ -218,11 +218,13 @@ exp -> digits "E" digits
 
 L2S -> year "-" d25_41 {% data => season(data, 2) %}
 
-decade -> d3
-  {% data => ({ values: [num(data)], type: 'Decade', level: 2 }) %}
-        | "-" d3
-  {% data => ({ values: [-num(data[1])], type: 'Decade', level: 2 }) %}
+decade -> positive_decade     {% data => decade(data[0]) %}
+        | "000"               {% () => decade(0) %}
+        | "-" positive_decade {% data => decade(-data[1]) %}
 
+positive_decade -> positive_digit digit digit {% num %}
+                 | "0" positive_digit digit   {% num %}
+                 | "00" positive_digit        {% num %}
 
 set  -> LSB OL RSB {% list %}
 list -> LLB OL RLB {% list %}

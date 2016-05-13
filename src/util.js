@@ -82,7 +82,7 @@ const util = {
     }
   },
 
-  decade(decade, level = 0) {
+  decade(decade, level = 2) {
     return {
       type: 'Decade',
       level,

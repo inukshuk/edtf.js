@@ -438,11 +438,18 @@ describe('parser', () => {
         .to.produce([2001, 39]).at.level(2).and.be.a.season
     })
 
-    it('YYY', () =>
-      expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade)
+    it('YYY', () => {
+      expect(p('193')).to.produce([193]).at.level(2).and.be.a.decade
+      expect(p('019')).to.produce([19]).at.level(2).and.be.a.decade
+      expect(p('009')).to.produce([9]).at.level(2).and.be.a.decade
+      expect(p('000')).to.produce([0]).at.level(2).and.be.a.decade
+    })
 
-    it('-YYY', () =>
-      expect(p('-193')).to.produce([-193]).at.level(2).and.be.a.decade)
+    it('-YYY', () => {
+      expect(p('-193')).to.produce([-193]).at.level(2).and.be.a.decade
+      expect(p('-019')).to.produce([-19]).at.level(2).and.be.a.decade
+      expect(() => p('-000')).to.be.rejected
+    })
 
     it('YYY~', () =>
       expect(p('197~')).to.produce([197]).at.level(2)
