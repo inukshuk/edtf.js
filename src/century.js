@@ -3,6 +3,7 @@
 const assert = require('assert')
 const Bitmask = require('./bitmask')
 const { parse } = require('./parser')
+const { pad } = require('./date')
 const { abs, floor } = Math
 
 const V = new WeakMap()
@@ -10,9 +11,9 @@ const U = new WeakMap()
 const A = new WeakMap()
 
 
-class Decade {
+class Century {
   static parse(input) {
-    return parse(input, { types: ['Decade'] })
+    return parse(input, { types: ['Century'] })
   }
 
   constructor(input) {
@@ -23,11 +24,11 @@ class Decade {
 
     switch (typeof input) {
     case 'number':
-      this.decade = input
+      this.century = input
       break
 
     case 'string':
-      input = Decade.parse(input)
+      input = Century.parse(input)
       // eslint-disable-line no-fallthrough
 
     case 'object':
@@ -36,12 +37,12 @@ class Decade {
 
       {
         assert(input !== null)
-        if (input.type) assert.equal('Decade', input.type)
+        if (input.type) assert.equal('Century', input.type)
 
         assert(input.values)
         assert(input.values.length === 1)
 
-        this.decade = input.values[0]
+        this.century = input.values[0]
         this.uncertain = input.uncertain
         this.approximate = input.approximate
       }
@@ -53,25 +54,25 @@ class Decade {
   }
 
   get type() {
-    return 'Decade'
+    return 'Century'
   }
 
-  get decade() {
+  get century() {
     return this.values[0]
   }
 
-  set decade(decade) {
+  set century(century) {
     decade = floor(Number(decade))
-    assert(abs(decade) < 1000, `invalid decade: ${decade}`)
-    return this.values[0] = decade
+    assert(abs(century) < 100, `invalid century: ${century}`)
+    return this.values[0] = century
   }
 
   get year() {
-    return this.values[0] * 10
+    return this.values[0] * 100
   }
 
   set year(year) {
-    return this.decade = year / 10
+    return this.century = year / 100
   }
 
   set uncertain(value) {
@@ -103,30 +104,20 @@ class Decade {
   }
 
   get max() {
-    return Date.UTC(this.year + 9, 11, 31, 24, 0, 0)
+    return Date.UTC(this.year + 99, 11, 31, 24, 0, 0)
   }
 
   toEDTF() {
-    let decade = Decade.pad(this.decade)
+    let century = pad(this.century, 2)
 
     if (this.uncertain.value)
-      decade = decade + '?'
+      century = century + '?'
 
     if (this.approximate.value)
-      decade = (decade + '~').replace(/\?~/, '%')
+      century = (century + '~').replace(/\?~/, '%')
 
-    return decade
-  }
-
-  static pad(number) {
-    let k = abs(number)
-    let sign = (k === number) ? '' : '-'
-
-    if (k < 10)   return `${sign}00${k}`
-    if (k < 100)  return `${sign}0${k}`
-
-    return `${number}`
+    return century
   }
 }
 
-module.exports = Decade
+module.exports = Century
