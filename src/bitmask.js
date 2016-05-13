@@ -132,18 +132,19 @@ class Bitmask {
       ].join(''))
   }
 
-  qualified(idx) {
+  qualified(idx) { // eslint-disable-line complexity
     switch (idx) {
     case 1:
       return this.value === Bitmask.YEAR ||
         (this.value & Bitmask.YEAR) && !(this.value & Bitmask.MONTH)
     case 2:
-      return this.value === Bitmask.MONTH
+      return this.value === Bitmask.MONTH ||
+        (this.value & Bitmask.MONTH) && !(this.value & Bitmask.YEAR)
     case 3:
       return this.value === Bitmask.YM
     case 4:
       return this.value === Bitmask.DAY ||
-        (this.value & Bitmask.DAY) && !(this.value & Bitmask.MONTH)
+        (this.value & Bitmask.DAY) && (this.value !== Bitmask.YMD)
     case 5:
       return this.value === Bitmask.YMD
     default:
