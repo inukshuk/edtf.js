@@ -1,14 +1,10 @@
 'use strict'
 
 const assert = require('assert')
-const Bitmask = require('./bitmask')
 const { parse } = require('./parser')
 const { abs, floor } = Math
 
 const V = new WeakMap()
-const U = new WeakMap()
-const A = new WeakMap()
-
 
 class Century {
   static parse(input) {
@@ -18,8 +14,8 @@ class Century {
   constructor(input) {
     V[this] = []
 
-    this.uncertain = 0
-    this.approximate = 0
+    this.uncertain = false
+    this.approximate = false
 
     switch (typeof input) {
     case 'number':
@@ -42,8 +38,8 @@ class Century {
         assert(input.values.length === 1)
 
         this.century = input.values[0]
-        this.uncertain = input.uncertain
-        this.approximate = input.approximate
+        this.uncertain = !!input.uncertain
+        this.approximate = !!input.approximate
       }
       break
 
@@ -74,22 +70,6 @@ class Century {
     return this.century = year / 100
   }
 
-  set uncertain(value) {
-    U[this] = new Bitmask(value)
-  }
-
-  get uncertain() {
-    return U[this]
-  }
-
-  set approximate(value) {
-    A[this] = new Bitmask(value)
-  }
-
-  get approximate() {
-    return A[this]
-  }
-
   get values() {
     return V[this]
   }
@@ -109,10 +89,10 @@ class Century {
   toEDTF() {
     let century = Century.pad(this.century)
 
-    if (this.uncertain.value)
+    if (this.uncertain)
       century = century + '?'
 
-    if (this.approximate.value)
+    if (this.approximate)
       century = (century + '~').replace(/\?~/, '%')
 
     return century

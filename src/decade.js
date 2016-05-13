@@ -1,13 +1,10 @@
 'use strict'
 
 const assert = require('assert')
-const Bitmask = require('./bitmask')
 const { parse } = require('./parser')
 const { abs, floor } = Math
 
 const V = new WeakMap()
-const U = new WeakMap()
-const A = new WeakMap()
 
 
 class Decade {
@@ -18,8 +15,8 @@ class Decade {
   constructor(input) {
     V[this] = []
 
-    this.uncertain = 0
-    this.approximate = 0
+    this.uncertain = false
+    this.approximate = false
 
     switch (typeof input) {
     case 'number':
@@ -42,8 +39,8 @@ class Decade {
         assert(input.values.length === 1)
 
         this.decade = input.values[0]
-        this.uncertain = input.uncertain
-        this.approximate = input.approximate
+        this.uncertain = !!input.uncertain
+        this.approximate = !!input.approximate
       }
       break
 
@@ -74,22 +71,6 @@ class Decade {
     return this.decade = year / 10
   }
 
-  set uncertain(value) {
-    U[this] = new Bitmask(value)
-  }
-
-  get uncertain() {
-    return U[this]
-  }
-
-  set approximate(value) {
-    A[this] = new Bitmask(value)
-  }
-
-  get approximate() {
-    return A[this]
-  }
-
   get values() {
     return V[this]
   }
@@ -109,10 +90,10 @@ class Decade {
   toEDTF() {
     let decade = Decade.pad(this.decade)
 
-    if (this.uncertain.value)
+    if (this.uncertain)
       decade = decade + '?'
 
-    if (this.approximate.value)
+    if (this.approximate)
       decade = (decade + '~').replace(/\?~/, '%')
 
     return decade
