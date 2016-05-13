@@ -3,7 +3,6 @@
 const assert = require('assert')
 const Bitmask = require('./bitmask')
 const { parse } = require('./parser')
-const { pad } = require('./date')
 const { abs, floor } = Math
 
 const V = new WeakMap()
@@ -108,7 +107,7 @@ class Century {
   }
 
   toEDTF() {
-    let century = pad(this.century, 2)
+    let century = Century.pad(this.century)
 
     if (this.uncertain.value)
       century = century + '?'
@@ -117,6 +116,15 @@ class Century {
       century = (century + '~').replace(/\?~/, '%')
 
     return century
+  }
+
+  static pad(number) {
+    let k = abs(number)
+    let sign = (k === number) ? '' : '-'
+
+    if (k < 10)   return `${sign}0${k}`
+
+    return `${number}`
   }
 }
 
