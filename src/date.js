@@ -189,7 +189,7 @@ class ExtDate extends Date {
 
     if (this.approximate.value) {
       values = this.approximate.marks(values, '~')
-        .map(value => value.replace(/~\?/, '%'))
+        .map(value => value.replace(/(~\?)|(\?~)/, '%'))
     }
 
     return values.join('-')
