@@ -111,11 +111,15 @@ describe('parser', () => {
       expect(() => p('2016-05-02T12:00:00+15')).to.be.rejected
     })
 
-    it('YY', () =>
-      expect(p('19')).to.produce([19]).at.level(0).and.be.a.century)
+    it('YY', () => {
+      expect(p('19')).to.produce([19]).at.level(0).and.be.a.century
+      expect(() => p('00')).to.be.rejected
+    })
 
-    it('-YY', () =>
-      expect(p('-04')).to.produce([-4]).at.level(0).and.be.a.century)
+    it('-YY', () => {
+      expect(p('-04')).to.produce([-4]).at.level(0).and.be.a.century
+      expect(() => p('-00')).to.be.rejected
+    })
 
     it('YYYY/YYYY', () =>
       expect(p('1980/1994'))

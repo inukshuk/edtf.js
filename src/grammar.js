@@ -4,8 +4,8 @@
 function id(x) {return x[0]; }
 
   const {
-    num, zero, nothing, pick, pluck, join, concat, merge,
-    interval, list, masked, date, datetime, season, qualify, year
+    num, zero, nothing, pick, pluck, join, concat, merge, century,
+    interval, list, masked, date, datetime, season, qualify, year, decade
   } = require('./util')
 
   const {
@@ -20,8 +20,10 @@ var grammar = {
     {"name": "L0", "symbols": ["century"], "postprocess": id},
     {"name": "L0", "symbols": ["L0i"], "postprocess": id},
     {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": interval(0)},
-    {"name": "century", "symbols": ["d2"], "postprocess": data => ({ values: [num(data)], type: 'Century', level: 0 })},
-    {"name": "century", "symbols": [{"literal":"-"}, "d2"], "postprocess": data => ({ values: [-num(data[1])], type: 'Century', level: 0 })},
+    {"name": "century", "symbols": ["positive_century"], "postprocess": data => century(data[0])},
+    {"name": "century", "symbols": [{"literal":"-"}, "positive_century"], "postprocess": data => century(-data[1])},
+    {"name": "positive_century", "symbols": ["positive_digit", "digit"], "postprocess": num},
+    {"name": "positive_century", "symbols": [{"literal":"0"}, "positive_digit"], "postprocess": num},
     {"name": "date_time", "symbols": ["date"], "postprocess": id},
     {"name": "date_time", "symbols": ["datetime"], "postprocess": id},
     {"name": "date", "symbols": ["year"], "postprocess": data => date(data)},

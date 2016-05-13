@@ -74,6 +74,22 @@ const util = {
     }, extra)
   },
 
+  century(century, level = 0) {
+    return {
+      type: 'Century',
+      level,
+      values: [century]
+    }
+  },
+
+  decade(decade, level = 0) {
+    return {
+      type: 'Decade',
+      level,
+      values: [decade]
+    }
+  },
+
   datetime(data) {
     return {
       values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),

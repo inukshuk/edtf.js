@@ -2,8 +2,8 @@
 
 @{%
   const {
-    num, zero, nothing, pick, pluck, join, concat, merge,
-    interval, list, masked, date, datetime, season, qualify, year
+    num, zero, nothing, pick, pluck, join, concat, merge, century,
+    interval, list, masked, date, datetime, season, qualify, year, decade
   } = require('./util')
 
   const {
@@ -28,10 +28,11 @@ L0 -> date_time {% id %}
 
 L0i -> date_time "/" date_time {% interval(0) %}
 
-century -> d2
-  {% data => ({ values: [num(data)], type: 'Century', level: 0 }) %}
-         | "-" d2
-  {% data => ({ values: [-num(data[1])], type: 'Century', level: 0 }) %}
+century -> positive_century     {% data => century(data[0]) %}
+         | "-" positive_century {% data => century(-data[1]) %}
+
+positive_century -> positive_digit digit {% num %}
+                  | "0" positive_digit   {% num %}
 
 
 date_time -> date     {% id %}
