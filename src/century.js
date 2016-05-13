@@ -43,8 +43,12 @@ class Century {
       }
       break
 
-    default:
+    case 'undefined':
       this.year = new Date().getUTCFullYear()
+      break
+
+    default:
+      throw new RangeError('Invalid century value')
     }
   }
 

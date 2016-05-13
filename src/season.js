@@ -40,9 +40,13 @@ class Season {
       }
       break
 
-    default:
+    case 'undefined':
       this.year = new Date().getUTCFullYear()
       this.season = 21
+      break
+
+    default:
+      throw new RangeError('Invalid season value')
     }
   }
 

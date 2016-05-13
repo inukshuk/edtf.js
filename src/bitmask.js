@@ -34,6 +34,8 @@ class Bitmask {
   static convert(value = 0) { // eslint-disable-line complexity
     value = value || 0
 
+    if (value instanceof Bitmask) return value.value
+
     switch (typeof value) {
     case 'number': return value
 
