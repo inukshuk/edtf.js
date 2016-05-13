@@ -62,7 +62,7 @@ class Century {
   }
 
   set century(century) {
-    decade = floor(Number(decade))
+    century = floor(Number(century))
     assert(abs(century) < 100, `invalid century: ${century}`)
     return this.values[0] = century
   }
