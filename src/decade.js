@@ -18,6 +18,9 @@ class Decade {
   constructor(input) {
     V[this] = []
 
+    this.uncertain = 0
+    this.approximate = 0
+
     switch (typeof input) {
     case 'number':
       this.decade = input
@@ -104,17 +107,15 @@ class Decade {
   }
 
   toEDTF() {
-    let values = this.values.map(Decade.pad)
+    let decade = Decade.pad(this.decade)
 
     if (this.uncertain.value)
-      values = this.uncertain.marks(values, '?')
+      decade = decade + '?'
 
-    if (this.approximate.value) {
-      values = this.approximate.marks(values, '~')
-        .map(value => value.replace(/~\?/, '%'))
-    }
+    if (this.approximate.value)
+      decade = (decade + '~').replace(/\?~/, '%')
 
-    return values[0]
+    return decade
   }
 
   static pad(number) {
