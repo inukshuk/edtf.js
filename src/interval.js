@@ -12,6 +12,8 @@ class Interval {
   }
 
   constructor(...args) {
+    V[this] = [null, null]
+
     switch (args.length) {
     case 2:
       [this.lower, this.upper] = args
