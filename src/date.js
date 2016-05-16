@@ -176,10 +176,10 @@ class ExtDate extends Date {
     }
   }
 
-  next() {
+  next(k = 1) {
     let { values, unspecified, uncertain, approximate } = this
 
-    values.push(values.pop() + 1)
+    values.push(values.pop() + k)
 
     return new ExtDate({ values, unspecified, uncertain, approximate })
   }
