@@ -176,6 +176,14 @@ class ExtDate extends Date {
     }
   }
 
+  next() {
+    let { values, unspecified, uncertain, approximate } = this
+
+    values.push(values.pop() + 1)
+
+    return new ExtDate({ values, unspecified, uncertain, approximate })
+  }
+
   toEDTF() {
     if (!this.precision) return this.toISOString()
 

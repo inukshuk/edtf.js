@@ -4,6 +4,26 @@ const { Date } = require('..')
 
 describe('Date', () => {
 
+  describe('.next()', () => {
+    it('YYYY', () => {
+      expect(new Date([1980]).next().edtf).to.eql('1981')
+      expect(new Date([-1]).next().edtf).to.eql('0000')
+    })
+
+    it('YYYY-MM', () => {
+      expect(new Date([1980, 7]).next().edtf).to.eql('1980-09')
+      expect(new Date([-1, 11]).next().edtf).to.eql('0000-01')
+      expect(new Date([2015, 11]).next().edtf).to.eql('2016-01')
+    })
+
+    it('YYYY-MM-DD', () => {
+      expect(new Date([1980, 7, 24]).next().edtf).to.eql('1980-08-25')
+      expect(new Date([-1, 11, 31]).next().edtf).to.eql('0000-01-01')
+      expect(new Date([2016, 1, 28]).next().edtf).to.eql('2016-02-29')
+      expect(new Date([2015, 1, 28]).next().edtf).to.eql('2015-03-01')
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Date().edtf)
