@@ -25,6 +25,10 @@ describe('List', () => {
       expect(new List({ values: [], later: true }).edtf)
         .to.eql('{}')
     })
+
+    it('{YYYY..YYYY}', () => {
+      expect(new List([['2016', '2018']]).edtf).to.eql('{2016..2018}')
+    })
   })
 })
 
