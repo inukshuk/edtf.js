@@ -238,13 +238,13 @@ RSB -> "]"   {% nothing %}
      | "..]" {% () => ({ later: true }) %}
 RLB -> "}"   {% nothing %}
 
-OL -> LI            {% pluck(0) %}
-    | OL _ "," _ LI {% pick(0, 4) %}
+OL -> LI            {% data => [data[0]] %}
+    | OL _ "," _ LI {% data => [...data[0], data[4]] %}
 
 LI -> date         {% id %}
     | ua_date      {% id %}
     | L2X          {% id %}
-    | consecutives
+    | consecutives {% id %}
 
 consecutives
   -> year_month_day ".." year_month_day {% d => [date(d[0]), date(d[2])] %}
