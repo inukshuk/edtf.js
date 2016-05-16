@@ -5,6 +5,7 @@ const assert = require('assert')
 const Bitmask = require('./bitmask')
 const { parse } = require('./parser')
 const { abs } = Math
+const { isArray } = Array
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -16,6 +17,10 @@ class ExtDate extends Date {
 
   static parse(input) {
     return parse(input, { types: ['Date'] })
+  }
+
+  static from(input) {
+    return (input instanceof ExtDate) ? input : new ExtDate(input)
   }
 
   constructor(...args) { // eslint-disable-line complexity
@@ -36,7 +41,7 @@ class ExtDate extends Date {
         // eslint-disable-line no-fallthrough
 
       case 'object':
-        if (Array.isArray(args[0]))
+        if (isArray(args[0]))
           args[0] = { values: args[0] }
 
         {
@@ -45,29 +50,29 @@ class ExtDate extends Date {
           assert(obj != null)
           if (obj.type) assert.equal('Date', obj.type)
 
-          assert(obj.values)
-          assert(obj.values.length)
+          if (obj.values && obj.values.length) {
+            precision = obj.values.length
+            args = obj.values.slice()
 
-          precision = obj.values.length
-          args = obj.values.slice()
+            // ECMA Date constructor needs at least two date parts!
+            if (args.length < 2) args.push(0)
 
-          // ECMA Date constructor needs at least two date parts!
-          if (args.length < 2) args.push(0)
+            if (obj.offset) {
+              if (args.length < 3) args.push(1)
+              while (args.length < 5) args.push(0)
 
-          if (obj.offset) {
-            if (args.length < 3) args.push(1)
-            while (args.length < 5) args.push(0)
+              // ECMA Date constructor handles overflows so we
+              // simply add the offset!
+              args[4] = args[4] + obj.offset
+            }
 
-            // ECMA Date constructor handles overflows so we
-            // simply add the offset!
-            args[4] = args[4] + obj.offset
+            args = [Date.UTC(...args)]
+
+            // ECMA Date constructor converts 0-99 to 1900-1999!
+            if (obj.values[0] >= 0 && obj.values[0] < 100)
+              args[0] = adj(new Date(args[0]))
+
           }
-
-          args = [Date.UTC(...args)]
-
-          // ECMA Date constructor converts 0-99 to 1900-1999!
-          if (obj.values[0] >= 0 && obj.values[0] < 100)
-            args[0] = adj(new Date(args[0]));
 
           ({ uncertain, approximate, unspecified } = obj)
         }

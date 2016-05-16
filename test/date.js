@@ -4,6 +4,20 @@ const { Date } = require('..')
 
 describe('Date', () => {
 
+  describe('constructor()', () => {
+    it('Date', () =>
+      expect(new Date(new global.Date(2015, 11)))
+        .to.be.an.edtf
+        .and.have.year(2015))
+
+    it('ExtDate', () => {
+      const a = new Date()
+      const b = new Date(a)
+
+      expect(b).to.be.an.edtf.and.not.equal(a)
+    })
+  })
+
   describe('.next()', () => {
     it('YYYY', () => {
       expect(new Date([1980]).next().edtf).to.eql('1981')

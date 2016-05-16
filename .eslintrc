@@ -11,7 +11,7 @@ rules:
   comma-spacing: 2
   complexity: [1, 8]
   constructor-super: 0
-  curly: [2, multi-or-nest]
+  curly: 0
   dot-location: [2, property]
   eqeqeq: [2, smart]
   indent: [2, 2]
