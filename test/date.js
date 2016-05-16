@@ -24,6 +24,54 @@ describe('Date', () => {
     })
   })
 
+  describe('comparison operators', () => {
+    it('<', () => {
+      expect(new Date([1980])).to.be.below(new Date([1980, 7]))
+    })
+
+    it('>', () => {
+      expect(new Date('198X')).to.be.above(new Date('196X'))
+    })
+  })
+
+  describe('compare()', () => {
+    function compare(a, b) {
+      return new Date(a).compare(new Date(b))
+    }
+
+    it('no overlap', () => {
+      expect(compare([2001], [2002])).to.eql(-1)
+      expect(compare([2002], [2001])).to.eql(1)
+      expect(compare([2001], [2001])).to.eql(0)
+    })
+  })
+
+  describe('between()', () => {
+    function between(a, b) {
+      return [...new Date(a).between(new Date(b))].map(d => d.values)
+    }
+
+    it('YYYY', () => {
+      expect(between([2001], [2002])).to.eql([])
+      expect(between([2001], [2001])).to.eql([])
+      expect(between([2002], [2001])).to.eql([])
+      expect(between([2003], [2001])).to.eql([[2002]])
+    })
+  })
+
+  describe('until()', () => {
+    function until(a, b) {
+      return [...new Date(a).until(new Date(b))].map(d => d.values)
+    }
+
+    it('YYYY', () => {
+      expect(until([2001], [2002])).to.eql([[2001], [2002]])
+      expect(until([2001], [2001])).to.eql([[2001]])
+      expect(until([2002], [2001])).to.eql([[2002], [2001]])
+      expect(until([2003], [2001])).to.eql([[2003], [2002], [2001]])
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Date().edtf)

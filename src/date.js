@@ -183,9 +183,48 @@ class ExtDate extends Date {
   next(k = 1) {
     let { values, unspecified, uncertain, approximate } = this
 
+    values = values.slice(0, 3)
     values.push(values.pop() + k)
 
     return new ExtDate({ values, unspecified, uncertain, approximate })
+  }
+
+  prev(k = 1) {
+    return this.next(-k)
+  }
+
+  *until(then) {
+    yield this
+
+    if (!this.compare(then)) return
+
+    yield* this.between(then)
+    yield then
+  }
+
+  *between(then) {
+    let cur = this
+    let dir = this.compare(then)
+
+    for (;;) {
+      cur = cur.next(-dir)
+      dir = cur.compare(then)
+
+      if (!dir) break
+      yield cur
+    }
+  }
+
+  compare(other) {
+    let [a, x, b, y] = [this.min, this.max, other.min, other.max]
+
+    if (a !== b)
+      return a < b ? -1 : 1
+
+    if (x !== y)
+      return x < y ? -1 : 1
+
+    return 0
   }
 
   toEDTF() {
