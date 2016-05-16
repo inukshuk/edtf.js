@@ -1,6 +1,7 @@
 'use strict'
 
 const assert = require('assert')
+const ExtDate = require('./date')
 const { parse } = require('./parser')
 const { isArray } = Array
 
@@ -37,7 +38,10 @@ class List {
           if (obj.type) assert.equal(this.type, obj.type)
 
           assert(obj.values)
-          this.concat(obj.values)
+          this.concat(...obj.values)
+
+          this.earlier = !!obj.earlier
+          this.later = !!obj.later
         }
         break
 
@@ -71,6 +75,24 @@ class List {
     return this.values[this.length - 1] // todo consecutives
   }
 
+  clear() {
+    return (this.values.length = 0), this
+  }
+
+  concat(...args) {
+    for (let value of args) this.push(value)
+    return this
+  }
+
+  push(value) {
+    if (isArray(value)) {
+      assert.equal(2, value.length)
+      return this.values.push(value.map(ExtDate.from))
+    }
+
+    return this.values.push(ExtDate.from(value))
+  }
+
   *[Symbol.iterator]() {
     for (let value of this.values) {
       if (isArray(value))
@@ -78,10 +100,6 @@ class List {
       else
         yield value
     }
-  }
-
-  entries() {
-    return Array.from(this[Symbol.iterator]())
   }
 
   get edtf() {
@@ -96,17 +114,18 @@ class List {
     return this.later ? Infinity : this.empty ? 0 : this.last.max
   }
 
-  toEDTF() {
-    return this.wrap(
-      this.values.map(v =>
-        isArray(v) ? v.map(d => d.edtf).join('..') : v.edtf)
-    )
+  content() {
+    return this
+      .values
+      .map(v => isArray(v) ? v.map(d => d.edtf).join('..') : v.edtf)
+      .join(',')
   }
 
-  wrap(values) {
-    return `{${values.join(',')}}`
+  toEDTF() {
+    return this.empty ? '{}' : [
+      this.earlier ? '{..' : '{', this.content(), this.later ? '..}' : '}'
+    ].join('')
   }
 }
 
 module.exports = List
-
