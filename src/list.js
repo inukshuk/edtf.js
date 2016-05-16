@@ -68,11 +68,13 @@ class List {
   }
 
   get first() {
-    return this.values[0] // todo consecutives
+    let value = this.values[0]
+    return isArray(value) ? value[0] : value
   }
 
   get last() {
-    return this.values[this.length - 1] // todo consecutives
+    let value = this.values[this.length - 1]
+    return isArray(value) ? value[0] : value
   }
 
   clear() {
