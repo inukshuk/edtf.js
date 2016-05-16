@@ -16,7 +16,7 @@ class Season {
   }
 
   constructor(input) {
-    V[this] = []
+    V.set(this, [])
 
     switch (typeof input) {
     case 'number':
@@ -75,7 +75,7 @@ class Season {
   }
 
   get values() {
-    return V[this]
+    return V.get(this)
   }
 
   get edtf() {

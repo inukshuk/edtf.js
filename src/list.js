@@ -18,10 +18,7 @@ class List {
   }
 
   constructor(...args) {
-    V[this] = []
-
-    this.earlier = false
-    this.later = false
+    V.set(this, [])
 
     if (args.length > 1) args = [args]
 
@@ -43,9 +40,6 @@ class List {
 
           assert(obj.values)
           this.concat(...obj.values)
-
-          this.earlier = !!obj.earlier
-          this.later = !!obj.later
         }
         break
 
@@ -60,7 +54,7 @@ class List {
   }
 
   get values() {
-    return V[this]
+    return V.get(this)
   }
 
   get length() {
@@ -113,11 +107,11 @@ class List {
   }
 
   get min() {
-    return this.earlier ? -Infinity : this.empty ? 0 : this.first.min
+    return this.empty ? 0 : this.first.min
   }
 
   get max() {
-    return this.later ? Infinity : this.empty ? 0 : this.last.max
+    return this.empty ? 0 : this.last.max
   }
 
   content() {
@@ -128,9 +122,7 @@ class List {
   }
 
   toEDTF() {
-    return this.empty ? '{}' : [
-      this.earlier ? '{..' : '{', this.content(), this.later ? '..}' : '}'
-    ].join('')
+    return `{${this.content()}}`
   }
 }
 

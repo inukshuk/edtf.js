@@ -99,35 +99,35 @@ class ExtDate extends Date {
 
 
   set precision(value) {
-    P[this] = Number(value) % 4
+    P.set(this, Number(value) % 4)
   }
 
   get precision() {
-    return P[this]
+    return P.get(this)
   }
 
   set uncertain(value) {
-    U[this] = new Bitmask(value)
+    U.set(this, new Bitmask(value))
   }
 
   get uncertain() {
-    return U[this]
+    return U.get(this)
   }
 
   set approximate(value) {
-    A[this] = new Bitmask(value)
+    A.set(this, new Bitmask(value))
   }
 
   get approximate() {
-    return A[this]
+    return A.get(this)
   }
 
   set unspecified(value) {
-    X[this] = new Bitmask(value)
+    X.set(this, new Bitmask(value))
   }
 
   get unspecified() {
-    return X[this]
+    return X.get(this)
   }
 
   get type() {

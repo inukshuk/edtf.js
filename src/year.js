@@ -14,7 +14,7 @@ class Year {
   }
 
   constructor(input) {
-    V[this] = []
+    V.set(this, [])
 
     switch (typeof input) {
     case 'number':
@@ -63,15 +63,15 @@ class Year {
   }
 
   get significant() {
-    return S[this]
+    return S.get(this)
   }
 
   set significant(digits) {
-    return S[this] = Number(digits)
+    return S.set(this, Number(digits))
   }
 
   get values() {
-    return V[this]
+    return V.get(this)
   }
 
   get edtf() {

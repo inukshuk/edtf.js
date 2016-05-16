@@ -16,7 +16,7 @@ class Interval {
   }
 
   constructor(...args) {
-    V[this] = [null, null]
+    V.set(this, [null, null])
 
     switch (args.length) {
     case 2:
@@ -81,7 +81,7 @@ class Interval {
   }
 
   get values() {
-    return V[this]
+    return V.get(this)
   }
 
   get earlier() {

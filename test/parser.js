@@ -512,6 +512,9 @@ describe('parser', () => {
       expect(p('{1960 ,  1961-12}'))
         .to.be.a.list.at.level(2)
         .from([1960]).until([1961, 11]))
+
+    it('{YYYY..}', () =>
+      expect(() => p('{1760..}')).to.be.rejected)
   })
 
   describe('constrain', () => {

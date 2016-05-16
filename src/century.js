@@ -16,7 +16,7 @@ class Century {
   }
 
   constructor(input) {
-    V[this] = []
+    V.set(this, [])
 
     this.uncertain = false
     this.approximate = false
@@ -79,7 +79,7 @@ class Century {
   }
 
   get values() {
-    return V[this]
+    return V.get(this)
   }
 
   get edtf() {
