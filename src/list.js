@@ -13,6 +13,10 @@ class List {
     return parse(input, { types: ['List'] })
   }
 
+  static from(input) {
+    return (input instanceof this) ? input : new this(input)
+  }
+
   constructor(...args) {
     V[this] = []
 

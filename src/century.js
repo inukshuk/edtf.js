@@ -11,6 +11,10 @@ class Century {
     return parse(input, { types: ['Century'] })
   }
 
+  static from(input) {
+    return (input instanceof Century) ? input : new Century(input)
+  }
+
   constructor(input) {
     V[this] = []
 

@@ -11,6 +11,10 @@ class Interval {
     return parse(input, { types: ['Interval'] })
   }
 
+  static from(input) {
+    return (input instanceof Interval) ? input : new Interval(input)
+  }
+
   constructor(...args) {
     V[this] = [null, null]
 

@@ -19,8 +19,8 @@ function edtf(...args) {
   if (!args.length)
     return new ExtDate()
 
-  if (args.length === 1 && typeof args[0] === 'object' && args[0].type)
-    return new edtf[args[0].type](args[0])
+  if (args.length === 1 && typeof args[0] === 'object')
+    return new (edtf[args[0].type] || ExtDate)(args[0])
 
   const res = parse(...args)
   return new edtf[res.type](res)
