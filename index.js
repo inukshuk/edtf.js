@@ -7,6 +7,7 @@ const Century = require('./src/century')
 const Season = require('./src/season')
 const Interval = require('./src/interval')
 const List = require('./src/list')
+const Set = require('./src/set')
 const Bitmask = require('./src/bitmask')
 const types = require('./src/types')
 
@@ -34,6 +35,7 @@ module.exports = Object.assign(edtf, {
   Season,
   Interval,
   List,
+  Set,
   Bitmask,
   parse,
   sample,
