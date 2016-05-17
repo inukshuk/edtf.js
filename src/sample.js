@@ -27,7 +27,7 @@ const NAMES = [
 
 module.exports = {
 
-  *sample({ count, level, type }) {
+  *sample({ count, level, type } = {}) {
     let name = 'edtf'
 
     if (typeof count !== 'number')
@@ -84,6 +84,8 @@ module.exports = {
       }
     }
 
-    return output.join('')
+    return output
+      .join('')
+      .replace(/ +/g, '') // filter excessive whitespace
   }
 }

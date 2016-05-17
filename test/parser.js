@@ -543,5 +543,10 @@ describe('parser', () => {
         .to.be.rejected
     })
   })
+
+  describe('rejects', () => {
+    it('empty string', () => expect(() => p('')).to.be.rejected)
+    it('-', () => expect(() => p('-')).to.be.rejected)
+  })
 })
 
