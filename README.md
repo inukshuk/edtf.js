@@ -12,26 +12,70 @@ date/time hackers and enthusiasts.
 
 ### EDFT / ISO 8601-2
 EDTF.js fully implements [EDTF](http://www.loc.gov/standards/datetime)
-levels 0, 1, and 2 as specified by WD 2016-02-16 of ISO 8601-2.
+levels 0, 1, and 2 as specified by WD 2016-02-16 of ISO 8601-2 with
+the following exceptions (as raised by the EDTF community):
+
+1. Symbols for unknown and open dates in intervals have been switched:
+   `*` makes more sense to represent an open date because it is often
+   used as a wildcard to match "all" or "everything". Also, when an
+   interval is blank, it suggessts "incomplete" or "unknown".
+
+2. "Before or after" is redundant and has been removed. It is covered
+   by "One of a Set", e.g., `[1760-12..]` which means "December 1760
+   or some later month".
+
+### ES6
+EDTF.js is written in ES6 and therefore requires Node.js 6+ or a modern
+browser. For Node.js 4/5 use the appropriate `--harmony` flags as necessary.
+
 
 ## Installation
 
-### Node.js
-
     $ npm install edtf
 
-EDTF.js is written in ES6 and therefore requires Node.js 6+. You should
-be able to use it in Node 4 or 5 when setting the appropriate
-`--harmony` flags or by using your favourite transpiler.
 
-### Browser
-EDTF.js was written for Node.js. While we don't currently provide a
-browser package, it should be easily possible to create one using
-browserify or similar tools.
+## Manual
 
-## Parser
+EDTF.js exports a top-level function which takes either a string
+(with optional parser constraints), a parse result, a regular or any
+of the extended date objects and returns a new, extended date object
+as appropriate.
 
-## Generator
+    const edtf = require('edtf')
+
+    edtf('2016-XX')          #-> returns an edtf.Date
+    edtf(new Date())         #-> returns an edtf.Date
+    edtf('2016-04~/2016-05') #-> returns an edtf.Interval
+
+For a list of all types supported by EDTF.js see:
+
+    edtf.types
+    #-> ['Date', 'Year', 'Decade', 'Century', 'Season', 'Interval', 'List', 'Set']
+
+Each type provides at least the following properties: the date's
+corresponding EDTF string, its minimal and maximal numeric value,
+its type, as well as its date part values.
+
+    edtf('2016?').edtf         #-> '2016?'
+
+    edtf('2016-02').min        #-> 1454284800000, i.e. 2016-02-01T00:00:00Z
+    edtf('2016-02').max        #-> 1456790399999, i.e. 2016-02-29T23:59:59Z
+
+    edtf('2016-02-2X').min     #-> 1455926400000, i.e. 2016-02-20T00:00:00Z
+    edtf('2016-02-2X').max     #-> 1456790399999, i.e. 2016-02-29T23:59:59Z
+
+    edtf('[..2016,2017]').min  #-> -Infinity
+    edtf('[..2016,2017]').max  #-> 1514764799999, i.e. 2017-12-31T23:59:59Z
+
+    edtf('2016?-02').values    #-> [2016, 1]
+    edtf('2016-05').values     #-> [2016, 4]
+
+See below, for more advanced features of each individual extended
+date type.
+
+### Parser
+
+### Generator
 
 ## API
 
@@ -43,5 +87,4 @@ The EDTF.js generator uses the ingenious
 [randexp](https://github.com/fent/randexp.js).
 
 ## License
-
 AGPL-3.0

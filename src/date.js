@@ -252,7 +252,7 @@ class ExtDate extends Date {
   }
 
   [Symbol.toPrimitive](hint) {
-    return (hint === 'number') ? this.valueOf() : this.toISOString()
+    return (hint === 'number') ? this.valueOf() : this.toEDTF()
   }
 
   static pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
@@ -274,7 +274,11 @@ class ExtDate extends Date {
 
 }
 
-ExtDate.prototype.toJSON = ExtDate.prototype.toEDTF
+Object.assign(ExtDate.prototype, {
+  toJSON: ExtDate.prototype.toEDTF,
+  toString: ExtDate.prototype.toEDTF,
+  inspect: ExtDate.prototype.toEDTF
+})
 
 function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
