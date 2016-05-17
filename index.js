@@ -1,44 +1,28 @@
 'use strict'
 
-const ExtDate = require('./src/date')
-const Year = require('./src/year')
-const Decade = require('./src/decade')
-const Century = require('./src/century')
-const Season = require('./src/season')
-const Interval = require('./src/interval')
-const List = require('./src/list')
-const Set = require('./src/set')
 const Bitmask = require('./src/bitmask')
 const types = require('./src/types')
 
-const { sample, gen } = require('./src/sample')
+const { sample } = require('./src/sample')
 const { parse } = require('./src/parser')
 
+const { assign, keys } = Object
 
 function edtf(...args) {
   if (!args.length)
-    return new ExtDate()
+    return new edtf.Date()
 
   if (args.length === 1 && typeof args[0] === 'object')
-    return new (edtf[args[0].type] || ExtDate)(args[0])
+    return new (edtf[args[0].type] || edtf.Date)(args[0])
 
   const res = parse(...args)
   return new edtf[res.type](res)
 }
 
 
-module.exports = Object.assign(edtf, {
-  Date: ExtDate,
-  Year,
-  Decade,
-  Century,
-  Season,
-  Interval,
-  List,
-  Set,
+module.exports = assign(edtf, types, {
   Bitmask,
   parse,
   sample,
-  gen,
-  types
+  types: keys(types)
 })

@@ -1,15 +1,11 @@
 'use strict'
 
-const { gen, sample, parse: p } = require('..')
+const { sample, parse: p } = require('..')
 
 describe('sample', () => {
 
   it('iterator', () => {
-    expect(Array.from(sample({ count: 5 }))).to.have.length(5)
-  })
-
-  it('dates', () => {
-    expect(p(gen('date'))).to.have.type('Date')
+    expect([...sample({ count: 5 })]).to.have.length(5)
   })
 
   describe('constraints', () => {

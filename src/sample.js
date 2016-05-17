@@ -8,8 +8,9 @@
 
 const assert = require('assert')
 const randexp = require('randexp')
+
+const types = Object.keys(require('./types'))
 const { ParserRules: Rules } = require('./grammar')
-const types = require('./types')
 
 const NAMES = [
   {
