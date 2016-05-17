@@ -11,6 +11,7 @@ const randexp = require('randexp')
 
 const types = Object.keys(require('./types'))
 const { ParserRules: Rules } = require('./grammar')
+const { floor, random } = Math
 
 const NAMES = [
   {
@@ -62,7 +63,7 @@ module.exports = {
 
         if (rules.length > 0) {
           let sample = rules[
-            Math.floor(Math.random() * rules.length)
+            floor(random() * rules.length)
           ]
 
           for (let j = sample.symbols.length - 1; j >= 0; --j)
