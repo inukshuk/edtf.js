@@ -30,4 +30,12 @@ describe('edtf', () => {
       .and.produce([2016])
       .and.not.equal(a)
   })
+
+  it('roundtrips', () => {
+    for (let string of [
+      '2016', '2016-05', '2016-05-31', '2016?', '2016-05?',
+      '2016-05-31?', '2016~-05?', '2016-~05'
+
+    ]) expect(edtf(string).edtf).to.eql(string)
+  })
 })

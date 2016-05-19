@@ -12,6 +12,7 @@ const U = new WeakMap()
 const A = new WeakMap()
 const X = new WeakMap()
 
+const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
 class ExtDate extends Date {
 
@@ -107,7 +108,7 @@ class ExtDate extends Date {
   }
 
   set uncertain(value) {
-    U.set(this, new Bitmask(value))
+    U.set(this, this.bits(value))
   }
 
   get uncertain() {
@@ -115,7 +116,7 @@ class ExtDate extends Date {
   }
 
   set approximate(value) {
-    A.set(this, new Bitmask(value))
+    A.set(this, this.bits(value))
   }
 
   get approximate() {
@@ -123,7 +124,7 @@ class ExtDate extends Date {
   }
 
   set unspecified(value) {
-    X.set(this, new Bitmask(value))
+    X.set(this, this.bits(value))
   }
 
   get unspecified() {
@@ -272,6 +273,12 @@ class ExtDate extends Date {
     return (number < 10) ? `0${number}` : `${number}`
   }
 
+  bits(value) {
+    if (value === true)
+      value = PM[this.precision]
+
+    return new Bitmask(value)
+  }
 }
 
 Object.assign(ExtDate.prototype, {
@@ -279,6 +286,8 @@ Object.assign(ExtDate.prototype, {
   toString: ExtDate.prototype.toEDTF,
   inspect: ExtDate.prototype.toEDTF
 })
+
+
 
 function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
