@@ -124,7 +124,7 @@ class ExtDate extends Date {
   }
 
   set unspecified(value) {
-    X.set(this, this.bits(value))
+    X.set(this, new Bitmask(value))
   }
 
   get unspecified() {
@@ -140,10 +140,19 @@ class ExtDate extends Date {
   }
 
   get min() {
+    // todo uncertain and approximate
     return this.getTime()
   }
 
-  get max() { // todo
+  get max() {
+    //if (this.unspecified.value) {
+    //}
+
+    // todo uncertain and approximate
+
+    if (this.precision)
+      return this.next().getTime() - 1
+
     return this.getTime()
   }
 
@@ -186,6 +195,11 @@ class ExtDate extends Date {
     }
   }
 
+  /**
+   * Returns the next day, month, or year, depending on
+   * the current date's precision. Uncertain, approximate
+   * and unspecified masks are copied.
+   */
   next(k = 1) {
     let { values, unspecified, uncertain, approximate } = this
 

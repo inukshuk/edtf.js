@@ -91,6 +91,32 @@ describe('Date', () => {
     })
   })
 
+  describe('max', () => {
+    it('full precision', () => {
+      let date = new Date()
+      expect(date.max).to.eql(date.min)
+    })
+
+    it('YYYY', () => {
+      expect(new Date([2016]).max)
+        .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+    })
+
+    it('YYYY-MM', () => {
+      expect(new Date([2016, 1]).max)
+        .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
+      expect(new Date([2017, 1]).max)
+        .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
+      expect(new Date([2016, 7]).max)
+        .to.eql(global.Date.UTC(2016, 7, 31, 23, 59, 59, 999))
+    })
+
+    it('YYYY-MM-DD', () => {
+      expect(new Date([2016, 1, 1]).max)
+        .to.eql(global.Date.UTC(2016, 1, 1, 23, 59, 59, 999))
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Date().edtf)
