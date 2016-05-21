@@ -154,8 +154,7 @@ class ExtDate extends Date {
     // TODO unspecified
     // TODO uncertain and approximate
 
-    if (this.precision)
-      return this.next().getTime() - 1
+    if (this.precision) return this.next() - 1
 
     return this.getTime()
   }
@@ -200,14 +199,14 @@ class ExtDate extends Date {
   }
 
   /**
-   * Returns the next day, month, or year, depending on
-   * the current date's precision. Uncertain, approximate
-   * and unspecified masks are copied.
+   * Returns the next second, day, month, or year, depending on
+   * the current date's precision. Uncertain, approximate and
+   * unspecified masks are copied.
    */
   next(k = 1) {
     let { values, unspecified, uncertain, approximate } = this
 
-    values = values.slice(0, 3)
+    // values = values.slice(0, 3)
     values.push(values.pop() + k)
 
     return new ExtDate({ values, unspecified, uncertain, approximate })
@@ -239,8 +238,29 @@ class ExtDate extends Date {
     }
   }
 
-  includes(other) {
+  *[Symbol.iterator]() {
+    let cur = this
+
+    while (cur <= this.max) {
+      yield cur
+      cur = cur.next()
+    }
+  }
+
+  covers(other) {
     return (this.min <= other.min) && (this.max >= other.max)
+  }
+
+  includes(other) {
+    if (!this.covers(other)) return false
+
+    const it = this[Symbol.iterator]()
+
+    while (!it.done) {
+      if (it.next() == other) return true // eslint-disable-line eqeqeq
+    }
+
+    return false
   }
 
   compare(other) {
@@ -306,8 +326,7 @@ class ExtDate extends Date {
 Object.assign(ExtDate.prototype, {
   toJSON: ExtDate.prototype.toEDTF,
   toString: ExtDate.prototype.toEDTF,
-  inspect: ExtDate.prototype.toEDTF,
-  covers: ExtDate.prototype.includes
+  inspect: ExtDate.prototype.toEDTF
 })
 
 

@@ -106,6 +106,16 @@ class Interval {
     this.values[1] =  value
   }
 
+  get finite() {
+    return (this.lower != null && this.lower !== Infinity) &&
+      (this.upper != null && this.upper !== Infinity)
+  }
+
+  *[Symbol.iterator]() {
+    if (!this.finite) return
+    yield* this.lower.until(this.upper)
+  }
+
   get values() {
     return V.get(this)
   }
