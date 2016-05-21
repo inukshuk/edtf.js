@@ -140,15 +140,14 @@ class ExtDate extends Date {
   }
 
   get min() {
-    // todo uncertain and approximate
+    // TODO uncertain and approximate
+
     return this.getTime()
   }
 
   get max() {
-    //if (this.unspecified.value) {
-    //}
-
-    // todo uncertain and approximate
+    // TODO unspecified
+    // TODO uncertain and approximate
 
     if (this.precision)
       return this.next().getTime() - 1
