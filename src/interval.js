@@ -1,6 +1,7 @@
 'use strict'
 
 const assert = require('assert')
+const ExtDate = require('./date')
 const { parse } = require('./parser')
 
 const V = new WeakMap()
@@ -43,6 +44,9 @@ class Interval {
           assert(obj.values.length < 3)
 
           ;[this.lower, this.upper] = obj.values
+
+          this.earlier = obj.earlier
+          this.later = obj.later
         }
         break
 
@@ -69,7 +73,7 @@ class Interval {
   }
 
   set lower(value) {
-    this.values[0] = value // todo
+    this.values[0] = ExtDate.from(value)
   }
 
   get upper() {
@@ -77,17 +81,11 @@ class Interval {
   }
 
   set upper(value) {
-    this.values[1] = value // todo
+    this.values[1] = ExtDate.from(value)
   }
 
   get values() {
     return V.get(this)
-  }
-
-  get earlier() {
-  }
-
-  get later() {
   }
 
   get edtf() {
@@ -95,11 +93,13 @@ class Interval {
   }
 
   get min() {
-    return this.lower.min
+    let v = this.lower
+    return !v ? null : (v === Infinity) ? -Infinity : v.min
   }
 
   get max() {
-    return this.upper.max
+    let v = this.upper
+    return !v ? null : (v === Infinity) ? Infinity : v.max
   }
 
   toEDTF() {
@@ -112,5 +112,8 @@ class Interval {
       .join('/')
   }
 }
+
+Interval.prototype.includes = ExtDate.prototype.includes
+Interval.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Interval
