@@ -88,11 +88,11 @@ class Century {
   }
 
   get min() {
-    return Date.UTC(this.year, 0)
+    return ExtDate.UTC(this.year, 0)
   }
 
   get max() {
-    return Date.UTC(this.year + 100, 0) - 1
+    return ExtDate.UTC(this.year + 100, 0) - 1
   }
 
   toEDTF() {

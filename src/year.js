@@ -1,8 +1,9 @@
 'use strict'
 
 const assert = require('assert')
+const ExtDate = require('./date')
 const { parse } = require('./parser')
-const { pad } = require('./date')
+const { pad } = ExtDate
 const { abs } = Math
 
 const V = new WeakMap()
@@ -79,11 +80,11 @@ class Year {
   }
 
   get min() {
-    return Date.UTC(this.year, 0)
+    return ExtDate.UTC(this.year, 0)
   }
 
   get max() {
-    return Date.UTC(this.year, 11, 31, 24, 0, 0)
+    return ExtDate.UTC(this.year + 1, 0) - 1
   }
 
   toEDTF() {
@@ -97,5 +98,8 @@ class Year {
     return `Y${this.year}${s}`
   }
 }
+
+Year.prototype.includes = ExtDate.prototype.includes
+Year.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Year

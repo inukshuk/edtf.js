@@ -84,7 +84,6 @@ class Season {
   }
 
   // TODO next/prev
-  // TODO min/max handle negative years
 
   get min() { // eslint-disable-line complexity
     switch (this.season) {
@@ -94,35 +93,35 @@ class Season {
     case 33:
     case 40:
     case 37:
-      return Date.UTC(this.year, 0)
+      return ExtDate.UTC(this.year, 0)
 
     case 22:
     case 26:
     case 31:
     case 34:
-      return Date.UTC(this.year, 3)
+      return ExtDate.UTC(this.year, 3)
 
     case 23:
     case 27:
     case 30:
     case 35:
     case 41:
-      return Date.UTC(this.year, 6)
+      return ExtDate.UTC(this.year, 6)
 
     case 24:
     case 28:
     case 29:
     case 36:
-      return Date.UTC(this.year, 9)
+      return ExtDate.UTC(this.year, 9)
 
     case 38:
-      return Date.UTC(this.year, 4)
+      return ExtDate.UTC(this.year, 4)
 
     case 39:
-      return Date.UTC(this.year, 8)
+      return ExtDate.UTC(this.year, 8)
 
     default:
-      return Date.UTC(this.year, 0)
+      return ExtDate.UTC(this.year, 0)
     }
   }
 
@@ -132,20 +131,20 @@ class Season {
     case 25:
     case 32:
     case 33:
-      return Date.UTC(this.year, 3) - 1
+      return ExtDate.UTC(this.year, 3) - 1
 
     case 22:
     case 26:
     case 31:
     case 34:
     case 40:
-      return Date.UTC(this.year, 6) - 1
+      return ExtDate.UTC(this.year, 6) - 1
 
     case 23:
     case 27:
     case 30:
     case 35:
-      return Date.UTC(this.year, 9) - 1
+      return ExtDate.UTC(this.year, 9) - 1
 
     case 24:
     case 28:
@@ -153,16 +152,16 @@ class Season {
     case 36:
     case 41:
     case 39:
-      return Date.UTC(this.year + 1, 0) - 1
+      return ExtDate.UTC(this.year + 1, 0) - 1
 
     case 37:
-      return Date.UTC(this.year, 5) - 1
+      return ExtDate.UTC(this.year, 5) - 1
 
     case 38:
-      return Date.UTC(this.year, 9) - 1
+      return ExtDate.UTC(this.year, 9) - 1
 
     default:
-      return Date.UTC(this.year + 1, 0) - 1
+      return ExtDate.UTC(this.year + 1, 0) - 1
     }
   }
 

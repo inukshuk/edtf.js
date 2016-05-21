@@ -4,6 +4,18 @@ const { Year } = require('..')
 
 describe('Year', () => {
 
+  describe('bounds', () => {
+    it('min', () => {
+      expect(new Year(-1).min)
+        .to.eql(Date.UTC(-1, 0, 1, 0, 0, 0, 0))
+    })
+
+    it('max', () => {
+      expect(new Year(-1).max)
+        .to.eql(Date.UTC(-1, 11, 31, 23, 59, 59, 999))
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Year().edtf).to.match(/^\d\d\d\d$/))

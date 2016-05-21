@@ -24,6 +24,16 @@ class ExtDate extends Date {
     return (input instanceof ExtDate) ? input : new ExtDate(input)
   }
 
+  static UTC(...args) {
+    let time = Date.UTC(...args)
+
+    // ECMA Date constructor converts 0-99 to 1900-1999!
+    if (args[0] >= 0 && args[0] < 100)
+      time = adj(new Date(time))
+
+    return time
+  }
+
   constructor(...args) { // eslint-disable-line complexity
     let precision = 0
     let uncertain, approximate, unspecified
@@ -67,12 +77,7 @@ class ExtDate extends Date {
               args[4] = args[4] + obj.offset
             }
 
-            args = [Date.UTC(...args)]
-
-            // ECMA Date constructor converts 0-99 to 1900-1999!
-            if (obj.values[0] >= 0 && obj.values[0] < 100)
-              args[0] = adj(new Date(args[0]))
-
+            args = [ExtDate.UTC(...args)]
           }
 
           ({ uncertain, approximate, unspecified } = obj)
