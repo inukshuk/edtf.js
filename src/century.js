@@ -1,6 +1,7 @@
 'use strict'
 
 const assert = require('assert')
+const ExtDate = require('./date')
 const { parse } = require('./parser')
 const { abs, floor } = Math
 
@@ -115,5 +116,8 @@ class Century {
     return `${number}`
   }
 }
+
+Century.prototype.includes = ExtDate.prototype.includes
+Century.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Century
