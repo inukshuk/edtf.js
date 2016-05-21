@@ -254,10 +254,8 @@ class ExtDate extends Date {
   includes(other) {
     if (!this.covers(other)) return false
 
-    const it = this[Symbol.iterator]()
-
-    while (!it.done) {
-      if (it.next() == other) return true // eslint-disable-line eqeqeq
+    for (let cur of this) {
+      if (cur.edtf === other.edtf) return true
     }
 
     return false
