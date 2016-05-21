@@ -92,7 +92,7 @@ class Decade {
   }
 
   get max() {
-    return Date.UTC(this.year + 9, 11, 31, 24, 0, 0)
+    return Date.UTC(this.year + 9, 11, 31, 23, 59, 59, 999)
   }
 
   toEDTF() {

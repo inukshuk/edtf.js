@@ -4,6 +4,18 @@ const { Decade } = require('..')
 
 describe('Decade', () => {
 
+  describe('bounds', () => {
+    it('min', () => {
+      expect(new Decade(199).min)
+        .to.eql(Date.UTC(1990, 0, 1, 0, 0, 0, 0))
+    })
+
+    it('max', () => {
+      expect(new Decade(199).max)
+        .to.eql(Date.UTC(1999, 11, 31, 23, 59, 59, 999))
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Decade().edtf).to.match(/^\d\d\d$/))
