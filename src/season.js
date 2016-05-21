@@ -83,6 +83,9 @@ class Season {
     return this.toEDTF()
   }
 
+  // TODO next/prev
+  // TODO min/max handle negative years
+
   get min() { // eslint-disable-line complexity
     switch (this.season) {
     case 21:
