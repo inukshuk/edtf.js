@@ -70,10 +70,66 @@ its type, as well as its date part values.
     edtf('2016?-02').values    #-> [2016, 1]
     edtf('2016-05').values     #-> [2016, 4]
 
-See below, for more advanced features of each individual extended
-date type.
+A date's `min` value is also used as its primitive value for numeric
+coercion. Because this is the case for all EDTF.js classes, comparison
+semantics tend to align well with common-sense expectations -- but be
+careful, as always when type coercion is at play.
+
 
 ### Parser
+
+To use EDTF.js' date parser directly, call `edtf.parse()` with an input
+string and optional parser constraints. The parser will always return
+plain JavaScript objects which you can pass to `edtf()` for conversion
+to extended date object, or to your own post-processing.
+
+    edtf.parse('2016-02')
+    #-> { type: 'Date', level: 0, values: [2016, 1] }
+
+As you can see, the parser output includes the compatibility level of
+the date parsed; the values array contains the individual date parts
+in a format compatible with JavaScript's Date semantics (months are
+a zero-based index).
+
+Unspecified, uncertain, or approximate dates are returned as a numeric
+value representing a bitmask; refer to the `edtf.Bitmask` for details.
+
+    edtf.parse('2016?-~02')
+    #-> { type: 'Date', level: 2, values: [2016, 1], uncertain: 15, approximate: 48 }
+
+    edtf.parse('20XX-02')
+    #-> { type: 'Date', level: 2, values: [2000, 1], unspecified: 12 }
+
+Note that unspecified date values will always the least possible value,
+e.g., '2000' for '20XX'. Note, also, that EDTF.js will not parse impossible
+unspecified dates. For instance, none of the following examples are
+can be valid dates:
+
+    edtf.parse('2016-02-3X') #-> A day in February cannot start with a 3
+    edtf.parse('2016-2X-XX') #-> There are only 12 months
+    edtf.parse('2016-XX-32') #-> No month has 32 days
+
+Intervals, Sets, and Lists will contain their parsed constiutent dates in
+the values array:
+
+    edtf.parse('2015/2016')
+    #-> { type: 'Interval', level: 0, values: [{..}, {..}] }
+
+By passing `level` or `types` constraints to the parser, you can ensure
+EDTF.js will accept only dates supported by your application.
+
+    edtf.parse('2016?', { level: 0 }) #-> parse error
+    edtf.parse('2016?', { level: 1 }) #-> ok
+
+    edtf.parse('2016?-02', { level: 1 }) #-> parse error
+    edtf.parse('2016?-02', { level: 2 }) #-> ok
+
+    edtf.parse('2016-21', { types: ['Date'] })           #-> parse error
+    edtf.parse('2016-21', { types: ['Date', 'Season'] }) #-> ok
+
+
+    edtf.parse('2016?', { level: 0, types: ['Date'] })   #-> parse error
+    edtf.parse('2016?', { level: 1, types: ['Date'] })   #-> ok
 
 ### Generator
 
@@ -103,7 +159,7 @@ You can also generate strings at a given compatibility level:
     #-> ['Y1E30', '-8110S2', '{%0401}']
 
 Note that some grammar rules at levels 1 and 2 may, potentially,
-generate strings at a lower level (but not higher).
+generate strings at a lower level (but never higher).
 
 Finally, at each level you can also limit the generated strings
 to a given type (you must specify a level for this to work):

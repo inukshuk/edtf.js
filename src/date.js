@@ -234,6 +234,10 @@ class ExtDate extends Date {
     }
   }
 
+  includes(other) {
+    return (this.min <= other.min) && (this.max >= other.max)
+  }
+
   compare(other) {
     let [a, x, b, y] = [this.min, this.max, other.min, other.max]
 
@@ -297,7 +301,8 @@ class ExtDate extends Date {
 Object.assign(ExtDate.prototype, {
   toJSON: ExtDate.prototype.toEDTF,
   toString: ExtDate.prototype.toEDTF,
-  inspect: ExtDate.prototype.toEDTF
+  inspect: ExtDate.prototype.toEDTF,
+  covers: ExtDate.prototype.includes
 })
 
 
