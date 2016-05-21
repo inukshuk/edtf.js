@@ -73,7 +73,18 @@ class Interval {
   }
 
   set lower(value) {
-    this.values[0] = ExtDate.from(value)
+    if (value == null)
+      return this.values[1] = null
+
+    if (value === Infinity || value === -Infinity)
+      return this.values[1] = Infinity
+
+    value = ExtDate.from(value)
+
+    if (value >= this.upper && this.upper != null)
+      throw new RangeError(`invalid lower bound: ${value}`)
+
+    this.values[0] = value
   }
 
   get upper() {
@@ -81,7 +92,18 @@ class Interval {
   }
 
   set upper(value) {
-    this.values[1] = ExtDate.from(value)
+    if (value == null)
+      return this.values[1] = null
+
+    if (value === Infinity)
+      return this.values[1] = Infinity
+
+    value = ExtDate.from(value)
+
+    if (value <= this.lower)
+      throw new RangeError(`invalid upper bound: ${value}`)
+
+    this.values[1] =  value
   }
 
   get values() {
