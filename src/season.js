@@ -1,8 +1,9 @@
 'use strict'
 
 const assert = require('assert')
+const ExtDate = require('./date')
 const { parse } = require('./parser')
-const { pad } = require('./date')
+const { pad } = ExtDate
 
 const V = new WeakMap()
 
@@ -166,5 +167,8 @@ class Season {
     return `${pad(this.year)}-${this.season}`
   }
 }
+
+Season.prototype.includes = ExtDate.prototype.includes
+Season.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Season
