@@ -92,7 +92,7 @@ in a format compatible with JavaScript's Date semantics (months are
 a zero-based index).
 
 Unspecified, uncertain, or approximate dates are returned as a numeric
-value representing a bitmask; refer to the `edtf.Bitmask` for details.
+value representing a bitmask; refer to the `edtf.Bitmask` class for details.
 
     edtf.parse('2016?-~02')
     #-> { type: 'Date', level: 2, values: [2016, 1], uncertain: 15, approximate: 48 }
@@ -102,8 +102,8 @@ value representing a bitmask; refer to the `edtf.Bitmask` for details.
 
 Note that unspecified date values will always the least possible value,
 e.g., '2000' for '20XX'. Note, also, that EDTF.js will not parse impossible
-unspecified dates. For instance, none of the following examples are
-can be valid dates:
+unspecified dates. For instance, none of the following examples can be
+valid dates:
 
     edtf.parse('2016-02-3X') #-> A day in February cannot start with a 3
     edtf.parse('2016-2X-XX') #-> There are only 12 months
@@ -130,6 +130,7 @@ EDTF.js will accept only dates supported by your application.
 
     edtf.parse('2016?', { level: 0, types: ['Date'] })   #-> parse error
     edtf.parse('2016?', { level: 1, types: ['Date'] })   #-> ok
+
 
 ### Generator
 
