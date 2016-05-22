@@ -4,6 +4,11 @@ const { Date } = require('..')
 
 describe('Date', () => {
 
+  it('type', () => {
+    expect(Date.type).to.eql('Date')
+    expect(new Date().type).to.eql('Date')
+  })
+
   describe('constructor()', () => {
     it('Date', () =>
       expect(new Date(new global.Date(2015, 11)))

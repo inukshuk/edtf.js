@@ -4,6 +4,11 @@ const { Year } = require('..')
 
 describe('Year', () => {
 
+  it('type', () => {
+    expect(Year.type).to.eql('Year')
+    expect(new Year().type).to.eql('Year')
+  })
+
   describe('bounds', () => {
     it('min', () => {
       expect(new Year(-1).min)

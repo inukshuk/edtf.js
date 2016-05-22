@@ -17,14 +17,14 @@ const X = new WeakMap()
 
 const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
-class ExtDate extends Date {
+class Date extends global.Date {
 
   static parse(input) {
     return parse(input, { types: ['Date'] })
   }
 
   static from(input) {
-    return (input instanceof ExtDate) ? input : new ExtDate(input)
+    return (input instanceof Date) ? input : new Date(input)
   }
 
   constructor(...args) { // eslint-disable-line complexity
@@ -41,7 +41,7 @@ class ExtDate extends Date {
         break
 
       case 'string':
-        args = [ExtDate.parse(args[0])]
+        args = [Date.parse(args[0])]
         // eslint-disable-line no-fallthrough
 
       case 'object':
@@ -129,10 +129,6 @@ class ExtDate extends Date {
     return X.get(this)
   }
 
-  get type() {
-    return 'Date'
-  }
-
   get min() {
     // TODO uncertain and approximate
 
@@ -198,7 +194,7 @@ class ExtDate extends Date {
     // values = values.slice(0, 3)
     values.push(values.pop() + k)
 
-    return new ExtDate({ values, unspecified, uncertain, approximate })
+    return new Date({ values, unspecified, uncertain, approximate })
   }
 
   prev(k = 1) {
@@ -250,7 +246,7 @@ class ExtDate extends Date {
   toEDTF() {
     if (!this.precision) return this.toISOString()
 
-    let values = this.values.map(ExtDate.pad)
+    let values = this.values.map(Date.pad)
 
     if (this.unspecified.value)
       return this.unspecified.masks(values).join('-')
@@ -291,6 +287,6 @@ class ExtDate extends Date {
   }
 }
 
-mixin(ExtDate, ExtDateTime)
+mixin(Date, ExtDateTime)
 
-module.exports = ExtDate
+module.exports = Date

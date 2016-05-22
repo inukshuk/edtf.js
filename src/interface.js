@@ -2,6 +2,10 @@
 
 class ExtDateTime {
 
+  static get type() {
+    return this.name
+  }
+
   static UTC(...args) {
     let time = Date.UTC(...args)
 
@@ -10,6 +14,10 @@ class ExtDateTime {
       time = adj(new Date(time))
 
     return time
+  }
+
+  get type() {
+    return this.constructor.type
   }
 
   get edtf() {
