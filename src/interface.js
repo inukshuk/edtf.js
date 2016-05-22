@@ -73,6 +73,17 @@ class ExtDateTime {
     return 0
   }
 
+
+  includes(other) {
+    let covered = this.covers(other)
+    if (!covered || !this[Symbol.iterator]) return covered
+
+    for (let cur of this) {
+      if (cur.edtf === other.edtf) return true
+    }
+
+    return false
+  }
 }
 
 function adj(date, by = 1900) {

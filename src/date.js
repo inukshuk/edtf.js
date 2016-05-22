@@ -222,17 +222,6 @@ class Date extends global.Date {
     }
   }
 
-  includes(other) {
-    if (!this.covers(other)) return false
-
-    for (let cur of this) {
-      if (cur.edtf === other.edtf) return true
-    }
-
-    return false
-  }
-
-
   toEDTF() {
     if (!this.precision) return this.toISOString()
 

@@ -130,6 +130,4 @@ class Interval extends ExtDateTime {
   }
 }
 
-Interval.prototype.includes = ExtDate.prototype.includes
-
 module.exports = Interval
