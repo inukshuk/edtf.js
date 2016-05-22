@@ -2,12 +2,13 @@
 
 const assert = require('assert')
 const ExtDate = require('./date')
+const ExtDateTime = require('./interface')
 const { parse } = require('./parser')
 
 const V = new WeakMap()
 
 
-class Interval {
+class Interval extends ExtDateTime {
   static parse(input) {
     return parse(input, { types: ['Interval'] })
   }
@@ -17,6 +18,8 @@ class Interval {
   }
 
   constructor(...args) {
+    super()
+
     V.set(this, [null, null])
 
     switch (args.length) {
@@ -120,10 +123,6 @@ class Interval {
     return V.get(this)
   }
 
-  get edtf() {
-    return this.toEDTF()
-  }
-
   get min() {
     let v = this.lower
     return !v ? null : (v === Infinity) ? -Infinity : v.min
@@ -146,6 +145,5 @@ class Interval {
 }
 
 Interval.prototype.includes = ExtDate.prototype.includes
-Interval.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Interval

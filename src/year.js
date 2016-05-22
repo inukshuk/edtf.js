@@ -2,6 +2,7 @@
 
 const assert = require('assert')
 const ExtDate = require('./date')
+const ExtDateTime = require('./interface')
 const { parse } = require('./parser')
 const { pad } = ExtDate
 const { abs } = Math
@@ -9,12 +10,14 @@ const { abs } = Math
 const V = new WeakMap()
 const S = new WeakMap()
 
-class Year {
+class Year extends ExtDateTime {
   static parse(input) {
     return parse(input, { types: ['Year'] })
   }
 
   constructor(input) {
+    super()
+
     V.set(this, [])
 
     switch (typeof input) {
@@ -75,16 +78,12 @@ class Year {
     return V.get(this)
   }
 
-  get edtf() {
-    return this.toEDTF()
-  }
-
   get min() {
-    return ExtDate.UTC(this.year, 0)
+    return ExtDateTime.UTC(this.year, 0)
   }
 
   get max() {
-    return ExtDate.UTC(this.year + 1, 0) - 1
+    return ExtDateTime.UTC(this.year + 1, 0) - 1
   }
 
   toEDTF() {
@@ -98,8 +97,5 @@ class Year {
     return `Y${this.year}${s}`
   }
 }
-
-Year.prototype.includes = ExtDate.prototype.includes
-Year.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Year

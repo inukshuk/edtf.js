@@ -2,13 +2,14 @@
 
 const assert = require('assert')
 const ExtDate = require('./date')
+const ExtDateTime = require('./interface')
 const { parse } = require('./parser')
 const { isArray } = Array
 
 const V = new WeakMap()
 
 
-class List {
+class List extends ExtDateTime {
   static parse(input) {
     return parse(input, { types: ['List'] })
   }
@@ -18,6 +19,8 @@ class List {
   }
 
   constructor(...args) {
+    super()
+
     V.set(this, [])
 
     if (args.length > 1) args = [args]
@@ -100,10 +103,6 @@ class List {
       else
         yield value
     }
-  }
-
-  get edtf() {
-    return this.toEDTF()
   }
 
   get min() {

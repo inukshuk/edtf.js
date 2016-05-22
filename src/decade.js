@@ -2,13 +2,14 @@
 
 const assert = require('assert')
 const ExtDate = require('./date')
+const ExtDateTime = require('./interface')
 const { parse } = require('./parser')
 const { abs, floor } = Math
 
 const V = new WeakMap()
 
 
-class Decade {
+class Decade extends ExtDateTime {
   static parse(input) {
     return parse(input, { types: ['Decade'] })
   }
@@ -18,6 +19,8 @@ class Decade {
   }
 
   constructor(input) {
+    super()
+
     V.set(this, [])
 
     this.uncertain = false
@@ -84,10 +87,6 @@ class Decade {
     return V.get(this)
   }
 
-  get edtf() {
-    return this.toEDTF()
-  }
-
   get min() {
     return ExtDate.UTC(this.year, 0)
   }
@@ -118,8 +117,5 @@ class Decade {
     return `${number}`
   }
 }
-
-Decade.prototype.includes = ExtDate.prototype.includes
-Decade.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Decade

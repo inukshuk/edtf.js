@@ -1,13 +1,13 @@
 'use strict'
 
 const assert = require('assert')
-const ExtDate = require('./date')
+const ExtDateTime = require('./interface')
 const { parse } = require('./parser')
-const { pad } = ExtDate
+const { pad } = require('./date')
 
 const V = new WeakMap()
 
-class Season {
+class Season extends ExtDateTime {
   static parse(input) {
     return parse(input, { types: ['Season'] })
   }
@@ -17,6 +17,8 @@ class Season {
   }
 
   constructor(input) {
+    super()
+
     V.set(this, [])
 
     switch (typeof input) {
@@ -79,10 +81,6 @@ class Season {
     return V.get(this)
   }
 
-  get edtf() {
-    return this.toEDTF()
-  }
-
   // TODO next/prev
 
   get min() { // eslint-disable-line complexity
@@ -93,35 +91,35 @@ class Season {
     case 33:
     case 40:
     case 37:
-      return ExtDate.UTC(this.year, 0)
+      return ExtDateTime.UTC(this.year, 0)
 
     case 22:
     case 26:
     case 31:
     case 34:
-      return ExtDate.UTC(this.year, 3)
+      return ExtDateTime.UTC(this.year, 3)
 
     case 23:
     case 27:
     case 30:
     case 35:
     case 41:
-      return ExtDate.UTC(this.year, 6)
+      return ExtDateTime.UTC(this.year, 6)
 
     case 24:
     case 28:
     case 29:
     case 36:
-      return ExtDate.UTC(this.year, 9)
+      return ExtDateTime.UTC(this.year, 9)
 
     case 38:
-      return ExtDate.UTC(this.year, 4)
+      return ExtDateTime.UTC(this.year, 4)
 
     case 39:
-      return ExtDate.UTC(this.year, 8)
+      return ExtDateTime.UTC(this.year, 8)
 
     default:
-      return ExtDate.UTC(this.year, 0)
+      return ExtDateTime.UTC(this.year, 0)
     }
   }
 
@@ -131,20 +129,20 @@ class Season {
     case 25:
     case 32:
     case 33:
-      return ExtDate.UTC(this.year, 3) - 1
+      return ExtDateTime.UTC(this.year, 3) - 1
 
     case 22:
     case 26:
     case 31:
     case 34:
     case 40:
-      return ExtDate.UTC(this.year, 6) - 1
+      return ExtDateTime.UTC(this.year, 6) - 1
 
     case 23:
     case 27:
     case 30:
     case 35:
-      return ExtDate.UTC(this.year, 9) - 1
+      return ExtDateTime.UTC(this.year, 9) - 1
 
     case 24:
     case 28:
@@ -152,16 +150,16 @@ class Season {
     case 36:
     case 41:
     case 39:
-      return ExtDate.UTC(this.year + 1, 0) - 1
+      return ExtDateTime.UTC(this.year + 1, 0) - 1
 
     case 37:
-      return ExtDate.UTC(this.year, 5) - 1
+      return ExtDateTime.UTC(this.year, 5) - 1
 
     case 38:
-      return ExtDate.UTC(this.year, 9) - 1
+      return ExtDateTime.UTC(this.year, 9) - 1
 
     default:
-      return ExtDate.UTC(this.year + 1, 0) - 1
+      return ExtDateTime.UTC(this.year + 1, 0) - 1
     }
   }
 
@@ -169,8 +167,5 @@ class Season {
     return `${pad(this.year)}-${this.season}`
   }
 }
-
-Season.prototype.includes = ExtDate.prototype.includes
-Season.prototype.covers = ExtDate.prototype.covers
 
 module.exports = Season

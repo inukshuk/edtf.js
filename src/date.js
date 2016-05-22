@@ -3,6 +3,9 @@
 const assert = require('assert')
 
 const Bitmask = require('./bitmask')
+const ExtDateTime = require('./interface')
+const mixin = require('./mixin')
+
 const { parse } = require('./parser')
 const { abs } = Math
 const { isArray } = Array
@@ -22,16 +25,6 @@ class ExtDate extends Date {
 
   static from(input) {
     return (input instanceof ExtDate) ? input : new ExtDate(input)
-  }
-
-  static UTC(...args) {
-    let time = Date.UTC(...args)
-
-    // ECMA Date constructor converts 0-99 to 1900-1999!
-    if (args[0] >= 0 && args[0] < 100)
-      time = adj(new Date(time))
-
-    return time
   }
 
   constructor(...args) { // eslint-disable-line complexity
@@ -77,7 +70,7 @@ class ExtDate extends Date {
               args[4] = args[4] + obj.offset
             }
 
-            args = [ExtDate.UTC(...args)]
+            args = [ExtDateTime.UTC(...args)]
           }
 
           ({ uncertain, approximate, unspecified } = obj)
@@ -138,10 +131,6 @@ class ExtDate extends Date {
 
   get type() {
     return 'Date'
-  }
-
-  get edtf() {
-    return this.toEDTF()
   }
 
   get min() {
@@ -247,10 +236,6 @@ class ExtDate extends Date {
     }
   }
 
-  covers(other) {
-    return (this.min <= other.min) && (this.max >= other.max)
-  }
-
   includes(other) {
     if (!this.covers(other)) return false
 
@@ -261,17 +246,6 @@ class ExtDate extends Date {
     return false
   }
 
-  compare(other) {
-    let [a, x, b, y] = [this.min, this.max, other.min, other.max]
-
-    if (a !== b)
-      return a < b ? -1 : 1
-
-    if (x !== y)
-      return x < y ? -1 : 1
-
-    return 0
-  }
 
   toEDTF() {
     if (!this.precision) return this.toISOString()
@@ -290,10 +264,6 @@ class ExtDate extends Date {
     }
 
     return values.join('-')
-  }
-
-  [Symbol.toPrimitive](hint) {
-    return (hint === 'number') ? this.valueOf() : this.toEDTF()
   }
 
   static pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
@@ -321,17 +291,6 @@ class ExtDate extends Date {
   }
 }
 
-Object.assign(ExtDate.prototype, {
-  toJSON: ExtDate.prototype.toEDTF,
-  toString: ExtDate.prototype.toEDTF,
-  inspect: ExtDate.prototype.toEDTF
-})
-
-
-
-function adj(date, by = 1900) {
-  date.setUTCFullYear(date.getUTCFullYear() - by)
-  return date.getTime()
-}
+mixin(ExtDate, ExtDateTime)
 
 module.exports = ExtDate
