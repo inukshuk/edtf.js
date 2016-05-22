@@ -3,21 +3,12 @@
 const assert = require('assert')
 const ExtDate = require('./date')
 const ExtDateTime = require('./interface')
-const { parse } = require('./parser')
 const { isArray } = Array
 
 const V = new WeakMap()
 
 
 class List extends ExtDateTime {
-  static parse(input) {
-    return parse(input, { types: ['List'] })
-  }
-
-  static from(input) {
-    return (input instanceof this) ? input : new this(input)
-  }
-
   constructor(...args) {
     super()
 
@@ -50,10 +41,6 @@ class List extends ExtDateTime {
         throw new RangeError(`invalid ${this.type} value: ${args}`)
       }
     }
-  }
-
-  get type() {
-    return 'List'
   }
 
   get values() {
@@ -90,7 +77,7 @@ class List extends ExtDateTime {
   push(value) {
     if (isArray(value)) {
       assert.equal(2, value.length)
-      return this.values.push(value.map(ExtDate.from))
+      return this.values.push(value.map(v => ExtDate.from(v)))
     }
 
     return this.values.push(ExtDate.from(value))

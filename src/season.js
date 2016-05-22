@@ -2,20 +2,11 @@
 
 const assert = require('assert')
 const ExtDateTime = require('./interface')
-const { parse } = require('./parser')
 const { pad } = require('./date')
 
 const V = new WeakMap()
 
 class Season extends ExtDateTime {
-  static parse(input) {
-    return parse(input, { types: ['Season'] })
-  }
-
-  static from(input) {
-    return (input instanceof Season) ? input : new Season(input)
-  }
-
   constructor(input) {
     super()
 
@@ -55,10 +46,6 @@ class Season extends ExtDateTime {
     default:
       throw new RangeError('Invalid season value')
     }
-  }
-
-  get type() {
-    return 'Season'
   }
 
   get year() {

@@ -4,6 +4,15 @@ const { Interval, Date } = require('..')
 
 describe('Interval', () => {
 
+  it('.type', () => {
+    expect(Interval.type).to.eql('Interval')
+    expect(new Interval().type).to.eql('Interval')
+  })
+
+  it('.from()', () => {
+    expect(Interval.from('2016/2017')).to.be.instanceof(Interval)
+  })
+
   describe('bounds', () => {
     it('min', () => {
       expect(new Interval([2001], [2003]).min)

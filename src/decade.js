@@ -3,21 +3,12 @@
 const assert = require('assert')
 const ExtDate = require('./date')
 const ExtDateTime = require('./interface')
-const { parse } = require('./parser')
 const { abs, floor } = Math
 
 const V = new WeakMap()
 
 
 class Decade extends ExtDateTime {
-  static parse(input) {
-    return parse(input, { types: ['Decade'] })
-  }
-
-  static from(input) {
-    return (input instanceof Decade) ? input : new Decade(input)
-  }
-
   constructor(input) {
     super()
 

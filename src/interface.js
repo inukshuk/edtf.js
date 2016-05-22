@@ -1,9 +1,19 @@
 'use strict'
 
+const { parse } = require('./parser')
+
 class ExtDateTime {
 
   static get type() {
     return this.name
+  }
+
+  static parse(input) {
+    return parse(input, { types: [this.type] })
+  }
+
+  static from(input) {
+    return (input instanceof this) ? input : new this(input)
   }
 
   static UTC(...args) {

@@ -3,20 +3,11 @@
 const assert = require('assert')
 const ExtDate = require('./date')
 const ExtDateTime = require('./interface')
-const { parse } = require('./parser')
 
 const V = new WeakMap()
 
 
 class Interval extends ExtDateTime {
-  static parse(input) {
-    return parse(input, { types: ['Interval'] })
-  }
-
-  static from(input) {
-    return (input instanceof Interval) ? input : new Interval(input)
-  }
-
   constructor(...args) {
     super()
 

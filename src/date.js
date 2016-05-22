@@ -6,7 +6,6 @@ const Bitmask = require('./bitmask')
 const ExtDateTime = require('./interface')
 const mixin = require('./mixin')
 
-const { parse } = require('./parser')
 const { abs } = Math
 const { isArray } = Array
 
@@ -18,15 +17,6 @@ const X = new WeakMap()
 const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
 class Date extends global.Date {
-
-  static parse(input) {
-    return parse(input, { types: ['Date'] })
-  }
-
-  static from(input) {
-    return (input instanceof Date) ? input : new Date(input)
-  }
-
   constructor(...args) { // eslint-disable-line complexity
     let precision = 0
     let uncertain, approximate, unspecified

@@ -4,9 +4,13 @@ const { Date } = require('..')
 
 describe('Date', () => {
 
-  it('type', () => {
+  it('.type', () => {
     expect(Date.type).to.eql('Date')
     expect(new Date().type).to.eql('Date')
+  })
+
+  it('.from()', () => {
+    expect(Date.from('2016')).to.be.instanceof(Date)
   })
 
   describe('constructor()', () => {
