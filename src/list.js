@@ -1,7 +1,7 @@
 'use strict'
 
 const assert = require('assert')
-const ExtDate = require('./date')
+const Date = require('./date')
 const ExtDateTime = require('./interface')
 const { isArray } = Array
 
@@ -77,10 +77,10 @@ class List extends ExtDateTime {
   push(value) {
     if (isArray(value)) {
       assert.equal(2, value.length)
-      return this.values.push(value.map(v => ExtDate.from(v)))
+      return this.values.push(value.map(v => Date.from(v)))
     }
 
-    return this.values.push(ExtDate.from(value))
+    return this.values.push(Date.from(value))
   }
 
   *[Symbol.iterator]() {
