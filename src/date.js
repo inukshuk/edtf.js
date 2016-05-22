@@ -201,14 +201,16 @@ class Date extends global.Date {
   }
 
   *between(then) {
+    then = Date.from(then)
+
     let cur = this
     let dir = this.compare(then)
 
+    if (!dir) return
+
     for (;;) {
       cur = cur.next(-dir)
-      dir = cur.compare(then)
-
-      if (!dir) break
+      if (cur.compare(then) !== dir) break
       yield cur
     }
   }
