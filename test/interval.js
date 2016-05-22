@@ -25,6 +25,12 @@ describe('Interval', () => {
     })
   })
 
+  describe('invalid', () => {
+    it('bounds', () => {
+      expect(() => new Interval([2001], [2000])).to.throw(RangeError)
+    })
+  })
+
   describe('iteration', () => {
     const Q1_94 = new Interval([1994, 0], [1994, 2])
     const FEB_94 = new Date(1994, 1)

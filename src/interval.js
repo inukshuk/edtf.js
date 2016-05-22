@@ -101,7 +101,7 @@ class Interval extends ExtDateTime {
   }
 
   *[Symbol.iterator]() {
-    if (!this.finite) return
+    if (!this.finite) throw Error('cannot iterate infinite interval')
     yield* this.lower.until(this.upper)
   }
 
