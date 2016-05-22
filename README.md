@@ -78,6 +78,102 @@ coercion. Because this is the case for all EDTF.js classes, comparison
 semantics tend to align well with common-sense expectations -- but be
 careful, as always when type coercion is at play.
 
+### Unspecified, uncertain, and approximate dates
+
+EDTF.js keeps track of qualified dates using bitmasks. If you are interested
+in binary yes or no, you can always convert a bitmask's value to boolean. For
+more fine-grained information, the `edtf.Bitmask` class provides a convenient
+interface for accessing these states:
+
+     edtf('2016-05?').uncertain.value        #-> 63 / yes
+     edtf('2016-05?').approximate.value      #-> 0  / no
+
+     edtf('2016-05?').uncertain.is('year')   #-> 15 / yes
+     edtf('2016-05?').uncertain.is('month')  #-> 48 / yes
+     edtf('2016-05?').uncertain.is('day')    #-> 0  / no
+
+     edtf('2016-?05').uncertain.is('year')   #-> 0  / no
+     edtf('2016-?05').uncertain.is('month')  #-> 48 / yes
+
+     edtf('201X-XX').unspecified.value       #-> 56 / yes
+     edtf('201X-XX').unspecified.is('year')  #-> 8  / yes
+     edtf('201X-XX').unspecified.is('month') #-> 48 / yes
+     edtf('201X-XX').unspecified.is('day')   #-> 0  / no
+
+Instead of `year`, `month`, and `day`, you can also query a string-based
+representation of the bitmask:
+
+     edtf('201X-XX').unspecified.test('XXYYMMDD') #-> 0  / no
+     edtf('201X-XX').unspecified.test('YYYXMMDD') #-> 8  / yes
+
+When printing qualified dates, EDTF.js will try to find an optimal
+rendtition of qualification symbols. For that reason, you can use EDTF.js
+to normalize EDTF strings:
+
+     edtf('?2016-?05-31').edtf   #-> 2016-05?-31
+     edtf('?2016-?05~-31').edtf  #-> 2016-05%-31
+
+Because every extended date object has a `min` and `max` value, you can
+always test if one date covers another one:
+
+     edtf('2016-06/2016-09').covers(edtf('2016-08-24')) #-> true
+     edtf('2016-06/2016-09').covers(edtf('2016-05-31')) #-> false
+
+Iteratable dates offer an `includes()` test as well which returns true
+only if a given date is part of the iteration. For example:
+
+     edtf('2016-06/2016-09').includes(edtf('2016-08-24')) #-> false
+
+August 24, 2016 is covered by the interval '2016-06/2016-09' but is not
+included in it, because the interval has month precision and can be
+iterated as:
+
+     [...edtf('2016-06/2016-09')]
+     #-> [2016-06, 2016-07, 2016-08, 2016-09]
+
+
+### Enumerating dates
+
+EDTF.js dates offer iterators to help measure the duration between
+two dates. These iterators are dependent on a date's precision:
+
+     edtf('2016').next()        #-> 2017
+     edtf('2016-05').next()     #-> 2016-06
+     edtf('2016-02-28').next()  #-> 2016-02-29
+     edtf('2017-02-28').next()  #-> 2017-03-01
+
+Careful, if your date has no precision, next will return the next
+second!
+
+The generator `*between()` returns all the dates, by precision,
+between two dates; similarly, `*until()` returns all datesi in between
+and includes the two dates themselves.
+
+     [...edtf('2016-05').between('2016-07')]
+     #-> [2016-06]
+
+     [...edtf('2016-05').until('2016-07')]
+     #-> [2016-05, 2016-06, 2016-07]
+
+### Iterators
+
+The EDTF.js classes `Date`, `Interval`, `List`, and `Set` (lists model
+EDTF's 'multiple dates', while sets model 'one of a set') are iterable.
+Date's are iterable.
+
+     [...edtf('2015/2018')]
+     #-> [2015, 2016, 2017, 2018]
+
+Note that this also works with varying precisions:
+
+     [...edtf('2015-10/2016')]
+      #-> [2015-10, 2015-11, 2015-12, 2016-01, 2016-02, 2016]
+
+Consecutive dates in lists and sets are expanded during an iteration:
+
+     [...edtf('{2015,2018..2020}')]
+     #-> [2015, 2018, 2019, 2020]
+
 
 ### Parser
 
@@ -171,8 +267,6 @@ to a given type (you must specify a level for this to work):
     [...edtf.sample({ count: 3, level: 2, type: 'Decade' }]
     #-> ['003', '030~', '000']
 
-
-## API
 
 ## Credits
 The EDTF.js parser is based on the awesome
