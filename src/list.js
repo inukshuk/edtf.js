@@ -19,7 +19,7 @@ class List extends ExtDateTime {
     if (args.length) {
       switch (typeof args[0]) {
       case 'string':
-        args[0] = this.parse(args[0])
+        args[0] = new.target.parse(args[0])
         // eslint-disable-line no-fallthrough
 
       case 'object':

@@ -4,6 +4,15 @@ const { Set } = require('..')
 
 describe('Set', () => {
 
+  it('type', () => {
+    expect(Set.type).to.eql('Set')
+    expect(new Set().type).to.eql('Set')
+  })
+
+  it('.from()', () => {
+    expect(Set.from('[2016]')).to.be.instanceof(Set)
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Set().edtf).to.eql('[]'))

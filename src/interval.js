@@ -57,11 +57,6 @@ class Interval extends ExtDateTime {
     }
   }
 
-  get type() {
-    return 'Interval'
-  }
-
-
   get lower() {
     return this.values[0]
   }

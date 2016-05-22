@@ -51,10 +51,6 @@ class Century extends ExtDateTime {
     }
   }
 
-  get type() {
-    return 'Century'
-  }
-
   get century() {
     return this.values[0]
   }

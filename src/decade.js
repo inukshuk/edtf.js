@@ -52,10 +52,6 @@ class Decade extends ExtDateTime {
     }
   }
 
-  get type() {
-    return 'Decade'
-  }
-
   get decade() {
     return this.values[0]
   }

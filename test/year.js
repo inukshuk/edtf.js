@@ -9,6 +9,10 @@ describe('Year', () => {
     expect(new Year().type).to.eql('Year')
   })
 
+  it('.from()', () => {
+    expect(Year.from('Y22016')).to.be.instanceof(Year)
+  })
+
   describe('bounds', () => {
     it('min', () => {
       expect(new Year(-1).min)
