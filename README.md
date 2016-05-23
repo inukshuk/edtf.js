@@ -22,7 +22,7 @@ the following exceptions (as raised by the EDTF community):
 
 2. "Before or after" is redundant and has been removed. It is covered
    by "One of a Set", e.g., `[1760-12..]` which means "December 1760
-   or some later month".
+   or some later month."
 
 ### ES6
 EDTF.js is written in ES6 and therefore requires Node.js 6+ or a modern
@@ -53,7 +53,7 @@ For a list of all types supported by EDTF.js see:
     #-> ['Date', 'Year', 'Decade', 'Century', 'Season', 'Interval', 'List', 'Set']
 
 Each type provides at least the following properties: the date's
-corresponding EDTF string, its minimal and maximal numeric value,
+corresponding EDTF string, its minimum and maximum numeric value,
 its type, as well as its date part values.
 
     edtf('2016?').edtf         #-> '2016?'
@@ -76,7 +76,7 @@ its type, as well as its date part values.
 A date's `min` value is also used as its primitive value for numeric
 coercion. Because this is the case for all EDTF.js classes, comparison
 semantics tend to align well with common-sense expectations -- but be
-careful, as always when type coercion is at play.
+careful, as always, when type coercion is at play.
 
 ### Unspecified, uncertain, and approximate dates
 
@@ -119,7 +119,7 @@ always test if one date covers another one:
      edtf('2016-06/2016-09').covers(edtf('2016-08-24')) #-> true
      edtf('2016-06/2016-09').covers(edtf('2016-05-31')) #-> false
 
-Iteratable dates offer an `includes()` test as well which returns true
+Iterable dates offer an `includes()` test as well which returns true
 only if a given date is part of the iteration. For example:
 
      edtf('2016-06/2016-09').includes(edtf('2016-08-24')) #-> false
@@ -146,7 +146,7 @@ Careful, if your date has no precision, next will return the next
 second!
 
 The generator `*between()` returns all the dates, by precision,
-between two dates; similarly, `*until()` returns all datesi in between
+between two dates; similarly, `*until()` returns all dates in between
 and includes the two dates themselves.
 
      [...edtf('2016-05').between('2016-07')]
@@ -159,7 +159,7 @@ and includes the two dates themselves.
 
 The EDTF.js classes `Date`, `Interval`, `List`, and `Set` (lists model
 EDTF's 'multiple dates', while sets model 'one of a set') are iterable.
-Date's are iterable.
+Dates are iterable.
 
      [...edtf('2015/2018')]
      #-> [2015, 2016, 2017, 2018]
@@ -199,7 +199,7 @@ value representing a bitmask; refer to the `edtf.Bitmask` class for details.
     edtf.parse('20XX-02')
     #-> { type: 'Date', level: 2, values: [2000, 1], unspecified: 12 }
 
-Note that unspecified date values will always the least possible value,
+Note that unspecified date values will always return the least possible value,
 e.g., '2000' for '20XX'. Note, also, that EDTF.js will not parse impossible
 unspecified dates. For instance, none of the following examples can be
 valid dates:
@@ -208,7 +208,7 @@ valid dates:
     edtf.parse('2016-2X-XX') #-> There are only 12 months
     edtf.parse('2016-XX-32') #-> No month has 32 days
 
-Intervals, Sets, and Lists will contain their parsed constiutent dates in
+Intervals, Sets, and Lists will contain their parsed constituent dates in
 the values array:
 
     edtf.parse('2015/2016')
