@@ -27,6 +27,24 @@ describe('Date', () => {
     })
   })
 
+  describe('.precision', () => {
+    it('YYYY', () => {
+      expect(new Date([1980]).precision).to.eql(1)
+    })
+
+    it('YYYY-MM', () => {
+      expect(new Date([1980, 1]).precision).to.eql(2)
+    })
+
+    it('YYYY-MM-DD', () => {
+      expect(new Date([1980, 1, 23]).precision).to.eql(3)
+    })
+
+    it('YYYY-MM-DDThh:mm:ss', () => {
+      expect(new Date([1980, 1, 12, 10, 15, 30]).precision).to.eql(6)
+    })
+  })
+
   describe('.next()', () => {
     it('YYYY', () => {
       expect(new Date([1980]).next().edtf).to.eql('1981')
