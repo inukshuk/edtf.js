@@ -88,7 +88,7 @@ class Date extends global.Date {
 
 
   set precision(value) {
-    P.set(this, (value > 3) ? 0 : Number(value));
+    P.set(this, (value > 3) ? 0 : Number(value))
   }
 
   get precision() {
