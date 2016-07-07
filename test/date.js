@@ -41,7 +41,7 @@ describe('Date', () => {
     })
 
     it('YYYY-MM-DDThh:mm:ss', () => {
-      expect(new Date([1980, 1, 12, 10, 15, 30]).precision).to.eql(6)
+      expect(new Date([1980, 1, 12, 10, 15, 30]).precision).to.eql(0)
     })
   })
 
