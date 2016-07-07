@@ -88,7 +88,7 @@ class Date extends global.Date {
 
 
   set precision(value) {
-    P.set(this, Number(value))
+    P.set(this, (value > 3) ? 0 : Number(value));
   }
 
   get precision() {
@@ -225,7 +225,7 @@ class Date extends global.Date {
   }
 
   toEDTF() {
-    if (!this.precision || this.precision > 3) return this.toISOString()
+    if (!this.precision) return this.toISOString()
 
     let values = this.values.map(Date.pad)
 
