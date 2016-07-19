@@ -64,8 +64,7 @@ class Century extends ExtDateTime {
   get year() {
     if (this.values[0] >= 0) {
       return this.values[0] * 100
-    }
-    else {
+    } else {
       return this.values[0] * 100 + 1
     }
   }
@@ -73,8 +72,7 @@ class Century extends ExtDateTime {
   set year(year) {
     if (year >= 0) {
       return this.century = year / 100
-    }
-    else {
+    } else {
       return this.century = (year - 1) / 100
     }
   }
@@ -88,10 +86,9 @@ class Century extends ExtDateTime {
   }
 
   get max() {
-    if (this.century == -1) {
+    if (this.century === -1) {
       return ExtDate.UTC(this.year + 99, 0) - 1
-    }
-    else {
+    } else {
       return ExtDate.UTC(this.year + 100, 0) - 1
     }
 
