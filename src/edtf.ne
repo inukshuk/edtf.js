@@ -258,7 +258,7 @@ digit -> positive_digit {% id %}
        | "0"            {% id %}
 
 digits -> digit        {% id %}
-        | digit digits {% join %}
+        | digits digit {% join %}
 
 d4 -> d2 d2       {% join %}
 d3 -> d2 digit    {% join %}

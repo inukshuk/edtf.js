@@ -248,7 +248,7 @@ var grammar = {
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},
     {"name": "digit", "symbols": [{"literal":"0"}], "postprocess": id},
     {"name": "digits", "symbols": ["digit"], "postprocess": id},
-    {"name": "digits", "symbols": ["digit", "digits"], "postprocess": join},
+    {"name": "digits", "symbols": ["digits", "digit"], "postprocess": join},
     {"name": "d4", "symbols": ["d2", "d2"], "postprocess": join},
     {"name": "d3", "symbols": ["d2", "digit"], "postprocess": join},
     {"name": "d2", "symbols": ["digit", "digit"], "postprocess": join},
