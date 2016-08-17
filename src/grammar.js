@@ -21,6 +21,8 @@ var grammar = {
     {"name": "L0", "symbols": ["L0i"], "postprocess": id},
     {"name": "L0i", "symbols": ["date_time", {"literal":"/"}, "date_time"], "postprocess": interval(0)},
     {"name": "century", "symbols": ["positive_century"], "postprocess": data => century(data[0])},
+    {"name": "century$string$1", "symbols": [{"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "century", "symbols": ["century$string$1"], "postprocess": () => century(0)},
     {"name": "century", "symbols": [{"literal":"-"}, "positive_century"], "postprocess": data => century(-data[1])},
     {"name": "positive_century", "symbols": ["positive_digit", "digit"], "postprocess": num},
     {"name": "positive_century", "symbols": [{"literal":"0"}, "positive_digit"], "postprocess": num},

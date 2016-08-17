@@ -57,16 +57,24 @@ class Century extends ExtDateTime {
 
   set century(century) {
     century = floor(Number(century))
-    assert(century !== 0 && abs(century) < 100, `invalid century: ${century}`)
+    assert(abs(century) < 100, `invalid century: ${century}`)
     return this.values[0] = century
   }
 
   get year() {
-    return this.values[0] * 100
+    if (this.values[0] >= 0) {
+      return this.values[0] * 100
+    } else {
+      return this.values[0] * 100 + 1
+    }
   }
 
   set year(year) {
-    return this.century = year / 100
+    if (year >= 0) {
+      return this.century = year / 100
+    } else {
+      return this.century = (year - 1) / 100
+    }
   }
 
   get values() {
@@ -78,7 +86,12 @@ class Century extends ExtDateTime {
   }
 
   get max() {
-    return ExtDate.UTC(this.year + 100, 0) - 1
+    if (this.century === -1) {
+      return ExtDate.UTC(this.year + 99, 0) - 1
+    } else {
+      return ExtDate.UTC(this.year + 100, 0) - 1
+    }
+
   }
 
   toEDTF() {
