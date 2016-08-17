@@ -8,6 +8,7 @@ const mixin = require('./mixin')
 
 const { abs } = Math
 const { isArray } = Array
+const { DAY, MONTH, YYXX, YYYX, XXXX } = Bitmask
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -119,19 +120,20 @@ class Date extends global.Date {
     return X.get(this)
   }
 
+  get atomic() {
+    return !(
+      this.precision || this.unspecified.value
+    )
+  }
+
   get min() {
     // TODO uncertain and approximate
-
     return this.getTime()
   }
 
   get max() {
-    // TODO unspecified
     // TODO uncertain and approximate
-
-    if (this.precision) return this.next() - 1
-
-    return this.getTime()
+    return (this.atomic) ? this.getTime() : this.next() - 1
   }
 
   get year() {
@@ -181,8 +183,36 @@ class Date extends global.Date {
   next(k = 1) {
     let { values, unspecified, uncertain, approximate } = this
 
-    // values = values.slice(0, 3)
-    values.push(values.pop() + k)
+    if (unspecified.value) {
+      switch (true) {
+      case !!unspecified.test(XXXX):
+        switch (unspecified.test(XXXX)) {
+        case XXXX:
+          values[0] = 10000 * k
+          break
+
+        case YYXX:
+          values[0] = (values[0] / 100 * 100) + 100 * k
+          break
+
+        case YYYX:
+          values[0] = (values[0] / 10 * 10) + 10 * k
+          break
+        }
+        break
+
+      case !!unspecified.test(MONTH):
+        values[0] = values[0] + k
+        break
+
+      case !!unspecified.test(DAY):
+        values[1] = values[1] + k
+        break
+      }
+
+    } else {
+      values.push(values.pop() + k)
+    }
 
     return new Date({ values, unspecified, uncertain, approximate })
   }

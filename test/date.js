@@ -137,28 +137,74 @@ describe('Date', () => {
   })
 
   describe('max', () => {
-    it('full precision', () => {
-      let date = new Date()
-      expect(date.max).to.eql(date.min)
-    })
+    describe('Level 1', () => {
+      it('full precision', () => {
+        let date = new Date()
+        expect(date.max).to.eql(date.min)
+      })
 
-    it('YYYY', () => {
-      expect(new Date([2016]).max)
-        .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
-    })
+      it('YYYY', () => {
+        expect(new Date([2016]).max)
+          .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+      })
 
-    it('YYYY-MM', () => {
-      expect(new Date([2016, 1]).max)
-        .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
-      expect(new Date([2017, 1]).max)
-        .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
-      expect(new Date([2016, 7]).max)
-        .to.eql(global.Date.UTC(2016, 7, 31, 23, 59, 59, 999))
-    })
+      it('YYYY-MM', () => {
+        expect(new Date([2016, 1]).max)
+          .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
+        expect(new Date([2017, 1]).max)
+          .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
+        expect(new Date([2016, 7]).max)
+          .to.eql(global.Date.UTC(2016, 7, 31, 23, 59, 59, 999))
+      })
 
-    it('YYYY-MM-DD', () => {
-      expect(new Date([2016, 1, 1]).max)
-        .to.eql(global.Date.UTC(2016, 1, 1, 23, 59, 59, 999))
+      it('YYYY-MM-DD', () => {
+        expect(new Date([2016, 1, 1]).max)
+          .to.eql(global.Date.UTC(2016, 1, 1, 23, 59, 59, 999))
+      })
+
+      it('YYYY-MM-XX', () => {
+        expect(Date.from('2016-01-XX').max)
+          .to.eql(global.Date.UTC(2016, 0, 31, 23, 59, 59, 999))
+
+        expect(Date.from('2016-02-XX').max)
+          .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
+
+        expect(Date.from('2017-02-XX').max)
+          .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
+
+        expect(Date.from('2016-08-XX').max)
+          .to.eql(global.Date.UTC(2016, 7, 31, 23, 59, 59, 999))
+      })
+
+      it('YYYY-XX', () => {
+        expect(Date.from('2016-XX').max)
+          .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YYXX', () => {
+        expect(Date.from('20XX').max)
+          .to.eql(global.Date.UTC(2099, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YYYX', () => {
+        expect(Date.from('201X').max)
+          .to.eql(global.Date.UTC(2019, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXXX', () => {
+        expect(Date.from('XXXX').max)
+          .to.eql(global.Date.UTC(9999, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXXX-XX', () => {
+        expect(Date.from('XXXX-XX').max)
+          .to.eql(global.Date.UTC(9999, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXXX-XX-XX', () => {
+        expect(Date.from('XXXX-XX-XX').max)
+          .to.eql(global.Date.UTC(9999, 11, 31, 23, 59, 59, 999))
+      })
     })
   })
 
@@ -206,10 +252,14 @@ describe('Date', () => {
       it('XXXX', () => {
         expect(Date.from('XXXX').min)
           .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+      })
 
+      it('XXXX-XX', () => {
         expect(Date.from('XXXX-XX').min)
           .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+      })
 
+      it('XXXX-XX-XX', () => {
         expect(Date.from('XXXX-XX-XX').min)
           .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
       })
