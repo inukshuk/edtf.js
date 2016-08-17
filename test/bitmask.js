@@ -36,6 +36,35 @@ describe('Bitmask', () => {
     })
   })
 
+  describe('.max()', () => {
+    it('year', () => {
+      expect(new Bitmask().max(['2016'])).to.eql([2016])
+      expect(new Bitmask('year').max(['2016'])).to.eql([9999])
+      expect(new Bitmask('yxyxmmdd').max(['2016'])).to.eql([2919])
+    })
+
+    it('month', () => {
+      expect(new Bitmask().max(['2016', '01'])).to.eql([2016, 0])
+      expect(new Bitmask('yyyyxxdd').max(['2016', '01'])).to.eql([2016, 11])
+      expect(new Bitmask('yyyymxdd').max(['2016', '01'])).to.eql([2016, 8])
+      expect(new Bitmask('yyyymxdd').max(['2016', '10'])).to.eql([2016, 11])
+      expect(new Bitmask('yyyyxmdd').max(['2016', '01'])).to.eql([2016, 10])
+      expect(new Bitmask('yyyyxmdd').max(['2016', '02'])).to.eql([2016, 11])
+      expect(new Bitmask('yyyyxmdd').max(['2016', '03'])).to.eql([2016, 2])
+    })
+
+    it('day', () => {
+      expect(new Bitmask().max(['2016', '01', '01']))
+        .to.eql([2016, 0, 1])
+      expect(new Bitmask('yyyymmxx').max(['2016', '01', '01']))
+        .to.eql([2016, 0, 31])
+      expect(new Bitmask('yyyymmxx').max(['2016', '02', '01']))
+        .to.eql([2016, 1, 29])
+      expect(new Bitmask('yyyymmxx').max(['2016', '04', '01']))
+        .to.eql([2016, 3, 30])
+    })
+  })
+
   describe('.test()', () => {
     it('true', () => {
       expect(Bitmask.test(true, true)).to.be.ok

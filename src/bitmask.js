@@ -9,7 +9,7 @@ const PATTERN = /^[0-9xXdDmMyY]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
 const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-const { pow } = Math
+const { pow, max, min } = Math
 
 
 /**
@@ -74,10 +74,10 @@ class Bitmask {
 
   static normalize(values) {
     if (values.length > 1)
-      values[1] = Math.min(11, Math.max(0, values[1] - 1))
+      values[1] = min(11, max(0, values[1] - 1))
 
     if (values.length > 2)
-      values[2] = Math.min(MAXDAYS[values[1]] || NaN, Math.max(1, values[2]))
+      values[2] = min(MAXDAYS[values[1]] || NaN, max(1, values[2]))
 
     return values
   }
@@ -125,6 +125,62 @@ class Bitmask {
     })
   }
 
+  max([year, month, day]) { // eslint-disable-line complexity
+    if (!year) return []
+
+    year = Number(
+      (this.test(Bitmask.YEAR)) ? this.masks([year], '9')[0] : year
+    )
+
+    if (!month) return [year]
+
+    month = Number(month) - 1
+
+    switch (this.test(Bitmask.MONTH)) {
+    case Bitmask.MONTH:
+      month = 11
+      break
+    case Bitmask.MX:
+      month = (month < 9) ? 8 : 11
+      break
+    case Bitmask.XM:
+      month = (month + 1) % 10
+      month = (month < 3) ? month + 9 : month - 1
+      break
+    }
+
+    if (!day) return [year, month]
+
+    day = Number(day)
+
+    switch (this.test(Bitmask.DAY)) {
+    case Bitmask.DAY:
+      day = MAXDAYS[month]
+      break
+    case Bitmask.DX:
+      day = min(MAXDAYS[month], day + (9 - (day % 10)))
+      break
+    case Bitmask.XD:
+      day = day % 10
+
+      if (month === 1) {
+        day = (day === 9 && !leap(year)) ? day + 10 : day + 20
+
+      } else {
+        day = (day < 2) ? day + 30 : day + 20
+        if (day > MAXDAYS[month]) day = day - 10
+      }
+
+      break
+    }
+
+    if (month === 1 && day > 28 && !leap(year)) {
+      day = 28
+    }
+
+    return [year, month, day]
+  }
+
   marks(values, symbol = '?') {
     return values
       .map((value, idx) => [
@@ -169,6 +225,12 @@ class Bitmask {
 
 Bitmask.prototype.is = Bitmask.prototype.test
 
+function leap(year) {
+  if (year % 4 > 0) return false
+  if (year % 100 > 0) return true
+  if (year % 400 > 0) return false
+  return true
+}
 
 Bitmask.DAY   = Bitmask.D = Bitmask.compute('yyyymmxx')
 Bitmask.MONTH = Bitmask.M = Bitmask.compute('yyyyxxdd')
@@ -181,6 +243,11 @@ Bitmask.YM  = Bitmask.Y | Bitmask.M
 Bitmask.YYXX = Bitmask.compute('yyxxmmdd')
 Bitmask.YYYX = Bitmask.compute('yyyxmmdd')
 Bitmask.XXXX = Bitmask.compute('xxxxmmdd')
+
+Bitmask.DX = Bitmask.compute('yyyymmdx')
+Bitmask.XD = Bitmask.compute('yyyymmxd')
+Bitmask.MX = Bitmask.compute('yyyymxdd')
+Bitmask.XM = Bitmask.compute('yyyyxmdd')
 
 /*
  * Map each UA symbol position to a mask.
