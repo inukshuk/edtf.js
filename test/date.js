@@ -100,21 +100,39 @@ describe('Date', () => {
     })
   })
 
+  describe('through()', () => {
+    function through(a, b) {
+      return [...new Date(a).through(new Date(b))].map(d => d.values)
+    }
+
+    it('YYYY', () => {
+      expect(through([2001], [2002])).to.eql([[2001], [2002]])
+      expect(through([2001], [2001])).to.eql([[2001]])
+      expect(through([2002], [2001])).to.eql([[2002], [2001]])
+      expect(through([2003], [2001])).to.eql([[2003], [2002], [2001]])
+    })
+
+    it('YYYY-MM', () => {
+      expect(through([2001, 11], [2002, 1]))
+        .to.eql([[2001, 11], [2002, 0], [2002, 1]])
+    })
+  })
+
   describe('until()', () => {
     function until(a, b) {
       return [...new Date(a).until(new Date(b))].map(d => d.values)
     }
 
     it('YYYY', () => {
-      expect(until([2001], [2002])).to.eql([[2001], [2002]])
+      expect(until([2001], [2002])).to.eql([[2001]])
       expect(until([2001], [2001])).to.eql([[2001]])
-      expect(until([2002], [2001])).to.eql([[2002], [2001]])
-      expect(until([2003], [2001])).to.eql([[2003], [2002], [2001]])
+      expect(until([2002], [2001])).to.eql([[2002]])
+      expect(until([2003], [2001])).to.eql([[2003], [2002]])
     })
 
     it('YYYY-MM', () => {
       expect(until([2001, 11], [2002, 1]))
-        .to.eql([[2001, 11], [2002, 0], [2002, 1]])
+        .to.eql([[2001, 11], [2002, 0]])
     })
   })
 

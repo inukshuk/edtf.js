@@ -86,7 +86,7 @@ class List extends ExtDateTime {
   *[Symbol.iterator]() {
     for (let value of this.values) {
       if (isArray(value))
-        yield* value[0].until(value[1])
+        yield* value[0].through(value[1])
       else
         yield value
     }

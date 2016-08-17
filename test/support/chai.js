@@ -123,7 +123,7 @@ chai.use(function (_, utils) {
       .to.have.deep.property('values[0].values').and.eql(expected)
   })
 
-  Assertion.addChainableMethod('until', function (expected) {
+  Assertion.addChainableMethod('through', function (expected) {
     expect(utils.flag(this, 'object'))
       .to.have.deep.property('values[1].values').and.eql(expected)
   })

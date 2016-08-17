@@ -193,11 +193,12 @@ class Date extends global.Date {
 
   *until(then) {
     yield this
+    if (this.compare(then)) yield* this.between(then)
+  }
 
-    if (!this.compare(then)) return
-
-    yield* this.between(then)
-    yield then
+  *through(then) {
+    yield* this.until(then)
+    if (this.compare(then)) yield then
   }
 
   *between(then) {
