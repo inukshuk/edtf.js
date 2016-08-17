@@ -29,6 +29,7 @@ L0 -> date_time {% id %}
 L0i -> date_time "/" date_time {% interval(0) %}
 
 century -> positive_century     {% data => century(data[0]) %}
+         | "00"                 {% data => century(0) %}
          | "-" positive_century {% data => century(-data[1]) %}
 
 positive_century -> positive_digit digit {% num %}

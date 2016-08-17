@@ -57,7 +57,7 @@ class Century extends ExtDateTime {
 
   set century(century) {
     century = floor(Number(century))
-    assert(century !== 0 && abs(century) < 100, `invalid century: ${century}`)
+    assert(abs(century) < 100, `invalid century: ${century}`)
     return this.values[0] = century
   }
 

@@ -113,7 +113,7 @@ describe('parser', () => {
 
     it('YY', () => {
       expect(p('19')).to.produce([19]).at.level(0).and.be.a.century
-      expect(() => p('00')).to.be.rejected
+      expect(p('00')).to.produce([0]).at.level(0).and.be.a.century
     })
 
     it('-YY', () => {
