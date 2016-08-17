@@ -8,7 +8,7 @@ const mixin = require('./mixin')
 
 const { abs } = Math
 const { isArray } = Array
-const { DAY, MONTH, YYXX, YYYX, XXXX } = Bitmask
+const { DAY, MONTH, YEAR, YYXX, YYYX } = Bitmask
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -185,9 +185,9 @@ class Date extends global.Date {
 
     if (unspecified.value) {
       switch (true) {
-      case !!unspecified.test(XXXX):
-        switch (unspecified.test(XXXX)) {
-        case XXXX:
+      case !!unspecified.test(YEAR):
+        switch (unspecified.test(YEAR)) {
+        case YEAR:
           values[0] = 10000 * k
           break
 

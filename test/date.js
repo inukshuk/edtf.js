@@ -172,8 +172,8 @@ describe('Date', () => {
         expect(Date.from('2017-02-XX').max)
           .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
 
-        expect(Date.from('2016-08-XX').max)
-          .to.eql(global.Date.UTC(2016, 7, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-09-XX').max)
+          .to.eql(global.Date.UTC(2016, 8, 30, 23, 59, 59, 999))
       })
 
       it('YYYY-XX', () => {
@@ -204,6 +204,131 @@ describe('Date', () => {
       it('XXXX-XX-XX', () => {
         expect(Date.from('XXXX-XX-XX').max)
           .to.eql(global.Date.UTC(9999, 11, 31, 23, 59, 59, 999))
+      })
+    })
+
+    describe.skip('Level 2', () => {
+      it('YYXX-MM-XX', () => {
+        expect(Date.from('20XX-01-XX').max)
+          .to.eql(global.Date.UTC(2099, 0, 31, 23, 59, 59, 999))
+      })
+
+      it('YYYY-MM-DX', () => {
+        expect(Date.from('2016-01-0X').max)
+          .to.eql(global.Date.UTC(2016, 0, 9, 23, 59, 59, 999))
+        expect(Date.from('2016-01-1X').max)
+          .to.eql(global.Date.UTC(2016, 0, 19, 23, 59, 59, 999))
+        expect(Date.from('2016-01-2X').max)
+          .to.eql(global.Date.UTC(2016, 0, 29, 23, 59, 59, 999))
+        expect(Date.from('2016-01-3X').max)
+          .to.eql(global.Date.UTC(2016, 0, 31, 23, 59, 59, 999))
+
+        expect(Date.from('2016-02-2X').max)
+          .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
+        expect(Date.from('2017-02-2X').max)
+          .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
+
+        expect(Date.from('2016-09-3X').max)
+          .to.eql(global.Date.UTC(2016, 8, 30, 23, 59, 59, 999))
+      })
+
+      it('YYYY-MM-XD', () => {
+        expect(Date.from('2016-01-X1').max)
+          .to.eql(global.Date.UTC(2016, 0, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-01-X2').max)
+          .to.eql(global.Date.UTC(2016, 0, 22, 23, 59, 59, 999))
+
+        expect(Date.from('2016-02-X9').max)
+          .to.eql(global.Date.UTC(2016, 1, 29, 23, 59, 59, 999))
+        expect(Date.from('2016-02-X1').max)
+          .to.eql(global.Date.UTC(2016, 1, 21, 23, 59, 59, 999))
+        expect(Date.from('2017-02-X8').max)
+          .to.eql(global.Date.UTC(2017, 1, 28, 23, 59, 59, 999))
+        expect(Date.from('2017-02-X9').max)
+          .to.eql(global.Date.UTC(2017, 1, 19, 23, 59, 59, 999))
+
+        expect(Date.from('2016-09-X1').max)
+          .to.eql(global.Date.UTC(2016, 8, 21, 23, 59, 59, 999))
+      })
+
+      it('YYYY-MX', () => {
+        expect(Date.from('2016-0X').max)
+          .to.eql(global.Date.UTC(2016, 8, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-1X').max)
+          .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YYYY-XM', () => {
+        expect(Date.from('2016-X0').max)
+          .to.eql(global.Date.UTC(2016, 9, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-X1').max)
+          .to.eql(global.Date.UTC(2016, 10, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-X2').max)
+          .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-X3').max)
+          .to.eql(global.Date.UTC(2016, 2, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-X4').max)
+          .to.eql(global.Date.UTC(2016, 3, 30, 23, 59, 59, 999))
+      })
+
+      it('YYXY', () => {
+        expect(Date.from('20X3').max)
+          .to.eql(global.Date.UTC(2093, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YXYY', () => {
+        expect(Date.from('2X13').max)
+          .to.eql(global.Date.UTC(2913, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YXYX', () => {
+        expect(Date.from('2X1X').max)
+          .to.eql(global.Date.UTC(2919, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YXXY', () => {
+        expect(Date.from('2XX3').max)
+          .to.eql(global.Date.UTC(2993, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('YXXX', () => {
+        expect(Date.from('2XXX').max)
+          .to.eql(global.Date.UTC(2999, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XYYY', () => {
+        expect(Date.from('X016').max)
+          .to.eql(global.Date.UTC(9016, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XYYX', () => {
+        expect(Date.from('X01X').max)
+          .to.eql(global.Date.UTC(9019, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XYXY', () => {
+        expect(Date.from('X0X6').max)
+          .to.eql(global.Date.UTC(9096, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XYXX', () => {
+        expect(Date.from('X0XX').max)
+          .to.eql(global.Date.UTC(9099, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXYY', () => {
+        expect(Date.from('XX16').max)
+          .to.eql(global.Date.UTC(9916, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXYX', () => {
+        expect(Date.from('XX1X').max)
+          .to.eql(global.Date.UTC(9919, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('XXXY', () => {
+        expect(Date.from('XXX6').max)
+          .to.eql(global.Date.UTC(9996, 11, 31, 23, 59, 59, 999))
       })
     })
   })
