@@ -147,13 +147,28 @@ second!
 
 The generator `*between()` returns all the dates, by precision,
 between two dates; similarly, `*until()` returns all dates in between
-and includes the two dates themselves.
+and includes the first of the two dates; to generate the full range
+inluding both dates, use `*through()`.
 
      [...edtf('2016-05').between('2016-07')]
      #-> [2016-06]
 
      [...edtf('2016-05').until('2016-07')]
+     #-> [2016-05, 2016-06]
+
+     [...edtf('2016-05').through('2016-07')]
      #-> [2016-05, 2016-06, 2016-07]
+
+Note, that all range generators also work in reverse order:
+
+     [...edtf('2016-07').through('2016-05')]
+     #-> [2016-07, 2016-06, 2016-05]
+
+     [...edtf('2016-07').until('2016-05')]
+     #-> [2016-07, 2016-06]
+
+     [...edtf('2016-07').between('2016-05')]
+     #-> [2016-06]
 
 ### Iterators
 
