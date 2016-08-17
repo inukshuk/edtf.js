@@ -258,17 +258,11 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
       })
 
-      it.skip('YYYY-XM', () => {
-        expect(Date.from('2016-X0').max)
-          .to.eql(global.Date.UTC(2016, 9, 31, 23, 59, 59, 999))
+      it('YYYY-XM', () => {
         expect(Date.from('2016-X1').max)
           .to.eql(global.Date.UTC(2016, 10, 30, 23, 59, 59, 999))
         expect(Date.from('2016-X2').max)
           .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
-        expect(Date.from('2016-X3').max)
-          .to.eql(global.Date.UTC(2016, 2, 31, 23, 59, 59, 999))
-        expect(Date.from('2016-X4').max)
-          .to.eql(global.Date.UTC(2016, 3, 30, 23, 59, 59, 999))
       })
 
       it('YYXY', () => {

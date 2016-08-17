@@ -8,7 +8,6 @@ const mixin = require('./mixin')
 
 const { abs } = Math
 const { isArray } = Array
-const { DAY, MONTH } = Bitmask
 
 const P = new WeakMap()
 const U = new WeakMap()
