@@ -163,54 +163,78 @@ describe('Date', () => {
   })
 
   describe('min', () => {
-    it('YYYY', () => {
-      expect(new Date([2016]).min)
-        .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
+    describe('Level 1', () => {
+      it('YYYY', () => {
+        expect(new Date([2016]).min)
+          .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYY-MM', () => {
+        expect(new Date([2016, 1]).min)
+          .to.eql(global.Date.UTC(2016, 1, 1, 0, 0, 0, 0))
+        expect(new Date([2017, 1]).min)
+          .to.eql(global.Date.UTC(2017, 1, 1, 0, 0, 0, 0))
+        expect(new Date([2016, 7]).min)
+          .to.eql(global.Date.UTC(2016, 7, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYY-MM-DD', () => {
+        expect(new Date([2016, 1, 1]).min)
+          .to.eql(global.Date.UTC(2016, 1, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYY-MM-XX', () => {
+        expect(Date.from('2016-01-XX').min)
+          .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYY-XX', () => {
+        expect(Date.from('2016-XX').min)
+          .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('YYXX', () => {
+        expect(Date.from('20XX').min)
+          .to.eql(global.Date.UTC(2000, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYX', () => {
+        expect(Date.from('201X').min)
+          .to.eql(global.Date.UTC(2010, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('XXXX', () => {
+        expect(Date.from('XXXX').min)
+          .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+
+        expect(Date.from('XXXX-XX').min)
+          .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+
+        expect(Date.from('XXXX-XX-XX').min)
+          .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+      })
     })
 
-    it('YYYY-MM', () => {
-      expect(new Date([2016, 1]).min)
-        .to.eql(global.Date.UTC(2016, 1, 1, 0, 0, 0, 0))
-      expect(new Date([2017, 1]).min)
-        .to.eql(global.Date.UTC(2017, 1, 1, 0, 0, 0, 0))
-      expect(new Date([2016, 7]).min)
-        .to.eql(global.Date.UTC(2016, 7, 1, 0, 0, 0, 0))
-    })
+    describe('Level 2', () => {
+      it('YYYX-MM-DD', () => {
+        expect(Date.from('201X-02-04').min)
+          .to.eql(global.Date.UTC(2010, 1, 4, 0, 0, 0, 0))
+      })
 
-    it('YYYY-MM-DD', () => {
-      expect(new Date([2016, 1, 1]).min)
-        .to.eql(global.Date.UTC(2016, 1, 1, 0, 0, 0, 0))
-    })
+      it('YYXX-MM-DD', () => {
+        expect(Date.from('20XX-02-04').min)
+          .to.eql(global.Date.UTC(2000, 1, 4, 0, 0, 0, 0))
+      })
 
-    it('YYYY-MM-XX', () => {
-      expect(Date.from('2016-01-XX').min)
-        .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
-    })
+      it('YYXX-XX-DD', () => {
+        expect(Date.from('20XX-XX-04').min)
+          .to.eql(global.Date.UTC(2000, 0, 4, 0, 0, 0, 0))
+      })
 
-    it('YYYY-XX', () => {
-      expect(Date.from('2016-XX').min)
-        .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
-    })
-
-    it('YYXX', () => {
-      expect(Date.from('20XX').min)
-        .to.eql(global.Date.UTC(2000, 0, 1, 0, 0, 0, 0))
-    })
-
-    it('YYYX', () => {
-      expect(Date.from('201X').min)
-        .to.eql(global.Date.UTC(2010, 0, 1, 0, 0, 0, 0))
-    })
-
-    it('XXXX', () => {
-      expect(Date.from('XXXX').min)
-        .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
-
-      expect(Date.from('XXXX-XX').min)
-        .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
-
-      expect(Date.from('XXXX-XX-XX').min)
-        .to.eql(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+      it('YXYY-MX-XD', () => {
+        expect(Date.from('2X12-1X-X4').min)
+          .to.eql(global.Date.UTC(2012, 9, 4, 0, 0, 0, 0))
+      })
     })
   })
 

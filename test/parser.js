@@ -347,7 +347,9 @@ describe('parser', () => {
         .and.unspecified('day')
         .and.specified('month'))
 
-    it('YYXX-MM-XX', () => {
+    it('YYXX-MM-DX', () => {
+      expect(p('15XX-01-3X'))
+        .to.produce([1500, 0, 30]).at.level(2)
       expect(() => p('15XX-02-3X')).to.be.rejected
     })
 
