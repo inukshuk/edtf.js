@@ -10,7 +10,7 @@ date/time hackers and enthusiasts.
 
 ## Compatibility
 
-### EDFT / ISO 8601-2
+### EDTF / ISO 8601-2
 EDTF.js fully implements [EDTF](http://www.loc.gov/standards/datetime)
 levels 0, 1, and 2 as specified by WD 2016-02-16 of ISO 8601-2 with
 the following exceptions (as raised by the EDTF community):
