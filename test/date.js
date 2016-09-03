@@ -508,7 +508,13 @@ describe('Date', () => {
   })
 
   describe('.localize', () => {
+    it('YYYY', () =>
+      expect(new Date([2014]).localize('en-US')).to.eql('2014'))
+
     it('YYYY-MM', () =>
       expect(new Date([2014, 3]).localize('en-US')).to.eql('4/2014'))
+
+    it('YYYY-MM-DD', () =>
+      expect(new Date([2014, 3, 1]).localize('en-US')).to.eql('4/1/2014'))
   })
 })
