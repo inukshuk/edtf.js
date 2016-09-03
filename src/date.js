@@ -5,9 +5,11 @@ const assert = require('assert')
 const Bitmask = require('./bitmask')
 const ExtDateTime = require('./interface')
 const mixin = require('./mixin')
+const { format } = require('./format')
 
 const { abs } = Math
 const { isArray } = Array
+const { defineProperty: prop } = Object
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -84,8 +86,11 @@ class Date extends global.Date {
     this.uncertain = uncertain
     this.approximate = approximate
     this.unspecified = unspecified
-  }
 
+    prop(this, 'format', {
+      value: format.bind(null, this)
+    })
+  }
 
   set precision(value) {
     P.set(this, (value > 3) ? 0 : Number(value))
@@ -246,6 +251,10 @@ class Date extends global.Date {
     }
 
     return values.join('-')
+  }
+
+  localize(...args) {
+    return this.format(...args).format(this)
   }
 
   static pad(number, idx = 0) { // idx 0 = year, 1 = month, ...

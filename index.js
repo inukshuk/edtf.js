@@ -5,6 +5,7 @@ const types = require('./src/types')
 
 const { sample } = require('./src/sample')
 const { parse } = require('./src/parser')
+const { format } = require('./src/format')
 
 const { assign, keys } = Object
 
@@ -24,5 +25,6 @@ module.exports = assign(edtf, types, {
   Bitmask,
   parse,
   sample,
+  format,
   types: keys(types)
 })

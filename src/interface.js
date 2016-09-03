@@ -42,6 +42,10 @@ class ExtDateTime {
     return this.toEDTF()
   }
 
+  toLocaleString(...args) {
+    return this.localize(...args)
+  }
+
   inspect() {
     return this.toEDTF()
   }

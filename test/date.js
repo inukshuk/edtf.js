@@ -506,4 +506,9 @@ describe('Date', () => {
         values: [2004, 5, 11], uncertain: 'yyyyxxxx'
       }).edtf).to.eql('2004-?06-?11'))
   })
+
+  describe('.localize', () => {
+    it('YYYY-MM', () =>
+      expect(new Date([2014, 3]).localize('en-US')).to.eql('4/2014'))
+  })
 })
