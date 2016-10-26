@@ -291,13 +291,25 @@ describe('parser', () => {
       expect(p('*/*'))
         .to.be.an.interval.at.level(1).and.produce([Infinity, Infinity]))
 
+    it('*/2016', () =>
+      expect(p('*/2016'))
+        .to.be.an.interval.through([2016]).at.level(1))
+
     it('YYYY-MM/*', () =>
       expect(p('2016-05/*'))
         .to.be.an.interval.from([2016, 4]).at.level(1))
 
+    it('YYYY-MM-DD/*', () =>
+      expect(p('2004-06-01/*'))
+        .to.be.an.interval.from([2004, 5, 1]).at.level(1))
+
     it('/YYYY-MM', () =>
       expect(p('/2016-05'))
         .to.be.an.interval.through([2016, 4]).at.level(1))
+
+    it('YYYY-MM-DD/', () =>
+      expect(p('2016-05-31/*'))
+        .to.be.an.interval.from([2016, 4, 31]).at.level(1))
   })
 
   describe('Level 2', () => {
