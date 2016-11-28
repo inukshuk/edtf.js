@@ -72,7 +72,7 @@ day -> d01_31 {% id %}
 datetime -> year_month_day "T" time (timezone {% id %}):? {% datetime %}
 
 time -> hours ":" minutes ":" seconds milliseconds {% pick(0, 2, 4, 5) %}
-      | "24:00:00"                                 {% () => [24, 00, 00] %}
+      | "24:00:00"                                 {% () => [24, 0, 0] %}
 
 hours   -> d00_23 {% num %}
 minutes -> d00_59 {% num %}

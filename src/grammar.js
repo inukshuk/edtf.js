@@ -56,7 +56,7 @@ var grammar = {
     {"name": "datetime", "symbols": ["year_month_day", {"literal":"T"}, "time", "datetime$ebnf$1"], "postprocess": datetime},
     {"name": "time", "symbols": ["hours", {"literal":":"}, "minutes", {"literal":":"}, "seconds", "milliseconds"], "postprocess": pick(0, 2, 4, 5)},
     {"name": "time$string$1", "symbols": [{"literal":"2"}, {"literal":"4"}, {"literal":":"}, {"literal":"0"}, {"literal":"0"}, {"literal":":"}, {"literal":"0"}, {"literal":"0"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "time", "symbols": ["time$string$1"], "postprocess": () => [24, 00, 00]},
+    {"name": "time", "symbols": ["time$string$1"], "postprocess": () => [24, 0, 0]},
     {"name": "hours", "symbols": ["d00_23"], "postprocess": num},
     {"name": "minutes", "symbols": ["d00_59"], "postprocess": num},
     {"name": "seconds", "symbols": ["d00_59"], "postprocess": num},
