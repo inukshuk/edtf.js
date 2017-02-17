@@ -46,8 +46,8 @@ describe('edtf', () => {
       '-0300',
       '-0300~',
       '03XX',
-      '-0300-XX'
-      //'-03XX'
+      '-0300-XX',
+      '-03XX'
 
     ]) expect(edtf(string).edtf).to.eql(string)
   })

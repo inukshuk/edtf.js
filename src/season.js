@@ -151,7 +151,7 @@ class Season extends ExtDateTime {
   }
 
   toEDTF() {
-    return `${pad(this.year)}-${this.season}`
+    return `${this.year < 0 ? '-' : ''}${pad(this.year)}-${this.season}`
   }
 }
 

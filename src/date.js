@@ -237,10 +237,11 @@ class Date extends global.Date {
   toEDTF() {
     if (!this.precision) return this.toISOString()
 
+    let sign = (this.year < 0) ? '-' : ''
     let values = this.values.map(Date.pad)
 
     if (this.unspecified.value)
-      return this.unspecified.masks(values).join('-')
+      return sign + this.unspecified.masks(values).join('-')
 
     if (this.uncertain.value)
       values = this.uncertain.marks(values, '?')
@@ -250,23 +251,22 @@ class Date extends global.Date {
         .map(value => value.replace(/(~\?)|(\?~)/, '%'))
     }
 
-    return values.join('-')
+    return  sign + values.join('-')
   }
 
   localize(...args) {
     return this.format(...args).format(this)
   }
 
-  static pad(number, idx = 0) { // idx 0 = year, 1 = month, ...
-    if (!idx) {
+  static pad(number, idx = 0) {
+    if (!idx) { // idx 0 = year, 1 = month, ...
       let k = abs(number)
-      let sign = (k === number) ? '' : '-'
 
-      if (k < 10)   return `${sign}000${k}`
-      if (k < 100)  return `${sign}00${k}`
-      if (k < 1000) return `${sign}0${k}`
+      if (k < 10)   return `000${k}`
+      if (k < 100)  return `00${k}`
+      if (k < 1000) return `0${k}`
 
-      return `${number}`
+      return `${k}`
     }
 
     if (idx === 1) number = number + 1

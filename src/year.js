@@ -81,7 +81,7 @@ class Year extends ExtDateTime {
     let y = abs(this.year)
     let s = this.significant ? `S${this.significant}` : ''
 
-    if (y < 9999) return `${pad(this.year)}${s}`
+    if (y <= 9999) return `${this.year < 0 ? '-' : ''}${pad(this.year)}${s}`
 
     // TODO exponential form for ending zeroes
 
