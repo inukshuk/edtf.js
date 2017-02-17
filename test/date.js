@@ -181,15 +181,30 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
       })
 
+      it('-YYYY-XX', () => {
+        expect(Date.from('-2016-XX').max)
+          .to.eql(global.Date.UTC(-2016, 11, 31, 23, 59, 59, 999))
+      })
+
       it('YYXX', () => {
+        expect(Date.from('20XX').values).to.eql([2000])
         expect(Date.from('20XX').max)
           .to.eql(global.Date.UTC(2099, 11, 31, 23, 59, 59, 999))
+      })
+
+      it('-YYXX', () => {
+        expect(Date.from('-20XX').values).to.eql([-2099])
       })
 
       it('YYYX', () => {
         expect(Date.from('201X').max)
           .to.eql(global.Date.UTC(2019, 11, 31, 23, 59, 59, 999))
       })
+
+      it('-YYYX', () => {
+        expect(Date.from('-201X').values).to.eql([-2019])
+      })
+
 
       it('XXXX', () => {
         expect(Date.from('XXXX').max)
@@ -451,6 +466,10 @@ describe('Date', () => {
     it('XXXX-XX-DD', () =>
       expect(new Date({ values: [2014, 3, 15], unspecified: 'xxxxxxdd' }).edtf)
         .to.eql('XXXX-XX-15'))
+
+    it('-YYXX-MM-DD')//, () =>
+      //expect(new Date({ values: [-300, 3, 15], unspecified: 'yyxxmmdd' }).edtf)
+      //  .to.eql('-03XX-04-15'))
 
     it('YXYX-MX-DD', () =>
       expect(new Date({ values: [2014, 3, 15], unspecified: 'yxyxmxdd' }).edtf)
