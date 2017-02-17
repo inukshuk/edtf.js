@@ -49,11 +49,18 @@ const util = {
 
   masked(type = 'unspecified', symbol = 'X') {
     return (data, _, reject) => {
-      let mask = data.join('').replace(/-/g, '')
+      data = data.join('')
 
-      return mask.indexOf(symbol) === -1 ? reject : {
-        values: Bitmask.values(mask),
-        [type]: Bitmask.compute(mask)
+      let negative = data.startsWith('-')
+      let mask = data.replace(/-/g, '')
+
+      if (mask.indexOf(symbol) === -1) return reject
+
+      let values = Bitmask.values(mask, negative ? 9 : 0)
+      if (negative) values[0] = -values[0]
+
+      return {
+        values, [type]: Bitmask.compute(mask)
       }
     }
   },

@@ -320,6 +320,10 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(9096, 11, 31, 23, 59, 59, 999))
       })
 
+      it('-XYXY', () => {
+        expect(Date.from('-X0X6').values).to.eql([-9096])
+      })
+
       it('XYXX', () => {
         expect(Date.from('X0XX').max)
           .to.eql(global.Date.UTC(9099, 11, 31, 23, 59, 59, 999))

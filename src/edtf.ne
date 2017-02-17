@@ -121,14 +121,14 @@ L1i_date -> null     {% nothing %}
 
 INFINITY -> "*" {% () => Infinity %}
 
-L1X -> d4 "-" md "-XX" {% masked() %}
-     | d4 "-XX-XX"     {% masked() %}
-     | "XXXX-XX-XX"    {% masked() %}
-     | d4 "-XX"        {% masked() %}
-     | "XXXX-XX"       {% masked() %}
-     | d2 "XX"         {% masked() %}
-     | d3 "X"          {% masked() %}
-     | "XXXX"          {% masked() %}
+L1X -> nd4 "-" md "-XX" {% masked() %}
+     | nd4 "-XX-XX"     {% masked() %}
+     | "XXXX-XX-XX"     {% masked() %}
+     | nd4 "-XX"        {% masked() %}
+     | "XXXX-XX"        {% masked() %}
+     | nd2 "XX"         {% masked() %}
+     | nd3 "X"          {% masked() %}
+     | "XXXX"           {% masked() %}
 
 L1Y -> "Y" d5+  {% data => year([num(data[1])], 1) %}
      | "Y-" d5+ {% data => year([-num(data[1])], 1) %}
@@ -261,6 +261,15 @@ digit -> positive_digit {% id %}
 digits -> digit        {% id %}
         | digits digit {% join %}
 
+nd4 -> d4
+     | "-" d4     {% join %}
+
+nd3 -> d3
+     | "-" d3     {% join %}
+
+nd2 -> d2
+     | "-" d2     {% join %}
+
 d4 -> d2 d2       {% join %}
 d3 -> d2 digit    {% join %}
 d2 -> digit digit {% join %}
@@ -271,7 +280,9 @@ d1x -> [1-9X]  {% id %}
 dx  -> d1x     {% id %}
      | "0"     {% id %}
 dx2 -> dx dx   {% join %}
-dx4 -> dx2 dx2 {% join %}
+
+dx4 -> dx2 dx2      {% join %}
+     | "-" dx2 dx2  {% join %}
 
 md  -> m31  {% id %}
      | m30  {% id %}
