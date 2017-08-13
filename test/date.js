@@ -530,14 +530,14 @@ describe('Date', () => {
       }).edtf).to.eql('2004-?06-?11'))
   })
 
-  describe('.localize', () => {
+  describe('.format', () => {
     it('YYYY', () =>
-      expect(new Date([2014]).localize('en-US')).to.eql('2014'))
+      expect(new Date([2014]).format('en-US')).to.eql('2014'))
 
     it('YYYY-MM', () =>
-      expect(new Date([2014, 3]).localize('en-US')).to.eql('4/2014'))
+      expect(new Date([2014, 3]).format('en-US')).to.eql('4/2014'))
 
     it('YYYY-MM-DD', () =>
-      expect(new Date([2014, 3, 1]).localize('en-US')).to.eql('4/1/2014'))
+      expect(new Date([2014, 3, 1]).format('en-US')).to.eql('4/1/2014'))
   })
 })

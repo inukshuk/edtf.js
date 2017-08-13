@@ -8,4 +8,8 @@ describe('format', () => {
   it('is a function', () =>
     expect(format).to.be.a('function'))
 
+
+  it('formats normal dates', () => {
+    expect(format(new Date(2017, 4, 9), 'en-US')).to.eql('5/9/2017')
+  })
 })

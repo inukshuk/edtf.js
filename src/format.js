@@ -2,35 +2,53 @@
 
 const { assign } = Object
 
-function format(date, locale, options = {}) {
+const noTime = {
+  timeZoneName: undefined,
+  hour: undefined,
+  minute: undefined,
+  second: undefined
+}
+
+const DEFAULTS = [
+  assign({ weekday: undefined, day: undefined, month: undefined }, noTime),
+  assign({ weekday: undefined, day: undefined }, noTime),
+  assign({}, noTime),
+]
+
+function getFormat(date, locale, options) {
   const defaults = {}
 
   switch (date.precision) {
   case 3:
-    if (options.weekday) defaults.weekday = options.weekday
-    else defaults.day = options.day || 'numeric'
-
+    defaults.day = 'numeric'
     // eslint-disable-next-line no-fallthrough
-
   case 2:
-    defaults.month = options.month || 'numeric'
-
+    defaults.month = 'numeric'
     // eslint-disable-next-line no-fallthrough
-
   case 1:
-    defaults.year = options.year || 'numeric'
-
-    defaults.hour = undefined
-    defaults.minute = undefined
-    defaults.second = undefined
-    defaults.timeZoneName = undefined
-
+    defaults.year = 'numeric'
     break
   }
 
-  return new Intl.DateTimeFormat(locale, assign({}, options, defaults))
+  return new Intl.DateTimeFormat(
+    locale,
+    assign(defaults, options, DEFAULTS[date.precision])
+  )
 }
 
+
+function format(date, locale = 'en', options = {}) {
+  const fmt = getFormat(date, locale, options)
+
+  if (typeof fmt.formatToParts !== 'function') {
+    return fmt.format(date)
+  }
+
+  return fmt.format(date)
+}
+
+
 module.exports = {
+  getFormat,
   format
 }

@@ -9,7 +9,6 @@ const { format } = require('./format')
 
 const { abs } = Math
 const { isArray } = Array
-const { defineProperty: prop } = Object
 
 const P = new WeakMap()
 const U = new WeakMap()
@@ -86,10 +85,6 @@ class Date extends global.Date {
     this.uncertain = uncertain
     this.approximate = approximate
     this.unspecified = unspecified
-
-    prop(this, 'format', {
-      value: format.bind(null, this)
-    })
   }
 
   set precision(value) {
@@ -254,8 +249,8 @@ class Date extends global.Date {
     return  sign + values.join('-')
   }
 
-  localize(...args) {
-    return this.format(...args).format(this)
+  format(...args) {
+    return format(this, ...args)
   }
 
   static pad(number, idx = 0) {
