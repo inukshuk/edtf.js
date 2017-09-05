@@ -33,13 +33,13 @@
   },
   "homepage": "https://github.com/inukshuk/edtf.js#readme",
   "dependencies": {
-    "nearley": "^2.5.0",
-    "randexp": "^0.4.2"
+    "nearley": "^2.11.0",
+    "randexp": "^0.4.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^3.3.1",
+    "eslint": "^3.19.0",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.2"
+    "mocha": "^3.5.0"
   }
 }
