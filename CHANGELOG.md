@@ -1,3 +1,7 @@
+2.1.0 / 2017-02-17
+==================
+  * Support negative masked dates
+  * Support negative masked years
 2.0.0 / 2016-08-17
 ==================
   * Rename until() -> through() [#4]
