@@ -1,7 +1,7 @@
 'use strict'
 
 const edtf = require('..')
-const canFormatToParts = 
+const canFormatToParts =
   typeof Intl.DateTimeFormat.prototype.formatToParts === 'function'
 
 describe('format', () => {
