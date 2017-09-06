@@ -4,6 +4,7 @@ const { assign } = Object
 const LC = require('../locale-data')
 
 const noTime = {
+  timeZone: 'UTC',
   timeZoneName: undefined,
   hour: undefined,
   minute: undefined,
