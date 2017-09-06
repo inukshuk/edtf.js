@@ -34,6 +34,10 @@ class ExtDateTime {
     return this.toEDTF()
   }
 
+  get isEDTF() {
+    return true
+  }
+
   toJSON() {
     return this.toEDTF()
   }

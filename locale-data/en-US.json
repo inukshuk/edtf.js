@@ -3,13 +3,11 @@
 
   "date": {
     "approximate": {
-      "full": "circa %D",
       "long": "circa %D",
       "medium": "ca. %D",
       "short": "c. %D"
     },
     "uncertain": {
-      "full": "%D (unspecified)",
       "long": "%D (unspecified)",
       "medium": "%D (?)",
       "short": "%D (?)"
