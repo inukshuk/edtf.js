@@ -11,6 +11,7 @@ const noTime = {
 }
 
 const DEFAULTS = [
+  {},
   assign({ weekday: undefined, day: undefined, month: undefined }, noTime),
   assign({ weekday: undefined, day: undefined }, noTime),
   assign({}, noTime),
