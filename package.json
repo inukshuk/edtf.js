@@ -1,6 +1,6 @@
 {
   "name": "edtf",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "main": "index.js",
   "scripts": {
