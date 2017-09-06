@@ -1,3 +1,7 @@
+2.2.0 / 2017-09-06
+==================
+  * Implement date formatting (non-standard)
+
 2.1.0 / 2017-02-17
 ==================
   * Support negative masked dates
