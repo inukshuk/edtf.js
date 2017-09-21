@@ -1,9 +1,9 @@
-  /*
-   * Based on `nearley-unparse`
-   * https://github.com/Hardmath123/nearley/blob/master/bin/nearley-unparse.js
-   *
-   * Copyright (c) 2014 Hardmath123
-   */
+/*
+ * Based on `nearley-unparse`
+ * https://github.com/Hardmath123/nearley/blob/master/bin/nearley-unparse.js
+ *
+ * Copyright (c) 2014 Hardmath123
+ */
 'use strict'
 
 const assert = require('assert')

@@ -55,7 +55,7 @@ class Bitmask {
 
   static compute(value) {
     return value.split('').reduce((memo, c, idx) =>
-        (memo | (SYMBOL.test(c) ? pow(2, idx) : 0)), 0)
+      (memo | (SYMBOL.test(c) ? pow(2, idx) : 0)), 0)
   }
 
   static values(mask, digit = 0) {
