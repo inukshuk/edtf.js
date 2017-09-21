@@ -37,7 +37,7 @@
     "randexp": "^0.4.6"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.1.2",
     "eslint": "^4.7.1",
     "istanbul": "^0.4.3",
     "mocha": "^3.5.3"

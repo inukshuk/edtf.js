@@ -9,11 +9,11 @@ describe('Bitmask', () => {
     beforeEach(() => bm = new Bitmask())
 
     it('is zero by default', () => {
-      expect(bm.value).to.be.zero
-      expect(bm.test()).to.be.zero
-      expect(bm.test('day')).to.be.zero
-      expect(bm.test('month')).to.be.zero
-      expect(bm.test('year')).to.be.zero
+      expect(bm.value).to.equal(0)
+      expect(bm.test()).to.equal(0)
+      expect(bm.test('day')).to.equal(0)
+      expect(bm.test('month')).to.equal(0)
+      expect(bm.test('year')).to.equal(0)
     })
 
     describe('.mask()', () => {
@@ -71,30 +71,30 @@ describe('Bitmask', () => {
       expect(Bitmask.test(true, 'day')).to.be.ok
       expect(Bitmask.test(true, 'month')).to.be.ok
       expect(Bitmask.test(true, 'year')).to.be.ok
-      expect(Bitmask.test(true, false)).to.be.zero
+      expect(Bitmask.test(true, false)).to.equal(0)
     })
 
     it('day', () => {
       expect(Bitmask.test('day', 'day')).to.be.ok
-      expect(Bitmask.test('day', 'month')).to.be.zero
-      expect(Bitmask.test('day', 'year')).to.be.zero
+      expect(Bitmask.test('day', 'month')).to.equal(0)
+      expect(Bitmask.test('day', 'year')).to.equal(0)
       expect(Bitmask.test('day', true)).to.be.ok
     })
 
     it('month', () => {
       expect(Bitmask.test('month', 'month')).to.be.ok
-      expect(Bitmask.test('month', 'year')).to.be.zero
-      expect(Bitmask.test('month', 'day')).to.be.zero
+      expect(Bitmask.test('month', 'year')).to.equal(0)
+      expect(Bitmask.test('month', 'day')).to.equal(0)
       expect(Bitmask.test('month', true)).to.be.ok
-      expect(Bitmask.test('month', Bitmask.Y)).to.be.zero
+      expect(Bitmask.test('month', Bitmask.Y)).to.equal(0)
       expect(Bitmask.test('month', Bitmask.YM)).to.be.ok
       expect(Bitmask.test('month', Bitmask.YMD)).to.be.ok
     })
 
     it('year', () => {
       expect(Bitmask.test('year', 'year')).to.be.ok
-      expect(Bitmask.test('year', 'day')).to.be.zero
-      expect(Bitmask.test('year', 'month')).to.be.zero
+      expect(Bitmask.test('year', 'day')).to.equal(0)
+      expect(Bitmask.test('year', 'month')).to.equal(0)
       expect(Bitmask.test('year', true)).to.be.ok
       expect(Bitmask.test('year', Bitmask.Y)).to.be.ok
       expect(Bitmask.test('year', Bitmask.YM)).to.be.ok
@@ -105,11 +105,11 @@ describe('Bitmask', () => {
     })
 
     it('false', () => {
-      expect(Bitmask.test(false, false)).to.be.zero
-      expect(Bitmask.test(false, 'day')).to.be.zero
-      expect(Bitmask.test(false, 'month')).to.be.zero
-      expect(Bitmask.test(false, 'year')).to.be.zero
-      expect(Bitmask.test(false, true)).to.be.zero
+      expect(Bitmask.test(false, false)).to.equal(0)
+      expect(Bitmask.test(false, 'day')).to.equal(0)
+      expect(Bitmask.test(false, 'month')).to.equal(0)
+      expect(Bitmask.test(false, 'year')).to.equal(0)
+      expect(Bitmask.test(false, true)).to.equal(0)
     })
   })
 

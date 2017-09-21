@@ -120,12 +120,12 @@ chai.use(function (_, utils) {
 
   Assertion.addChainableMethod('from', function (expected) {
     expect(utils.flag(this, 'object'))
-      .to.have.deep.property('values[0].values').and.eql(expected)
+      .to.have.nested.property('values[0].values').and.eql(expected)
   })
 
   Assertion.addChainableMethod('through', function (expected) {
     expect(utils.flag(this, 'object'))
-      .to.have.deep.property('values[1].values').and.eql(expected)
+      .to.have.nested.property('values[1].values').and.eql(expected)
   })
 
   Assertion.addProperty('rejected', function () {
