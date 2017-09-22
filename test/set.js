@@ -39,5 +39,16 @@ describe('Set', () => {
       expect(new Set([['2016', '2018']]).edtf).to.eql('[2016..2018]')
     })
   })
+
+  describe('precision', () => {
+    it('supports varying precisions', () => {
+      expect(new Set('[1984,1985-10-01]').values.map(d => d.precision))
+        .to.eql([1, 3])
+      expect(new Set('[1984,1985-10-01..]').values.map(d => d.precision))
+        .to.eql([1, 3])
+      expect(new Set('[..1984,1985-10-01..]').values.map(d => d.precision))
+        .to.eql([1, 3])
+    })
+  })
 })
 
