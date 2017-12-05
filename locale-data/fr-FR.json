@@ -1,0 +1,16 @@
+{
+  "locale": "fr-FR",
+
+  "date": {
+    "approximate": {
+      "long": "circa %D",
+      "medium": "ca. %D",
+      "short": "c. %D"
+    },
+    "uncertain": {
+      "long": "%D (?)",
+      "medium": "%D (?)",
+      "short": "%D (?)"
+    }
+  }
+}
