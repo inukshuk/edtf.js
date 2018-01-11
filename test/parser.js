@@ -531,6 +531,13 @@ describe('parser', () => {
       expect(() => p('{1760..}')).to.be.rejected)
   })
 
+  describe('Level 3 (Non-Standard)', () => {
+    it.only('YYYY-SS/YYYY-SS', () =>
+      expect(p('2018-21/2018-23', { level: 3 }))
+        .to.be.an.interval.through([2018, 23]).at.level(3))
+
+  })
+
   describe('constrain', () => {
     it('by type', () => {
       expect(p('[1760..]', { types: ['List', 'Set'] }))
@@ -552,7 +559,8 @@ describe('parser', () => {
       expect(p('1800/1X01', { level: 2, types: ['Interval'] }))
         .to.be.an.interval.at.level(2)
 
-      expect(() => p('1800/1X01', { level: 2, types: ['Date'] })).to.be.rejected
+      expect(() => p('1800/1X01', { level: 2, types: ['Date'] }))
+        .to.be.rejected
       expect(() => p('1800/1X01', { level: 1, types: ['Interval'] }))
         .to.be.rejected
     })

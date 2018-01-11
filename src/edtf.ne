@@ -17,6 +17,7 @@
 edtf -> L0 {% id %}
       | L1 {% id %}
       | L2 {% id %}
+      | L3 {% id %}
 
 
 # --- EDTF Level 0 / ISO 8601-1 ---
@@ -251,6 +252,21 @@ consecutives
   -> year_month_day ".." year_month_day {% d => [date(d[0]), date(d[2])] %}
    | year_month ".." year_month         {% d => [date(d[0]), date(d[2])] %}
    | year ".." year                     {% d => [date([d[0]]), date([d[2]])] %}
+
+
+# --- Level 3 / Non-Standard Features ---
+
+L3 -> L3i        {% id %}
+
+L3i -> L3S "/" L3S       {% interval(3) %}
+     | L3S "/" L3i_date  {% interval(3) %}
+     | L3i_date "/" L3S  {% interval(3) %}
+
+L3i_date -> date_time {% id %}
+          | L2i_date  {% id %}
+
+L3S -> L1S {% id %}
+     | L2S {% id %}
 
 
 # --- Base Definitions ---
