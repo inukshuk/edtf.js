@@ -250,7 +250,7 @@ var grammar = {
     {"name": "consecutives$string$3", "symbols": [{"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "consecutives", "symbols": ["year", "consecutives$string$3", "year"], "postprocess": d => [date([d[0]]), date([d[2]])]},
     {"name": "L3", "symbols": ["L3i"], "postprocess": id},
-    {"name": "L3i", "symbols": ["L1S", {"literal":"/"}, "L1S"], "postprocess": interval(3)},
+    {"name": "L3i", "symbols": ["L3S", {"literal":"/"}, "L3S"], "postprocess": interval(3)},
     {"name": "L3i", "symbols": ["L3S", {"literal":"/"}, "L3i_date"], "postprocess": interval(3)},
     {"name": "L3i", "symbols": ["L3i_date", {"literal":"/"}, "L3S"], "postprocess": interval(3)},
     {"name": "L3i_date", "symbols": ["date_time"], "postprocess": id},
