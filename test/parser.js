@@ -532,7 +532,7 @@ describe('parser', () => {
   })
 
   describe('Level 3 (Non-Standard)', () => {
-    it.only('YYYY-SS/YYYY-SS', () =>
+    it('YYYY-SS/YYYY-SS', () =>
       expect(p('2018-21/2018-23', { level: 3 }))
         .to.be.an.interval.through([2018, 23]).at.level(3))
 
