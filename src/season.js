@@ -185,7 +185,11 @@ function validate(season) {
 
 function inc(year, season, by, base, size) {
   const m = (season + by) - base
-  return [year + Math.floor(m / size), validate(base + (m % size + size) % size)]
+
+  return [
+    year + Math.floor(m / size),
+    validate(base + (m % size + size) % size)
+  ]
 }
 
 module.exports = Season

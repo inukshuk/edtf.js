@@ -4,6 +4,7 @@ const assert = require('assert')
 const ExtDate = require('./date')
 const ExtDateTime = require('./interface')
 const Season = require('./season')
+
 const V = new WeakMap()
 
 
@@ -15,7 +16,8 @@ class Interval extends ExtDateTime {
 
     switch (args.length) {
     case 2:
-      [this.lower, this.upper] = args
+      this.lower = args[0]
+      this.upper = args[1]
       break
 
     case 1:
@@ -37,7 +39,8 @@ class Interval extends ExtDateTime {
           assert(obj.values)
           assert(obj.values.length < 3)
 
-          ;[this.lower, this.upper] = obj.values
+          this.lower = obj.values[0]
+          this.upper = obj.values[1]
 
           this.earlier = obj.earlier
           this.later = obj.later
