@@ -4,7 +4,7 @@ const Bitmask = require('./src/bitmask')
 const types = require('./src/types')
 
 const { sample } = require('./src/sample')
-const { parse } = require('./src/parser')
+const { parse, defaults } = require('./src/parser')
 const { format } = require('./src/format')
 
 const { assign, keys } = Object
@@ -23,6 +23,7 @@ function edtf(...args) {
 
 module.exports = assign(edtf, types, {
   Bitmask,
+  defaults,
   parse,
   sample,
   format,
