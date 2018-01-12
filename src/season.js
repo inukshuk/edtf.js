@@ -61,14 +61,36 @@ class Season extends ExtDateTime {
   }
 
   set season(season) {
-    return this.values[1] = Number(season)
+    return validate(this.values[1] = Number(season))
   }
 
   get values() {
     return V.get(this)
   }
 
-  // TODO next/prev
+  next(k = 1) {
+    let { season, year } = this
+
+    switch (true) {
+    case (season >= 21 && season <= 36):
+      [year, season] = inc(year, season, k, season - (season - 21) % 4, 4)
+      break
+    case (season >= 37 && season <= 39):
+      [year, season] = inc(year, season, k, 37, 3)
+      break
+    case (season >= 40 && season <= 41):
+      [year, season] = inc(year, season, k, 40, 2)
+      break
+    default:
+      throw new RangeError(`Cannot compute next/prev for season ${season}`)
+    }
+
+    return new Season(year, season)
+  }
+
+  prev(k = 1) {
+    return this.next(-k)
+  }
 
   get min() { // eslint-disable-line complexity
     switch (this.season) {
@@ -153,6 +175,17 @@ class Season extends ExtDateTime {
   toEDTF() {
     return `${this.year < 0 ? '-' : ''}${pad(this.year)}-${this.season}`
   }
+}
+
+function validate(season) {
+  if (isNaN(season) || season < 21 || season === Infinity)
+    throw new RangeError(`invalid division of year: ${season}`)
+  return season
+}
+
+function inc(year, season, by, base, size) {
+  const m = (season + by) - base
+  return [year + Math.floor(m / size), validate(base + (m % size + size) % size)]
 }
 
 module.exports = Season

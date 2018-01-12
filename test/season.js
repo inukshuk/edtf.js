@@ -20,6 +20,24 @@ describe('Season', () => {
     })
   })
 
+  describe('.next', () => {
+    it('positive', () => {
+      expect(new Season(2018, 21).next().toEDTF()).to.eql('2018-22')
+      expect(new Season(2018, 21).next(2).toEDTF()).to.eql('2018-23')
+      expect(new Season(2018, 21).next(3).toEDTF()).to.eql('2018-24')
+      expect(new Season(2018, 21).next(4).toEDTF()).to.eql('2019-21')
+      expect(new Season(2018, 25).next(9).toEDTF()).to.eql('2020-26')
+    })
+
+    it('negative', () => {
+      expect(new Season(2018, 24).next(-1).toEDTF()).to.eql('2018-23')
+      expect(new Season(2018, 24).next(-2).toEDTF()).to.eql('2018-22')
+      expect(new Season(2018, 24).next(-3).toEDTF()).to.eql('2018-21')
+      expect(new Season(2018, 24).next(-4).toEDTF()).to.eql('2017-24')
+      expect(new Season(2018, 24).next(-9).toEDTF()).to.eql('2016-23')
+    })
+  })
+
   describe('.edtf', () => {
     it('default', () =>
       expect(new Season().edtf).to.match(/^\d\d\d\d-21$/))

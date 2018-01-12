@@ -74,9 +74,14 @@ describe('Interval', () => {
       expect(S80.toEDTF()).to.be.eql('1980-21/1980-24')
     })
 
-    //it('includes', () => {
-    //  expect(S80.includes(new Date(1980, 8))).to.be.true
-    //  expect(S80.includes(new Season(1980, 22))).to.be.true
-    //})
+    it('.covers', () => {
+      expect(S80.covers(new Season(1980, 22))).to.be.true
+      expect(S80.covers(new Date(1980, 8))).to.be.true
+    })
+
+    it('.includes', () => {
+      expect(S80.includes(new Season(1980, 22))).to.be.true
+      expect(S80.includes(new Date(1980, 8))).to.be.false
+    })
   })
 })
