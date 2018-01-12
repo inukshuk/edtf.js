@@ -10,7 +10,8 @@
     "coverage": "istanbul cover _mocha",
     "prepare": "npm run compile",
     "pretest": "npm run lint",
-    "test": "mocha"
+    "test": "mocha",
+    "debug": "node inspect $(npm bin)/_mocha"
   },
   "repository": {
     "type": "git",

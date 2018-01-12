@@ -23,6 +23,7 @@ rules:
   max-nested-callbacks: [1, 4]
   new-parens: 2
   no-caller: 2
+  no-debugger: 1
   no-eval: 2
   no-implied-eval: 2
   no-loop-func: 2
