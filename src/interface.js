@@ -81,7 +81,6 @@ class ExtDateTime {
     return 0
   }
 
-
   includes(other) {
     let covered = this.covers(other)
     if (!covered || !this[Symbol.iterator]) return covered
@@ -91,6 +90,31 @@ class ExtDateTime {
     }
 
     return false
+  }
+
+  *until(then) {
+    yield this
+    if (this.compare(then)) yield* this.between(then)
+  }
+
+  *through(then) {
+    yield* this.until(then)
+    if (this.compare(then)) yield then
+  }
+
+  *between(then) {
+    then = this.constructor.from(then)
+
+    let cur = this
+    let dir = this.compare(then)
+
+    if (!dir) return
+
+    for (;;) {
+      cur = cur.next(-dir)
+      if (cur.compare(then) !== dir) break
+      yield cur
+    }
   }
 }
 
