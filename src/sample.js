@@ -87,6 +87,7 @@ module.exports = {
 
     return output
       .join('')
-      .replace(/ +/g, '') // filter excessive whitespace
+      .replace(/ +/g, '')       // remove excessive whitespace
+      .replace(/-0000/, '0000') // filter negative year zero
   }
 }
