@@ -24,13 +24,27 @@ the following exceptions (as raised by the EDTF community):
    by "One of a Set", e.g., `[1760-12..]` which means "December 1760
    or some later month."
 
-### ES6
-EDTF.js is written in ES6 and therefore requires Node.js 6+ or a modern
-browser. For Node.js 4/5 use the appropriate `--harmony` flags as necessary.
+3. Seasons in intervals are supported at the experimental/non-standard
+   level 3.
 
+### ES6
+EDTF.js is written as a standard Nodes.js / CommonJS module using many ES6
+features. It therefore requires Node.js 6 or later (for Nodes.js 4/5 use the
+appropriate `--harmony` flags as necessary).
+
+### Bundling using RollUp
+To bundle EDTF.js with RollUp you'll need to enable the following plugins
+
+* rollup-plugin-json
+* rollup-plugin-node-resolve
+* rollup-plugin-commonjs
+* rollup-plugin-node-globals (optional)
+* rollup-plugin-node-builtins (optional)
+
+The last two are optional; you need them only if you want to include Node.js
+`assert` in your bundle.
 
 ## Installation
-
     $ npm install edtf
 
 
