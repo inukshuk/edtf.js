@@ -1,6 +1,6 @@
 'use strict'
 
-const { Interval, Date } = require('..')
+const { Interval, Date, Season } = require('..')
 
 describe('Interval', () => {
 
@@ -61,5 +61,22 @@ describe('Interval', () => {
   describe('.edtf', () => {
     it('default', () =>
       expect(new Interval().edtf).to.eql('/'))
+  })
+
+  describe('seasons (non-standard)', () => {
+    const S80 = new Interval('1980-21', '1980-24')
+
+    it('.lower', () => {
+      expect(S80.lower).to.be.instanceof(Season)
+    })
+
+    it('.edtf', () => {
+      expect(S80.toEDTF()).to.be.eql('1980-21/1980-24')
+    })
+
+    //it('includes', () => {
+    //  expect(S80.includes(new Date(1980, 8))).to.be.true
+    //  expect(S80.includes(new Season(1980, 22))).to.be.true
+    //})
   })
 })

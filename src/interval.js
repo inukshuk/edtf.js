@@ -3,7 +3,7 @@
 const assert = require('assert')
 const ExtDate = require('./date')
 const ExtDateTime = require('./interface')
-
+const Season = require('./season')
 const V = new WeakMap()
 
 
@@ -68,7 +68,7 @@ class Interval extends ExtDateTime {
     if (value === Infinity || value === -Infinity)
       return this.values[1] = Infinity
 
-    value = ExtDate.from(value)
+    value = getDateOrSeasonFrom(value)
 
     if (value >= this.upper && this.upper != null)
       throw new RangeError(`invalid lower bound: ${value}`)
@@ -87,7 +87,7 @@ class Interval extends ExtDateTime {
     if (value === Infinity)
       return this.values[1] = Infinity
 
-    value = ExtDate.from(value)
+    value = getDateOrSeasonFrom(value)
 
     if (value <= this.lower)
       throw new RangeError(`invalid upper bound: ${value}`)
@@ -127,6 +127,14 @@ class Interval extends ExtDateTime {
         return v.edtf
       })
       .join('/')
+  }
+}
+
+function getDateOrSeasonFrom(value) {
+  try {
+    return ExtDate.from(value)
+  } catch (de) {
+    return Season.from(value)
   }
 }
 
