@@ -1,7 +1,7 @@
-// Generated automatically by nearley
+// Generated automatically by nearley, version 2.11.1
 // http://github.com/Hardmath123/nearley
 (function () {
-function id(x) {return x[0]; }
+function id(x) { return x[0]; }
 
   const {
     num, zero, nothing, pick, pluck, join, concat, merge, century,
@@ -251,10 +251,6 @@ var grammar = {
     {"name": "consecutives", "symbols": ["year", "consecutives$string$3", "year"], "postprocess": d => [date([d[0]]), date([d[2]])]},
     {"name": "L3", "symbols": ["L3i"], "postprocess": id},
     {"name": "L3i", "symbols": ["L3S", {"literal":"/"}, "L3S"], "postprocess": interval(3)},
-    {"name": "L3i", "symbols": ["L3S", {"literal":"/"}, "L3i_date"], "postprocess": interval(3)},
-    {"name": "L3i", "symbols": ["L3i_date", {"literal":"/"}, "L3S"], "postprocess": interval(3)},
-    {"name": "L3i_date", "symbols": ["date_time"], "postprocess": id},
-    {"name": "L3i_date", "symbols": ["L2i_date"], "postprocess": id},
     {"name": "L3S", "symbols": ["L1S"], "postprocess": id},
     {"name": "L3S", "symbols": ["L2S"], "postprocess": id},
     {"name": "digit", "symbols": ["positive_digit"], "postprocess": id},

@@ -536,17 +536,11 @@ describe('parser', () => {
       expect(p('2018-21/2018-23', { level: 3 }))
         .to.be.an.interval.through([2018, 23]).at.level(3))
 
-    it('YYYY/YYYY-SS', () =>
-      expect(p('2018/2018-23', { level: 3 }))
-        .to.be.an.interval.through([2018, 23]).at.level(3))
-
-    it('YYYY-SS/YYYY-MM-DD', () =>
-      expect(p('2018-21/2017-01-01', { level: 3 }))
-        .to.be.an.interval.from([2018, 21]).at.level(3))
-
-    it('YYYY-01?/YYYY-SS', () =>
-      expect(p('2018-01?/2018-23', { level: 3 }))
-        .to.be.an.interval.through([2018, 23]).at.level(3))
+    it('rejects mixed intervals', () => {
+      expect(() => p('2018/2018-23', { level: 3 })).to.be.rejected
+      expect(() => p('2018-21/2017-01-01', { level: 3 })).to.be.rejected
+      expect(() => p('2018-01?/2018-23', { level: 3 })).to.be.rejected
+    })
   })
 
   describe('constrain', () => {

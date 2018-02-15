@@ -259,11 +259,6 @@ consecutives
 L3 -> L3i        {% id %}
 
 L3i -> L3S "/" L3S       {% interval(3) %}
-     | L3S "/" L3i_date  {% interval(3) %}
-     | L3i_date "/" L3S  {% interval(3) %}
-
-L3i_date -> date_time {% id %}
-          | L2i_date  {% id %}
 
 L3S -> L1S {% id %}
      | L2S {% id %}
