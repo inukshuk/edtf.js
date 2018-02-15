@@ -5,6 +5,7 @@ const locale = {}
 locale.en = require('./en-US.json')
 locale.de = require('./de-DE.json')
 locale.fr = require('./fr-FR.json')
+locale.ja = require('./ja-JA.json')
 
 alias('en', 'AU', 'CA', 'GB', 'NZ', 'SA', 'US')
 alias('de', 'AT', 'CH', 'DE')

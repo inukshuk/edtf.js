@@ -1,0 +1,16 @@
+{
+  "locale": "ja-JA",
+
+  "date": {
+    "approximate": {
+      "long": "%D年頃",
+      "medium": "%D年頃",
+      "short": "%D年頃"
+    },
+    "uncertain": {
+      "long": "%D (?)",
+      "medium": "%D (?)",
+      "short": "%D (?)"
+    }
+  }
+}
