@@ -3,14 +3,14 @@
 
   "date": {
     "approximate": {
-      "long": "%D年頃",
-      "medium": "%D年頃",
-      "short": "%D年頃"
+      "long": "%D頃",
+      "medium": "%D頃",
+      "short": "%D頃"
     },
     "uncertain": {
-      "long": "%D (?)",
-      "medium": "%D (?)",
-      "short": "%D (?)"
+      "long": "%D頃",
+      "medium": "%D頃",
+      "short": "%D頃"
     }
   }
 }
