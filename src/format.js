@@ -18,25 +18,57 @@ const DEFAULTS = [
   assign({}, noTime),
 ]
 
+
+function getCacheId(...args) {
+  let id = []
+
+  for (let arg of args) {
+    if (arg && typeof arg === 'object') {
+      id.push(getOrderedProps(arg))
+    } else {
+      id.push(arg)
+    }
+  }
+
+  return JSON.stringify(id)
+
+}
+
+function getOrderedProps(obj) {
+  let props = []
+  let keys = Object.getOwnPropertyNames(obj)
+
+  for (let key of keys.sort()) {
+    props.push({ [key]: obj[key] })
+  }
+
+  return props
+}
+
 function getFormat(date, locale, options) {
-  const defaults = {}
+  let opts = {}
 
   switch (date.precision) {
   case 3:
-    defaults.day = 'numeric'
+    opts.day = 'numeric'
     // eslint-disable-next-line no-fallthrough
   case 2:
-    defaults.month = 'numeric'
+    opts.month = 'numeric'
     // eslint-disable-next-line no-fallthrough
   case 1:
-    defaults.year = 'numeric'
+    opts.year = 'numeric'
     break
   }
 
-  return new Intl.DateTimeFormat(
-    locale,
-    assign(defaults, options, DEFAULTS[date.precision])
-  )
+  assign(opts, options, DEFAULTS[date.precision])
+
+  let id = getCacheId(locale, opts)
+
+  if (!format.cache.has(id)) {
+    format.cache.set(id, new Intl.DateTimeFormat(locale, opts))
+  }
+
+  return format.cache.get(id)
 }
 
 function getPatternsFor(fmt) {
@@ -58,6 +90,18 @@ function isDMY(type) {
   return type === 'day' || type === 'month' || type === 'year'
 }
 
+function mask(date, parts) {
+  let string = ''
+
+  for (let { type, value } of parts) {
+    string += (isDMY(type) && date.unspecified.is(type)) ?
+      value.replace(/./g, 'X') :
+      value
+  }
+
+  return string
+}
+
 function format(date, locale = 'en-US', options = {}) {
   const fmt = getFormat(date, locale, options)
   const pat = getPatternsFor(fmt)
@@ -66,18 +110,10 @@ function format(date, locale = 'en-US', options = {}) {
     return fmt.format(date)
   }
 
-  let string = ''
+  let string = (!date.unspecified.value || !fmt.formatToParts) ?
+    fmt.format(date) :
+    mask(date, fmt.formatToParts(date))
 
-  if (date.unspecified.value && typeof fmt.formatToParts === 'function') {
-    for (let { type, value } of fmt.formatToParts(date)) {
-      string += (isDMY(type) && date.unspecified.is(type)) ?
-        value.replace(/./g, 'X') :
-        value
-    }
-
-  } else {
-    string = fmt.format(date)
-  }
 
   if (date.approximate.value) {
     string = pat.approximate.replace('%D', string)
@@ -89,6 +125,8 @@ function format(date, locale = 'en-US', options = {}) {
 
   return string
 }
+
+format.cache = new Map()
 
 
 module.exports = {
