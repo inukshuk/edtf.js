@@ -1,3 +1,7 @@
+2.4.0 / 2018-11-12
+==================
+  * Add DateTimeFormat cache
+
 2.2.0 / 2017-09-06
 ==================
   * Implement date formatting (non-standard)
@@ -6,6 +10,7 @@
 ==================
   * Support negative masked dates
   * Support negative masked years
+
 2.0.0 / 2016-08-17
 ==================
   * Rename until() -> through() [#4]
