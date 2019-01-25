@@ -87,16 +87,16 @@ timezone -> "Z"                 {% zero %}
           | "+" positive_offset {% pick(1) %}
 
 positive_offset
-  -> offset                  {% id %}
-   | "00:00"                 {% zero %}
-   | ("12"|"13") ":" minutes {% data => num(data[0]) * 60 + data[2] %}
-   | "14:00"                 {% () => 840 %}
-   | d00_14                  {% data => num(data[0]) * 60 %}
+  -> offset                    {% id %}
+   | "00" ":":? "00"           {% zero %}
+   | ("12"|"13") ":":? minutes {% data => num(data[0]) * 60 + data[2] %}
+   | "14" ":":? "00"           {% () => 840 %}
+   | d00_14                    {% data => num(data[0]) * 60 %}
 
-offset -> d01_11 ":" minutes {% data => num(data[0]) * 60 + data[2] %}
-        | "00:" d01_59       {% data => num(data[1]) %}
-        | "12:00"            {% () => 720 %}
-        | d01_12             {% data => num(data[0]) * 60 %}
+offset -> d01_11 ":":? minutes {% data => num(data[0]) * 60 + data[2] %}
+        | "00" ":":? d01_59    {% data => num(data[2]) %}
+        | "12" ":":? "00"      {% () => 720 %}
+        | d01_12               {% data => num(data[0]) * 60 %}
 
 
 # --- EDTF / ISO 8601-2 Level 1 ---
