@@ -83,7 +83,7 @@ milliseconds -> null
               | "." d3 {% data => num(data.slice(1)) %}
 
 timezone -> "Z"                 {% zero %}
-          | "-" offset          {% data => -data[1] %}
+          | ("-"|"−") offset    {% data => -data[1] %}
           | "+" positive_offset {% pick(1) %}
 
 positive_offset
