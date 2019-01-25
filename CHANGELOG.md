@@ -1,3 +1,9 @@
+2.5.0 / 2019-01-23
+==================
+  * Support timezone offset without colon
+  * Support negative timezone offset with minus sign
+  * Use system timezone when given time without offset
+
 2.4.0 / 2018-11-12
 ==================
   * Add DateTimeFormat cache
