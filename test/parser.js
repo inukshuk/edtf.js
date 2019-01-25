@@ -59,6 +59,9 @@ describe('parser', () => {
       expect(() => p('2016-05-02T24:00:01')).to.be.rejected
       expect(() => p('2016-05-02T00:61:00')).to.be.rejected
       expect(() => p('2016-05-02T01:01:60')).to.be.rejected
+
+      expect(p('2016-05-02T16:54:59'))
+        .to.have.property('offset', new Date().getTimezoneOffset())
     })
 
     it('YYYY-MM-DDThh:mm:ss.sss', () =>

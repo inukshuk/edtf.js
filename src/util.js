@@ -98,9 +98,12 @@ const util = {
   },
 
   datetime(data) {
+    let offset = data[3]
+    if (offset == null) offset = new Date().getTimezoneOffset()
+
     return {
       values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),
-      offset: data[3],
+      offset,
       type: 'Date',
       level: 0
     }
