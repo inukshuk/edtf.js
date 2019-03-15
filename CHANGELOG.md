@@ -1,3 +1,7 @@
+2.6.0 / 2019-03-15
+==================
+  * Accept ISO times with missing seconds
+
 2.5.0 / 2019-01-23
 ==================
   * Support timezone offset without colon
