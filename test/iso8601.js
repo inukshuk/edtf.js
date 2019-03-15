@@ -41,6 +41,8 @@ describe('ISO 8601-1', () => {
       .to.have.ymd([1900, 0, 1]).and.hms([0, 0, 0])
     expect(edtf('1900-01-01T00:00:00Z'))
       .to.have.ymd([1900, 0, 1]).and.hms([0, 0, 0])
+    expect(edtf('1899-12-31T24:00Z'))
+      .to.have.ymd([1900, 0, 1]).and.hms([0, 0, 0])
 
     expect(edtf('-0001-12-31T23:59:59Z'))
       .to.have.ymd([-1, 11, 31]).and.hms([23, 59, 59])
@@ -61,6 +63,16 @@ describe('ISO 8601-1', () => {
     expect(edtf('2000-01-01T00:00:00Z'))
       .to.have.ymd([2000, 0, 1]).and.hms([0, 0, 0])
   })
+
+  it('YYYY-MM-DDTHH:MM', () =>
+    expect(edtf('2014-12-08T11:46'))
+      .to.have.ymd([2014, 11, 8]).and.hms([11 + H, 46 + M, 0]))
+  it('YYYY-MM-DDTHH:MMZ', () =>
+    expect(edtf('2014-12-08T11:46Z'))
+      .to.have.ymd([2014, 11, 8]).and.hms([11, 46, 0]))
+  it('YYYY-MM-DDTHH:MM+02:00', () =>
+    expect(edtf('2014-12-08T11:46-02:00'))
+      .to.have.ymd([2014, 11, 8]).and.hms([9, 46, 0]))
 
   it('YYYY-MM-DDTHH:MM:SS.sss', () =>
     expect(edtf('2014-12-08T11:46:42.123'))
