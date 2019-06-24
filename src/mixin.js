@@ -3,6 +3,7 @@
 const keys = Reflect.ownKeys.bind(Reflect)
 const descriptor = Object.getOwnPropertyDescriptor.bind(Object)
 const define = Object.defineProperty.bind(Object)
+const has = Object.prototype.hasOwnProperty
 
 function mixin(target, ...mixins) {
   for (let source of mixins) {
@@ -15,7 +16,7 @@ function mixin(target, ...mixins) {
 
 function inherit(target, source) {
   for (let key of keys(source)) {
-    if (!target.hasOwnProperty(key)) {
+    if (!has.call(target, key)) {
       define(target, key, descriptor(source, key))
     }
   }
