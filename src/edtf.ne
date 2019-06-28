@@ -150,6 +150,7 @@ L2 -> L2d        {% id %}
     | L2Y        {% id %}
     | L2S        {% id %}
     | L2D        {% id %}
+    | L2C        {% id %}
     | L2i        {% id %}
     | set        {% id %}
     | list       {% id %}
@@ -159,6 +160,9 @@ L2d -> ua_date   {% id %}
 
 L2D -> decade    {% id %}
      | decade UA {% merge(0, 1) %}
+
+L2C -> century    {% id %}
+     | century UA {% merge(0, 1, {level: 2}) %}
 
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified

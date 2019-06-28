@@ -3,6 +3,13 @@
 const { Decade } = require('..')
 
 describe('Decade', () => {
+  describe('getters', () => {
+    it('certain', () => {
+      expect(new Decade({ values: [201], uncertain: true }).uncertain)
+        .to.eql(true)
+      expect(new Decade({ values: [201] }).uncertain).to.eql(false)
+    })
+  })
 
   describe('bounds', () => {
     it('min', () => {
@@ -32,6 +39,11 @@ describe('Decade', () => {
     it('DDD~', () => {
       expect(new Decade({ values: [198], approximate: true }).edtf)
         .to.eql('198~')
+    })
+
+    it('DDD?', () => {
+      expect(new Decade({ values: [198], uncertain: true }).edtf)
+        .to.eql('198?')
     })
   })
 })
