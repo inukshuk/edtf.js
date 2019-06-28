@@ -154,7 +154,7 @@ var grammar = {
     {"name": "L2D", "symbols": ["decade"], "postprocess": id},
     {"name": "L2D", "symbols": ["decade", "UA"], "postprocess": merge(0, 1)},
     {"name": "L2C", "symbols": ["century"], "postprocess": id},
-    {"name": "L2C", "symbols": ["century", "UA"], "postprocess": merge(0, 1)},
+    {"name": "L2C", "symbols": ["century", "UA"], "postprocess": merge(0, 1, {level: 2})},
     {"name": "ua_date", "symbols": ["ua_year"], "postprocess": qualify},
     {"name": "ua_date", "symbols": ["ua_year_month"], "postprocess": qualify},
     {"name": "ua_date", "symbols": ["ua_year_month_day"], "postprocess": qualify},
