@@ -130,7 +130,7 @@ chai.use(function (_, utils) {
 
   Assertion.addProperty('rejected', function () {
     expect(utils.flag(this, 'object'))
-      .to.throw(/(invalid syntax)|(no possible parsings)/i)
+      .to.throw(/(invalid syntax)|(no possible parsings)|was expecting to see/i)
   })
 
   Assertion.addChainableMethod('uncertain', bitmask('uncertain'))
