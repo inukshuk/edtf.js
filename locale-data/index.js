@@ -3,6 +3,7 @@
 const locale = {}
 
 locale.en = require('./en-US.json')
+locale.es = require('./es-ES.json')
 locale.de = require('./de-DE.json')
 locale.fr = require('./fr-FR.json')
 locale.it = require('./it-IT.json')
