@@ -73,6 +73,7 @@ describe('Date', () => {
 
       expect(date.next().edtf).to.eql('202X')
       expect(date.next().next().edtf).to.eql('203X')
+      expect(date.next().prev().edtf).to.eql('201X')
     })
 
     it('-YYYX', () => {
@@ -83,6 +84,7 @@ describe('Date', () => {
 
       expect(date.next().edtf).to.eql('-200X')
       expect(date.next().next().edtf).to.eql('-199X')
+      expect(date.next().prev().edtf).to.eql('-201X')
     })
   })
 
@@ -95,6 +97,7 @@ describe('Date', () => {
 
       expect(date.prev().edtf).to.eql('200X')
       expect(date.prev().prev().edtf).to.eql('199X')
+      expect(date.prev().next().edtf).to.eql('201X')
     })
 
     it('-YYYX', () => {
@@ -105,6 +108,7 @@ describe('Date', () => {
 
       expect(date.prev().edtf).to.eql('-202X')
       expect(date.prev().prev().edtf).to.eql('-203X')
+      expect(date.prev().next().edtf).to.eql('-201X')
     })
   })
 
