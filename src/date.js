@@ -183,7 +183,9 @@ class Date extends global.Date {
     let { values, unspecified, uncertain, approximate } = this
 
     if (unspecified.value) {
-      values = unspecified.max(values.map(Date.pad))
+      values = k > 0 ?
+        unspecified.max(values.map(Date.pad)) :
+        unspecified.min(values.map(Date.pad))
     }
 
     values.push(values.pop() + k)
