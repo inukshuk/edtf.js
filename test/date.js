@@ -74,6 +74,16 @@ describe('Date', () => {
       expect(date.next().edtf).to.eql('202X')
       expect(date.next().next().edtf).to.eql('203X')
     })
+
+    it('-YYYX', () => {
+      let date = new Date({
+        values: [-2010],
+        unspecified: 8
+      })
+
+      expect(date.next().edtf).to.eql('-200X')
+      expect(date.next().next().edtf).to.eql('-199X')
+    })
   })
 
   describe('.prev()', () => {
@@ -85,6 +95,16 @@ describe('Date', () => {
 
       expect(date.prev().edtf).to.eql('200X')
       expect(date.prev().prev().edtf).to.eql('199X')
+    })
+
+    it('-YYYX', () => {
+      let date = new Date({
+        values: [-2010],
+        unspecified: 8
+      })
+
+      expect(date.prev().edtf).to.eql('-202X')
+      expect(date.prev().prev().edtf).to.eql('-203X')
     })
   })
 
