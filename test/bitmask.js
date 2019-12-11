@@ -65,6 +65,52 @@ describe('Bitmask', () => {
     })
   })
 
+  describe('.min()', () => {
+    it('year', () => {
+      expect(new Bitmask().min(['2016'])).to.eql([2016])
+      expect(new Bitmask('year').min(['2016'])).to.eql([0])
+      expect(new Bitmask('yxyxmmdd').min(['2016'])).to.eql([2010])
+    })
+
+    it('month', () => {
+      expect(new Bitmask().min(['2019', '11'])).to.eql([2019, 10])
+      expect(new Bitmask('yyyyxxdd').min(['2019', '11'])).to.eql([2019, 0])
+
+      expect(new Bitmask('yyyymxdd').min(['2019', '09'])).to.eql([2019, 0])
+      expect(new Bitmask('yyyymxdd').min(['2019', '10'])).to.eql([2019, 9])
+      expect(new Bitmask('yyyymxdd').min(['2019', '11'])).to.eql([2019, 9])
+      expect(new Bitmask('yyyymxdd').min(['2019', '12'])).to.eql([2019, 9])
+
+      expect(new Bitmask('yyyyxmdd').min(['2019', '03'])).to.eql([2019, 0])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '12'])).to.eql([2019, 0])
+    })
+
+    it('day', () => {
+      expect(new Bitmask().min(['2019', '01', '11']))
+        .to.eql([2019, 0, 11])
+      expect(new Bitmask('yyyymmxx').min(['2019', '01', '03']))
+        .to.eql([2019, 0, 1])
+      expect(new Bitmask('yyyymmxx').min(['2019', '01', '13']))
+        .to.eql([2019, 0, 1])
+      expect(new Bitmask('yyyymmxx').min(['2019', '01', '31']))
+        .to.eql([2019, 0, 1])
+      expect(new Bitmask('yyyymmdx').min(['2019', '01', '03']))
+        .to.eql([2019, 0, 1])
+      expect(new Bitmask('yyyymmdx').min(['2019', '01', '13']))
+        .to.eql([2019, 0, 10])
+      expect(new Bitmask('yyyymmdx').min(['2019', '01', '31']))
+        .to.eql([2019, 0, 30])
+      expect(new Bitmask('yyyymmxd').min(['2019', '01', '03']))
+        .to.eql([2019, 0, 3])
+      expect(new Bitmask('yyyymmxd').min(['2019', '01', '13']))
+        .to.eql([2019, 0, 3])
+      expect(new Bitmask('yyyymmxd').min(['2019', '01', '31']))
+        .to.eql([2019, 0, 1])
+      expect(new Bitmask('yyyymmxd').min(['2019', '01', '30']))
+        .to.eql([2019, 0, 1])
+    })
+  })
+
   describe('.test()', () => {
     it('true', () => {
       expect(Bitmask.test(true, true)).to.be.ok

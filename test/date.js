@@ -49,6 +49,7 @@ describe('Date', () => {
     it('YYYY', () => {
       expect(new Date([1980]).next().edtf).to.eql('1981')
       expect(new Date([-1]).next().edtf).to.eql('0000')
+      expect(new Date([-2019]).next().edtf).to.eql('-2018')
     })
 
     it('YYYY-MM', () => {
@@ -62,6 +63,52 @@ describe('Date', () => {
       expect(new Date([-1, 11, 31]).next().edtf).to.eql('0000-01-01')
       expect(new Date([2016, 1, 28]).next().edtf).to.eql('2016-02-29')
       expect(new Date([2015, 1, 28]).next().edtf).to.eql('2015-03-01')
+    })
+
+    it('YYYX', () => {
+      let date = new Date({
+        values: [2010],
+        unspecified: 8
+      })
+
+      expect(date.next().edtf).to.eql('202X')
+      expect(date.next().next().edtf).to.eql('203X')
+      expect(date.next().prev().edtf).to.eql('201X')
+    })
+
+    it('-YYYX', () => {
+      let date = new Date({
+        values: [-2010],
+        unspecified: 8
+      })
+
+      expect(date.next().edtf).to.eql('-200X')
+      expect(date.next().next().edtf).to.eql('-199X')
+      expect(date.next().prev().edtf).to.eql('-201X')
+    })
+  })
+
+  describe('.prev()', () => {
+    it('YYYX', () => {
+      let date = new Date({
+        values: [2010],
+        unspecified: 8
+      })
+
+      expect(date.prev().edtf).to.eql('200X')
+      expect(date.prev().prev().edtf).to.eql('199X')
+      expect(date.prev().next().edtf).to.eql('201X')
+    })
+
+    it('-YYYX', () => {
+      let date = new Date({
+        values: [-2010],
+        unspecified: 8
+      })
+
+      expect(date.prev().edtf).to.eql('-202X')
+      expect(date.prev().prev().edtf).to.eql('-203X')
+      expect(date.prev().next().edtf).to.eql('-201X')
     })
   })
 

@@ -9,7 +9,7 @@ const PATTERN = /^[0-9xXdDmMyY]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
 const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-const { pow, max, min } = Math
+const { floor, pow, max, min } = Math
 
 
 /**
@@ -125,7 +125,8 @@ class Bitmask {
     })
   }
 
-  max([year, month, day]) { // eslint-disable-line complexity
+  // eslint-disable-next-line complexity
+  max([year, month, day]) {
     if (!year) return []
 
     year = Number(
@@ -176,6 +177,47 @@ class Bitmask {
 
     if (month === 1 && day > 28 && !leap(year)) {
       day = 28
+    }
+
+    return [year, month, day]
+  }
+
+  // eslint-disable-next-line complexity
+  min([year, month, day]) {
+    if (!year) return []
+
+    year = Number(
+      (this.test(Bitmask.YEAR)) ? this.masks([year], '0')[0] : year
+    )
+
+    if (!month) return [year]
+
+    month = Number(month) - 1
+
+    switch (this.test(Bitmask.MONTH)) {
+    case Bitmask.MONTH:
+    case Bitmask.XM:
+      month = 0
+      break
+    case Bitmask.MX:
+      month = (month < 9) ? 0 : 9
+      break
+    }
+
+    if (!day) return [year, month]
+
+    day = Number(day)
+
+    switch (this.test(Bitmask.DAY)) {
+    case Bitmask.DAY:
+      day = 1
+      break
+    case Bitmask.DX:
+      day = max(1, floor(day / 10) * 10)
+      break
+    case Bitmask.XD:
+      day = max(1, day % 10)
+      break
     }
 
     return [year, month, day]
