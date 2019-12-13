@@ -588,3 +588,28 @@ describe('Date', () => {
       expect(new Date([2014, 3, 1]).format('en-US')).to.eql('4/1/2014'))
   })
 })
+
+describe('Leap year', () => {
+  it('YYXX-02-29', () => {
+    let date = new Date({
+      values: [2100, 1, 29],
+      unspecified: 12
+    })
+
+    expect(date.edtf).to.eql('21XX-02-29')
+
+    date = new Date('21XX-02-29')
+
+    expect(date.edtf).to.eql('21XX-02-29')
+  })
+
+  it('.next()', () => {
+    let date = new Date('201X-02-28')
+    expect(date.next().edtf).to.eql('201X-02-29')
+  })
+
+  it('.prev()', () => {
+    let date = new Date('201X-03-01')
+    expect(date.prev().edtf).to.eql('201X-02-29')
+  })
+})

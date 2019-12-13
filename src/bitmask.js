@@ -9,7 +9,7 @@ const PATTERN = /^[0-9xXdDmMyY]{8}$/
 const YYYYMMDD = 'YYYYMMDD'.split('')
 const MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-const { floor, pow, max, min } = Math
+const { floor, pow, max, min, abs } = Math
 
 
 /**
@@ -173,6 +173,9 @@ class Bitmask {
       }
 
       break
+    default:
+      if (!this.test(Bitmask.MONTH) && month === 1 && day === 29)
+        year = this.lastLeapYear(year)
     }
 
     if (month === 1 && day > 28 && !leap(year)) {
@@ -263,6 +266,24 @@ class Bitmask {
   toString(symbol = 'X') {
     return this.masks(['YYYY', 'MM', 'DD'], symbol).join('-')
   }
+
+  lastLeapYear(year) {
+    if (leap(year))
+      return year
+    const values = [pad(year)]
+    const [minYear] = this.min(values)
+    const yearReg = this.masks(values, '.')
+    let [newYear] = this.max(values)
+
+    while (!(leap(newYear) &&
+            pad(newYear).match(yearReg)) &&
+            newYear >= minYear) {
+      newYear--
+    }
+    if (newYear < minYear)
+      return year
+    return newYear
+  }
 }
 
 Bitmask.prototype.is = Bitmask.prototype.test
@@ -272,6 +293,16 @@ function leap(year) {
   if (year % 100 > 0) return true
   if (year % 400 > 0) return false
   return true
+}
+
+function pad(number) {
+  let k = abs(number)
+
+  if (k < 10)   return `000${k}`
+  if (k < 100)  return `00${k}`
+  if (k < 1000) return `0${k}`
+
+  return `${k}`
 }
 
 Bitmask.DAY   = Bitmask.D = Bitmask.compute('yyyymmxx')

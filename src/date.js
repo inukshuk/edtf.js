@@ -61,7 +61,26 @@ class Date extends global.Date {
               args[4] = args[4] + obj.offset
             }
 
-            args = [ExtDateTime.UTC(...args)]
+            let UTCDateTime = ExtDateTime.UTC(...args)
+
+            const mask = new Bitmask(obj.unspecified)
+            if (mask.test(Bitmask.YEAR) > 0 &&
+            !mask.test(Bitmask.MONTH) &&
+            !mask.test(Bitmask.DAY)) {
+              let date = new global.Date(UTCDateTime),
+                year = date.getUTCFullYear(),
+                day = date.getUTCDate()
+              const leapYear = mask.lastLeapYear(abs(year))
+              if (leapYear !== abs(year)) {
+                args[0] = leapYear * (year < 0 ? -1 : 1)
+                let newUTCDateTime = ExtDateTime.UTC(...args),
+                  newDate = new global.Date(newUTCDateTime),
+                  newDay = newDate.getUTCDate()
+                if (newDay !== day) UTCDateTime = newUTCDateTime
+              }
+            }
+
+            args = [UTCDateTime]
           }
 
           ({ uncertain, approximate, unspecified } = obj)
