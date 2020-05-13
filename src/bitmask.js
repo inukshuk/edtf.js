@@ -190,7 +190,7 @@ class Bitmask {
       (this.test(Bitmask.YEAR)) ? this.masks([year], '0')[0] : year
     )
 
-    if (!month) return [year]
+    if (month == null) return [year]
 
     month = Number(month) - 1
 

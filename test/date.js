@@ -470,6 +470,16 @@ describe('Date', () => {
         expect(Date.from('2X12-1X-X4').min)
           .to.eql(global.Date.UTC(2012, 9, 4, 0, 0, 0, 0))
       })
+
+      it('YXXX', () => {
+        expect(Date.from('1XXX').min)
+          .to.eql(Date.UTC(1000, 0, 1, 0, 0, 0, 0))
+      })
+
+      it('-YXXX', () => {
+        expect(Date.from('-1XXX').min)
+          .to.eql(Date.UTC(-1999, 0, 1, 0, 0, 0, 0))
+      })
     })
   })
 

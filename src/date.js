@@ -127,12 +127,19 @@ class Date extends global.Date {
 
   get min() {
     // TODO uncertain and approximate
+
+    if (this.unspecified.value && this.year < 0) {
+      let values = this.unspecified.max(this.values.map(Date.pad))
+      values[0] = -values[0]
+      return (new Date({ values })).getTime()
+    }
+
     return this.getTime()
   }
 
   get max() {
     // TODO uncertain and approximate
-    return (this.atomic) ? this.getTime() : this.next() - 1
+    return (this.atomic) ? this.getTime() : this.next().getTime() - 1
   }
 
   get year() {

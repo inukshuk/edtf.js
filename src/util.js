@@ -57,6 +57,7 @@ const util = {
       if (mask.indexOf(symbol) === -1) return reject
 
       let values = Bitmask.values(mask, 0)
+
       if (negative) values[0] = -values[0]
 
       return {
