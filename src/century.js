@@ -58,7 +58,7 @@ class Century extends ExtDateTime {
   set century(century) {
     century = floor(Number(century))
     assert(abs(century) < 100, `invalid century: ${century}`)
-    return this.values[0] = century
+    this.values[0] = century
   }
 
   get year() {
@@ -66,7 +66,7 @@ class Century extends ExtDateTime {
   }
 
   set year(year) {
-    return this.century = year / 100
+    this.century = year / 100
   }
 
   get values() {

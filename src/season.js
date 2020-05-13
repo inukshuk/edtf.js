@@ -53,7 +53,7 @@ class Season extends ExtDateTime {
   }
 
   set year(year) {
-    return this.values[0] = Number(year)
+    this.values[0] = Number(year)
   }
 
   get season() {
@@ -61,7 +61,7 @@ class Season extends ExtDateTime {
   }
 
   set season(season) {
-    return validate(this.values[1] = Number(season))
+    this.values[1] = validate(Number(season))
   }
 
   get values() {

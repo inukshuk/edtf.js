@@ -54,7 +54,7 @@ class Year extends ExtDateTime {
   }
 
   set year(year) {
-    return this.values[0] = Number(year)
+    this.values[0] = Number(year)
   }
 
   get significant() {
@@ -62,7 +62,7 @@ class Year extends ExtDateTime {
   }
 
   set significant(digits) {
-    return S.set(this, Number(digits))
+    S.set(this, Number(digits))
   }
 
   get values() {

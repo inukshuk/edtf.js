@@ -59,7 +59,7 @@ class Decade extends ExtDateTime {
   set decade(decade) {
     decade = floor(Number(decade))
     assert(abs(decade) < 1000, `invalid decade: ${decade}`)
-    return this.values[0] = decade
+    this.values[0] = decade
   }
 
   get year() {
@@ -67,7 +67,7 @@ class Decade extends ExtDateTime {
   }
 
   set year(year) {
-    return this.decade = year / 10
+    this.decade = year / 10
   }
 
   get values() {
