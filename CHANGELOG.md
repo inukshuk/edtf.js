@@ -1,3 +1,8 @@
+2.8.0 / 2020-06-08
+==================
+  * Interpret single integer input as Unix timestamp (like native Date)
+  * Interpret 5+ digit strings as Unix timestamp
+
 2.6.0 / 2019-03-15
 ==================
   * Accept ISO times with missing seconds
