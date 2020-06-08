@@ -20,6 +20,21 @@ describe('edtf', () => {
     expect(edtf('Y210001')).to.be.instanceof(edtf.Year)
   })
 
+  it('parses date instances', () =>
+    expect(edtf(new Date(Date.UTC(2014, 11, 8))))
+      .to.be.an.edtf.and.produce([2014, 11, 8, 0, 0, 0]))
+
+  it('parses integers', () =>
+    expect(edtf(Date.UTC(2014, 11, 8)))
+      .to.be.an.edtf.and.produce([2014, 11, 8, 0, 0, 0]))
+
+  it('parses 5+ digits only as Unix epoch', () => {
+    expect(edtf('2000'))
+      .to.be.an.edtf.and.produce([2000])
+    expect(edtf('20000'))
+      .to.be.an.edtf.and.produce([1970, 0, 1, 0, 0, 20])
+  })
+
   it('creates new extended date objects', () => {
     expect(edtf([2016, 2])).to.be.an.edtf.and.produce([2016, 2])
 
