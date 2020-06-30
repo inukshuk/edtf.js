@@ -12,19 +12,10 @@ date/time hackers and enthusiasts.
 
 ### EDTF / ISO 8601-2
 EDTF.js fully implements [EDTF](http://www.loc.gov/standards/datetime)
-levels 0, 1, and 2 as specified by WD 2016-02-16 of ISO 8601-2 with
-the following exceptions (as raised by the EDTF community):
+levels 0, 1, and 2 as specified by ISO 8601-2 with the following
+exceptions:
 
-1. Symbols for unknown and open dates in intervals have been switched:
-   `*` makes more sense to represent an open date because it is often
-   used as a wildcard to match "all" or "everything". Also, when an
-   interval is blank, it suggessts "incomplete" or "unknown".
-
-2. "Before or after" is redundant and has been removed. It is covered
-   by "One of a Set", e.g., `[1760-12..]` which means "December 1760
-   or some later month."
-
-3. Seasons in intervals are supported at the experimental/non-standard
+1. Seasons in intervals are supported at the experimental/non-standard
    level 3.
 
 ### ES6

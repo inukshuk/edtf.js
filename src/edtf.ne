@@ -121,7 +121,7 @@ L1i_date -> null     {% nothing %}
           | date_ua  {% id %}
           | INFINITY {% id %}
 
-INFINITY -> "*" {% () => Infinity %}
+INFINITY -> ".." {% () => Infinity %}
 
 L1X -> nd4 "-" md "-XX" {% masked() %}
      | nd4 "-XX-XX"     {% masked() %}

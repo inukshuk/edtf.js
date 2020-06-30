@@ -1,4 +1,4 @@
-// Generated automatically by nearley, version 2.19.3
+// Generated automatically by nearley, version 2.19.4
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
@@ -118,7 +118,8 @@ var grammar = {
     {"name": "L1i_date", "symbols": [], "postprocess": nothing},
     {"name": "L1i_date", "symbols": ["date_ua"], "postprocess": id},
     {"name": "L1i_date", "symbols": ["INFINITY"], "postprocess": id},
-    {"name": "INFINITY", "symbols": [{"literal":"*"}], "postprocess": () => Infinity},
+    {"name": "INFINITY$string$1", "symbols": [{"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "INFINITY", "symbols": ["INFINITY$string$1"], "postprocess": () => Infinity},
     {"name": "L1X$string$1", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "L1X", "symbols": ["nd4", {"literal":"-"}, "md", "L1X$string$1"], "postprocess": masked()},
     {"name": "L1X$string$2", "symbols": [{"literal":"-"}, {"literal":"X"}, {"literal":"X"}, {"literal":"-"}, {"literal":"X"}, {"literal":"X"}], "postprocess": function joiner(d) {return d.join('');}},
