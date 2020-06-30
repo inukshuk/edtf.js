@@ -66,10 +66,10 @@ class Interval extends ExtDateTime {
 
   set lower(value) {
     if (value == null)
-      return this.values[1] = null
+      return this.values[0] = null
 
     if (value === Infinity || value === -Infinity)
-      return this.values[1] = Infinity
+      return this.values[0] = Infinity
 
     value = getDateOrSeasonFrom(value)
 
@@ -92,7 +92,7 @@ class Interval extends ExtDateTime {
 
     value = getDateOrSeasonFrom(value)
 
-    if (value <= this.lower)
+    if (this.lower !== Infinity && value <= this.lower)
       throw new RangeError(`invalid upper bound: ${value}`)
 
     this.values[1] =  value
@@ -125,8 +125,8 @@ class Interval extends ExtDateTime {
   toEDTF() {
     return this.values
       .map(v => {
+        if (v === Infinity) return '..'
         if (!v) return ''
-        if (v === Infinity) return '*'
         return v.edtf
       })
       .join('/')
