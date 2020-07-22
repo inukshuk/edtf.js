@@ -2,12 +2,12 @@
   "name": "edtf",
   "version": "3.0.1",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
-  "type": "module",
-  "main": "./index.cjs",
-  "module": "./index.js",
+  "type": "commonjs",
+  "main": "./index.js",
+  "module": "./index.mjs",
   "exports": {
-    "import": "./index.js",
-    "require": "./index.cjs"
+    "import": "./index.mjs",
+    "require": "./index.js"
   },
   "scripts": {
     "lint": "eslint src test",

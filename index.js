@@ -1,10 +1,17 @@
-import edtf from './index.cjs'
+'use strict'
 
-export const Bitmask = edtf.Bitmask
-export const defaults = edtf.defaults
-export const parse = edtf.parse
-export const sample = edtf.sample
-export const format = edtf.format
-export const types = edtf.types
+const edtf = require('./src/edtf')
+const Bitmask = require('./src/bitmask')
+const types = require('./src/types')
+const { sample } = require('./src/sample')
+const { parse, defaults } = require('./src/parser')
+const { format } = require('./src/format')
 
-export default edtf
+module.exports = Object.assign(edtf, types, {
+  Bitmask,
+  defaults,
+  parse,
+  sample,
+  format,
+  types: Object.keys(types)
+})
