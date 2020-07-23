@@ -40,7 +40,9 @@
   },
   "homepage": "https://github.com/inukshuk/edtf.js#readme",
   "dependencies": {
-    "nearley": "^2.19.5",
+    "nearley": "^2.19.5"
+  },
+  "optionalDependencies": {
     "randexp": "^0.5.3"
   },
   "devDependencies": {
