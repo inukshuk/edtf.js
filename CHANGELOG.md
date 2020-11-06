@@ -1,3 +1,7 @@
+3.1.0 / 2020-11-06
+==================
+  * Support '..' affix for earlier/later in inclusive lists
+
 3.0.0 / 2020-06-30
 ==================
   * Use '..' instead of '*' for open end intervals
