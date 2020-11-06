@@ -456,6 +456,11 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(2010, 1, 4, 0, 0, 0, 0))
       })
 
+      it('YYYX-MM', () => {
+        expect(Date.from('201X-02').min)
+          .to.eql(global.Date.UTC(2010, 1, 1, 0, 0, 0, 0))
+      })
+
       it('YYXX-MM-DD', () => {
         expect(Date.from('20XX-02-04').min)
           .to.eql(global.Date.UTC(2000, 1, 4, 0, 0, 0, 0))

@@ -236,10 +236,12 @@ list -> LLB OL RLB {% list %}
 LSB -> "["   {% () => ({ type: 'Set' }) %}
      | "[.." {% () => ({ type: 'Set', earlier: true }) %}
 LLB -> "{"   {% () => ({ type: 'List' }) %}
+     | "{.." {% () => ({ type: 'List', earlier: true }) %}
 
 RSB -> "]"   {% nothing %}
      | "..]" {% () => ({ later: true }) %}
 RLB -> "}"   {% nothing %}
+     | "..}" {% () => ({ later: true }) %}
 
 OL -> LI            {% data => [data[0]] %}
     | OL _ "," _ LI {% data => [...data[0], data[4]] %}

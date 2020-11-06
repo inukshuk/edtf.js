@@ -1,4 +1,4 @@
-// Generated automatically by nearley, version 2.19.5
+// Generated automatically by nearley, version 2.19.7
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) { return x[0]; }
@@ -255,10 +255,14 @@ var grammar = {
     {"name": "LSB$string$1", "symbols": [{"literal":"["}, {"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "LSB", "symbols": ["LSB$string$1"], "postprocess": () => ({ type: 'Set', earlier: true })},
     {"name": "LLB", "symbols": [{"literal":"{"}], "postprocess": () => ({ type: 'List' })},
+    {"name": "LLB$string$1", "symbols": [{"literal":"{"}, {"literal":"."}, {"literal":"."}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "LLB", "symbols": ["LLB$string$1"], "postprocess": () => ({ type: 'List', earlier: true })},
     {"name": "RSB", "symbols": [{"literal":"]"}], "postprocess": nothing},
     {"name": "RSB$string$1", "symbols": [{"literal":"."}, {"literal":"."}, {"literal":"]"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "RSB", "symbols": ["RSB$string$1"], "postprocess": () => ({ later: true })},
     {"name": "RLB", "symbols": [{"literal":"}"}], "postprocess": nothing},
+    {"name": "RLB$string$1", "symbols": [{"literal":"."}, {"literal":"."}, {"literal":"}"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "RLB", "symbols": ["RLB$string$1"], "postprocess": () => ({ later: true })},
     {"name": "OL", "symbols": ["LI"], "postprocess": data => [data[0]]},
     {"name": "OL", "symbols": ["OL", "_", {"literal":","}, "_", "LI"], "postprocess": data => [...data[0], data[4]]},
     {"name": "LI", "symbols": ["date"], "postprocess": id},

@@ -34,6 +34,9 @@ class List extends ExtDateTime {
 
           assert(obj.values)
           this.concat(...obj.values)
+
+          this.earlier = !!obj.earlier
+          this.later = !!obj.later
         }
         break
 
@@ -93,11 +96,11 @@ class List extends ExtDateTime {
   }
 
   get min() {
-    return this.empty ? 0 : this.first.min
+    return this.earlier ? -Infinity : (this.empty ? 0 : this.first.min)
   }
 
   get max() {
-    return this.empty ? 0 : this.last.max
+    return this.later ? Infinity : (this.empty ? 0 : this.last.max)
   }
 
   content() {
@@ -108,7 +111,14 @@ class List extends ExtDateTime {
   }
 
   toEDTF() {
-    return `{${this.content()}}`
+    return this.wrap(this.empty ?
+      '' :
+      `${this.earlier ? '..' : ''}${this.content()}${this.later ? '..' : ''}`
+    )
+  }
+
+  wrap(content) {
+    return `{${content}}`
   }
 }
 

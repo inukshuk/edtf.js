@@ -554,7 +554,12 @@ describe('parser', () => {
         .from([1960]).through([1961, 11]))
 
     it('{YYYY..}', () =>
-      expect(() => p('{1760..}')).to.be.rejected)
+      expect(p('{1760..}'))
+        .to.be.a.list.at.level(2).and.have.property('later', true))
+
+    it('{..YYYY}', () =>
+      expect(p('{..1760}'))
+        .to.be.a.list.at.level(2).and.have.property('earlier', true))
   })
 
   describe('Level 3 (Non-Standard)', () => {
