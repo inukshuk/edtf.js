@@ -40,15 +40,15 @@
   },
   "homepage": "https://github.com/inukshuk/edtf.js#readme",
   "dependencies": {
-    "nearley": "^2.19.5"
+    "nearley": "^2.19.7"
   },
   "optionalDependencies": {
     "randexp": "^0.5.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.12.1",
     "istanbul": "^0.4.3",
-    "mocha": "^8.0.1"
+    "mocha": "^8.2.1"
   }
 }
