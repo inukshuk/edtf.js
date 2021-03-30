@@ -155,24 +155,24 @@ between two dates; similarly, `*until()` returns all dates in between
 and includes the first of the two dates; to generate the full range
 inluding both dates, use `*through()`.
 
-     [...edtf('2016-05').between('2016-07')]
+     [...edtf('2016-05').between(edtf('2016-07'))]
      #-> [2016-06]
 
-     [...edtf('2016-05').until('2016-07')]
+     [...edtf('2016-05').until(edtf('2016-07'))]
      #-> [2016-05, 2016-06]
 
-     [...edtf('2016-05').through('2016-07')]
+     [...edtf('2016-05').through(edtf('2016-07'))]
      #-> [2016-05, 2016-06, 2016-07]
 
 Note, that all range generators also work in reverse order:
 
-     [...edtf('2016-07').through('2016-05')]
+     [...edtf('2016-07').through(edtf('2016-05'))]
      #-> [2016-07, 2016-06, 2016-05]
 
-     [...edtf('2016-07').until('2016-05')]
+     [...edtf('2016-07').until(edtf('2016-05'))]
      #-> [2016-07, 2016-06]
 
-     [...edtf('2016-07').between('2016-05')]
+     [...edtf('2016-07').between(edtf('2016-05'))]
      #-> [2016-06]
 
 ### Iterators
@@ -264,18 +264,18 @@ EDTF.js can generate random EDTF strings for you. Simply call
 
 For a finite iterator, simply pass a count:
 
-    [...edtf.sample({ count: 3 }]
+    [...edtf.sample({ count: 3 })]
     #-> ['-003%', '-0070-07-31%', '[-0080-10..]']
 
 You can also generate strings at a given compatibility level:
 
-    [...edtf.sample({ count: 3, level: 0 }]
+    [...edtf.sample({ count: 3, level: 0 })]
     #-> ['0305/0070-04-30', '-07', '0000/0013']
 
-    [...edtf.sample({ count: 3, level: 1 }]
+    [...edtf.sample({ count: 3, level: 1 })]
     #-> ['00XX', 'Y80105', '0000~']
 
-    [...edtf.sample({ count: 3, level: 2 }]
+    [...edtf.sample({ count: 3, level: 2 })]
     #-> ['Y1E30', '-8110S2', '{%0401}']
 
 Note that some grammar rules at levels 1 and 2 may, potentially,
@@ -284,7 +284,7 @@ generate strings at a lower level (but never higher).
 Finally, at each level you can also limit the generated strings
 to a given type (you must specify a level for this to work):
 
-    [...edtf.sample({ count: 3, level: 2, type: 'Decade' }]
+    [...edtf.sample({ count: 3, level: 2, type: 'Decade' })]
     #-> ['003', '030~', '000']
 
 
