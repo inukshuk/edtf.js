@@ -3,6 +3,13 @@
 const { Century, Date } = require('..')
 
 describe('Century', () => {
+  describe('getters', () => {
+    it('certain', () => {
+      expect(new Century({ values: [20], uncertain: true }).uncertain)
+        .to.eql(true)
+      expect(new Century({ values: [20] }).uncertain).to.eql(false)
+    })
+  })
 
   describe('.edtf', () => {
     it('default', () =>
@@ -22,6 +29,10 @@ describe('Century', () => {
     it('CC~', () => {
       expect(new Century({ values: [19], approximate: true }).edtf)
         .to.eql('19~')
+    })
+    it('CC?', () => {
+      expect(new Century({ values: [19], uncertain: true }).edtf)
+        .to.eql('19?')
     })
   })
 

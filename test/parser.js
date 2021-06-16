@@ -503,6 +503,18 @@ describe('parser', () => {
       expect(p('197%')).to.produce([197]).at.level(2)
         .and.be.an.uncertain().and.approximate().decade)
 
+    it('YY~', () =>
+      expect(p('19~')).to.produce([19]).at.level(2)
+        .and.be.an.approximate().century.and.not.uncertain())
+
+    it('YY?', () =>
+      expect(p('19?')).to.produce([19]).at.level(2)
+        .and.be.an.uncertain().century.and.not.approximate())
+
+    it('YY%', () =>
+      expect(p('19%')).to.produce([19]).at.level(2)
+        .and.be.an.uncertain().and.approximate().century)
+
     it('YYYY-MM-~DD/YYYY-MM-~DD', () =>
       expect(p('2004-06-~01/2004-06-~20'))
         .to.be.an.interval.at.level(2)
