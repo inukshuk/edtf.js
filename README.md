@@ -296,4 +296,4 @@ The EDTF.js generator uses the ingenious
 [randexp](https://github.com/fent/randexp.js).
 
 ## License
-AGPL-3.0
+EDTF.js is licensed under the terms of the BSD-2-Clause license.

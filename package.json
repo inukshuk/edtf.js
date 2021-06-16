@@ -30,11 +30,10 @@
     "parser",
     "ISO 8601"
   ],
-  "author": "Center for History and New Media, George Mason University",
-  "contributors": [
+  "author": [
     "Sylvester Keil <sylvester@keil.or.at>"
   ],
-  "license": "AGPL-3.0",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/inukshuk/edtf.js/issues"
   },
