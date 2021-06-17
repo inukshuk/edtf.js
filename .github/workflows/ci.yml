@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    environment: ci
+    environment: CI
     runs-on: ubuntu-latest
 
     strategy:
