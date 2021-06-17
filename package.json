@@ -13,7 +13,6 @@
     "lint": "eslint src test",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
     "sample": "nearley-unparse -s edtf -n 20 src/grammar.js && echo || true",
-    "coverage": "istanbul cover _mocha",
     "prepare": "npm run compile",
     "pretest": "npm run lint",
     "test": "mocha",
@@ -47,7 +46,6 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^7.12.1",
-    "istanbul": "^0.4.3",
     "mocha": "^9.0.0"
   }
 }
