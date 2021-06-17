@@ -1,14 +1,12 @@
-'use strict'
-
-const assert = require('assert')
-const ExtDate = require('./date')
-const ExtDateTime = require('./interface')
-const Season = require('./season')
+import assert from 'assert'
+import { Date as ExtDate } from './date.js'
+import { ExtDateTime } from './interface.js'
+import { Season } from './season.js'
 
 const V = new WeakMap()
 
 
-class Interval extends ExtDateTime {
+export class Interval extends ExtDateTime {
   constructor(...args) {
     super()
 
@@ -140,5 +138,3 @@ function getDateOrSeasonFrom(value) {
     return Season.from(value)
   }
 }
-
-module.exports = Interval

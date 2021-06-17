@@ -1,11 +1,9 @@
-'use strict'
-
-const { parse: p, parser } = require('../src/parser')
-const { Parser } = require('nearley')
+import { parse as p, parser } from '../src/parser.js'
+import nearley from 'nearley'
 
 describe('parser', () => {
   it('returns a parser instance', () =>
-    expect(parser()).to.be.instanceof(Parser))
+    expect(parser()).to.be.instanceof(nearley.Parser))
 
   describe('Level 0', () => {
     it('YYYY', () => {

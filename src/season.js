@@ -1,12 +1,10 @@
-'use strict'
-
-const assert = require('assert')
-const ExtDateTime = require('./interface')
-const { pad } = require('./date')
+import assert from 'assert'
+import { ExtDateTime } from './interface.js'
+import { pad } from './date.js'
 
 const V = new WeakMap()
 
-class Season extends ExtDateTime {
+export class Season extends ExtDateTime {
   constructor(input) {
     super()
 
@@ -191,5 +189,3 @@ function inc(year, season, by, base, size) {
     validate(base + (m % size + size) % size)
   ]
 }
-
-module.exports = Season

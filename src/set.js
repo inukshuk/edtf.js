@@ -1,9 +1,7 @@
-'use strict'
+import { List } from './list.js'
+import { parse } from './parser.js'
 
-const List = require('./list')
-const { parse } = require('./parser')
-
-class Set extends List {
+export class Set extends List {
   static parse(input) {
     return parse(input, { types: ['Set'] })
   }
@@ -16,5 +14,3 @@ class Set extends List {
     return `[${content}]`
   }
 }
-
-module.exports = Set

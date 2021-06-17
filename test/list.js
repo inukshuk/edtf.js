@@ -1,6 +1,4 @@
-'use strict'
-
-const { List } = require('..')
+import { List } from '../index.js'
 
 describe('List', () => {
 

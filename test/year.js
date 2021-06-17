@@ -1,6 +1,4 @@
-'use strict'
-
-const { Year } = require('..')
+import { Year } from '../index.js'
 
 describe('Year', () => {
 

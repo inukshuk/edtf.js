@@ -17,22 +17,10 @@ exceptions:
 1. Seasons in intervals are supported at the experimental/non-standard
    level 3.
 
-### ES6
-EDTF.js is written as a standard Nodes.js / CommonJS module using many ES6
-features. It therefore requires Node.js 6 or later (for Nodes.js 4/5 use the
-appropriate `--harmony` flags as necessary).
+### ESM
+Since version 4.0 EDTF.js uses Nodes.js native ESM module implementation.
+If you require CommonJS modules, please use package version '< 4.0'.
 
-### Bundling using RollUp
-To bundle EDTF.js with RollUp you'll need to enable the following plugins
-
-* rollup-plugin-json
-* rollup-plugin-node-resolve
-* rollup-plugin-commonjs
-* rollup-plugin-node-globals (optional)
-* rollup-plugin-node-builtins (optional)
-
-The last two are optional; you need them only if you want to include Node.js
-`assert` in your bundle.
 
 ## Installation
     $ npm install edtf
@@ -45,15 +33,16 @@ EDTF.js exports a top-level function which takes either a string
 of the extended date objects and returns a new, extended date object
 as appropriate.
 
-    const edtf = require('edtf')
+    import edtf, { Date, Interval } from 'edtf'
 
-    edtf('2016-XX')          #-> returns an edtf.Date
-    edtf(new Date())         #-> returns an edtf.Date
-    edtf('2016-04~/2016-05') #-> returns an edtf.Interval
+    edtf('2016-XX')          #-> returns a EDTF Date
+    edtf(new Date())         #-> returns a EDTF Date
+    edtf('2016-04~/2016-05') #-> returns a EDTF Interval
 
 For a list of all types supported by EDTF.js see:
 
-    edtf.types
+    import * as types from 'edtf/types'
+    Object.keys(types)
     #-> ['Date', 'Year', 'Decade', 'Century', 'Season', 'Interval', 'List', 'Set']
 
 Each type provides at least the following properties: the date's
@@ -86,7 +75,7 @@ careful, as always, when type coercion is at play.
 
 EDTF.js keeps track of qualified dates using bitmasks. If you are interested
 in binary yes or no, you can always convert a bitmask's value to boolean. For
-more fine-grained information, the `edtf.Bitmask` class provides a convenient
+more fine-grained information, the `Bitmask` class provides a convenient
 interface for accessing these states:
 
      edtf('2016-05?').uncertain.value        #-> 63 / yes
@@ -196,12 +185,13 @@ Consecutive dates in lists and sets are expanded during an iteration:
 
 ### Parser
 
-To use EDTF.js' date parser directly, call `edtf.parse()` with an input
+To use EDTF.js' date parser directly, call `parse()` with an input
 string and optional parser constraints. The parser will always return
 plain JavaScript objects which you can pass to `edtf()` for conversion
 to extended date object, or to your own post-processing.
 
-    edtf.parse('2016-02')
+    import { parse } from 'edtf'
+    parse('2016-02')
     #-> { type: 'Date', level: 0, values: [2016, 1] }
 
 As you can see, the parser output includes the compatibility level of
@@ -210,12 +200,12 @@ in a format compatible with JavaScript's Date semantics (months are
 a zero-based index).
 
 Unspecified, uncertain, or approximate dates are returned as a numeric
-value representing a bitmask; refer to the `edtf.Bitmask` class for details.
+value representing a bitmask; refer to the `Bitmask` class for details.
 
-    edtf.parse('2016?-~02')
+    parse('2016?-~02')
     #-> { type: 'Date', level: 2, values: [2016, 1], uncertain: 15, approximate: 48 }
 
-    edtf.parse('20XX-02')
+    parse('20XX-02')
     #-> { type: 'Date', level: 2, values: [2000, 1], unspecified: 12 }
 
 Note that unspecified date values will always return the least possible value,
@@ -223,39 +213,41 @@ e.g., '2000' for '20XX'. Note, also, that EDTF.js will not parse impossible
 unspecified dates. For instance, none of the following examples can be
 valid dates:
 
-    edtf.parse('2016-02-3X') #-> A day in February cannot start with a 3
-    edtf.parse('2016-2X-XX') #-> There are only 12 months
-    edtf.parse('2016-XX-32') #-> No month has 32 days
+    parse('2016-02-3X') #-> A day in February cannot start with a 3
+    parse('2016-2X-XX') #-> There are only 12 months
+    parse('2016-XX-32') #-> No month has 32 days
 
 Intervals, Sets, and Lists will contain their parsed constituent dates in
 the values array:
 
-    edtf.parse('2015/2016')
+    parse('2015/2016')
     #-> { type: 'Interval', level: 0, values: [{..}, {..}] }
 
 By passing `level` or `types` constraints to the parser, you can ensure
 EDTF.js will accept only dates supported by your application.
 
-    edtf.parse('2016?', { level: 0 }) #-> parse error
-    edtf.parse('2016?', { level: 1 }) #-> ok
+    parse('2016?', { level: 0 }) #-> parse error
+    parse('2016?', { level: 1 }) #-> ok
 
-    edtf.parse('2016?-02', { level: 1 }) #-> parse error
-    edtf.parse('2016?-02', { level: 2 }) #-> ok
+    parse('2016?-02', { level: 1 }) #-> parse error
+    parse('2016?-02', { level: 2 }) #-> ok
 
-    edtf.parse('2016-21', { types: ['Date'] })           #-> parse error
-    edtf.parse('2016-21', { types: ['Date', 'Season'] }) #-> ok
+    parse('2016-21', { types: ['Date'] })           #-> parse error
+    parse('2016-21', { types: ['Date', 'Season'] }) #-> ok
 
 
-    edtf.parse('2016?', { level: 0, types: ['Date'] })   #-> parse error
-    edtf.parse('2016?', { level: 1, types: ['Date'] })   #-> ok
+    parse('2016?', { level: 0, types: ['Date'] })   #-> parse error
+    parse('2016?', { level: 1, types: ['Date'] })   #-> ok
 
 
 ### Generator
 
-EDTF.js can generate random EDTF strings for you. Simply call
-`edtf.sample()` to create a new iterator:
+EDTF.js can generate random EDTF strings for you. Simply add
+`randexp` to your NPM dependencies and import `edtf/sample`
+to create a new iterator:
 
-    let it = edtf.sample()
+    import { sample } from 'edtf/sample'
+    let it = sample()
 
     it.next() #-> { value: '0097-26', done: false }
     it.next() #-> { value: '0000-09-30T22:50:54-07', done: false }
@@ -263,18 +255,18 @@ EDTF.js can generate random EDTF strings for you. Simply call
 
 For a finite iterator, simply pass a count:
 
-    [...edtf.sample({ count: 3 })]
+    [...sample({ count: 3 })]
     #-> ['-003%', '-0070-07-31%', '[-0080-10..]']
 
 You can also generate strings at a given compatibility level:
 
-    [...edtf.sample({ count: 3, level: 0 })]
+    [...sample({ count: 3, level: 0 })]
     #-> ['0305/0070-04-30', '-07', '0000/0013']
 
-    [...edtf.sample({ count: 3, level: 1 })]
+    [...sample({ count: 3, level: 1 })]
     #-> ['00XX', 'Y80105', '0000~']
 
-    [...edtf.sample({ count: 3, level: 2 })]
+    [...sample({ count: 3, level: 2 })]
     #-> ['Y1E30', '-8110S2', '{%0401}']
 
 Note that some grammar rules at levels 1 and 2 may, potentially,
@@ -283,7 +275,7 @@ generate strings at a lower level (but never higher).
 Finally, at each level you can also limit the generated strings
 to a given type (you must specify a level for this to work):
 
-    [...edtf.sample({ count: 3, level: 2, type: 'Decade' })]
+    [...sample({ count: 3, level: 2, type: 'Decade' })]
     #-> ['003', '030~', '000']
 
 
@@ -291,7 +283,7 @@ to a given type (you must specify a level for this to work):
 The EDTF.js parser is based on the awesome
 [nearley](https://github.com/Hardmath123/nearley) parser generator.
 
-The EDTF.js generator uses the ingenious
+The EDTF.js sample generator uses the ingenious
 [randexp](https://github.com/fent/randexp.js).
 
 ## License

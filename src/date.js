@@ -1,11 +1,8 @@
-'use strict'
-
-const assert = require('assert')
-
-const Bitmask = require('./bitmask')
-const ExtDateTime = require('./interface')
-const mixin = require('./mixin')
-const { format } = require('./format')
+import assert from 'assert'
+import { Bitmask } from './bitmask.js'
+import { ExtDateTime } from './interface.js'
+import { mixin } from './mixin.js'
+import { format } from './format.js'
 
 const { abs } = Math
 const { isArray } = Array
@@ -17,7 +14,7 @@ const X = new WeakMap()
 
 const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
-class Date extends global.Date {
+export class Date extends global.Date {
   constructor(...args) { // eslint-disable-line complexity
     let precision = 0
     let uncertain, approximate, unspecified
@@ -267,4 +264,4 @@ class Date extends global.Date {
 
 mixin(Date, ExtDateTime)
 
-module.exports = Date
+export const pad = Date.pad

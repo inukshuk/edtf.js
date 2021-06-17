@@ -1,21 +1,16 @@
-'use strict'
-
-const edtf = require('../..')
-const chai = require('chai')
-
-const { Bitmask } = edtf
-const { expect, Assertion } = chai
+import { Bitmask, Date as ExtDate } from '../../index.js'
+import { expect, Assertion, use } from 'chai'
 
 global.expect = expect
 
-chai.use(function (_, utils) {
+use(function (_, utils) {
 
   Assertion.addProperty('date', function () {
     expect(utils.flag(this, 'object')).to.be.instanceof(Date)
   })
 
   Assertion.addProperty('edtf', function () {
-    expect(utils.flag(this, 'object')).to.be.instanceof(edtf.Date)
+    expect(utils.flag(this, 'object')).to.be.instanceof(ExtDate)
   })
 
   function year(expected) {

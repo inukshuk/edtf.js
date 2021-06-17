@@ -1,6 +1,4 @@
-'use strict'
-
-const edtf = require('..')
+import edtf from '../index.js'
 
 describe('ISO 8601-1', () => {
   let H, M

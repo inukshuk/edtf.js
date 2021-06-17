@@ -1,6 +1,4 @@
-'use strict'
-
-const { Date } = require('..')
+import { Date } from '../index.js'
 
 describe('Date', () => {
 

@@ -1,12 +1,8 @@
-'use strict'
-
-const util = require('../src/util')
+import { concat, pick } from '../src/util.js'
 
 describe('util', () => {
 
   describe('pick', () => {
-    const pick = util.pick
-
     it('generates picker for given indices', () => {
       expect(pick(0)([23, 42])).to.eql(23)
       expect(pick(0, 2)([23, 24, 42])).to.eql([23, 42])
@@ -14,8 +10,6 @@ describe('util', () => {
   })
 
   describe('concat', () => {
-    const concat = util.concat
-
     it('flattens the given arrays', () => {
       expect(concat([23, 42])).to.eql([23, 42])
       expect(concat([23, [42, 53]])).to.eql([23, 42, 53])

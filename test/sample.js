@@ -1,9 +1,7 @@
-'use strict'
-
-const { sample, parse: p } = require('..')
+import { parse as p } from '../index.js'
+import { sample } from '../src/sample.js'
 
 describe('sample', () => {
-
   it('iterator', () => {
     expect([...sample({ count: 5 })]).to.have.length(5)
   })

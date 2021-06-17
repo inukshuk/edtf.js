@@ -1,6 +1,4 @@
-'use strict'
-
-const { Season } = require('..')
+import { Season } from '../index.js'
 
 describe('Season', () => {
 

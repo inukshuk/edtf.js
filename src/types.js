@@ -1,12 +1,8 @@
-'use strict'
-
-module.exports = {
-  Date: require('./date'),
-  Year: require('./year'),
-  Decade: require('./decade'),
-  Century: require('./century'),
-  Season: require('./season'),
-  Interval: require('./interval'),
-  List: require('./list'),
-  Set: require('./set')
-}
+export { Date } from './date.js'
+export { Year } from './year.js'
+export { Decade } from './decade.js'
+export { Century } from './century.js'
+export { Season } from './season.js'
+export { Interval } from './interval.js'
+export { List } from './list.js'
+export { Set } from './set.js'

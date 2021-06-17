@@ -1,15 +1,13 @@
-'use strict'
+import assert from 'assert'
+import { ExtDateTime } from './interface.js'
+import { pad } from './date.js'
 
-const assert = require('assert')
-const ExtDate = require('./date')
-const ExtDateTime = require('./interface')
-const { pad } = ExtDate
 const { abs } = Math
 
 const V = new WeakMap()
 const S = new WeakMap()
 
-class Year extends ExtDateTime {
+export class Year extends ExtDateTime {
   constructor(input) {
     super()
 
@@ -88,5 +86,3 @@ class Year extends ExtDateTime {
     return `Y${this.year}${s}`
   }
 }
-
-module.exports = Year

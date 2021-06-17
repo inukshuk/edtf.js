@@ -1,6 +1,4 @@
-'use strict'
-
-const { Set } = require('..')
+import { Set } from '../index.js'
 
 describe('Set', () => {
 

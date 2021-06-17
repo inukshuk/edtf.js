@@ -1,14 +1,18 @@
 # http://www.loc.gov/standards/datetime
 
+@preprocessor module
+
 @{%
-  const {
+  import {
     num, zero, nothing, pick, pluck, join, concat, merge, century,
     interval, list, masked, date, datetime, season, qualify, year, decade
-  } = require('./util')
+  } from './util.js'
+
+  import { Bitmask } from './bitmask.js'
 
   const {
     DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
-  } = require('./bitmask')
+  } = Bitmask
 %}
 
 

@@ -1,8 +1,6 @@
-'use strict'
+import { parse } from './parser.js'
 
-const { parse } = require('./parser')
-
-class ExtDateTime {
+export class ExtDateTime {
 
   static get type() {
     return this.name
@@ -122,5 +120,3 @@ function adj(date, by = 1900) {
   date.setUTCFullYear(date.getUTCFullYear() - by)
   return date.getTime()
 }
-
-module.exports = ExtDateTime

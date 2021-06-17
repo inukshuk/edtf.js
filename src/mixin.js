@@ -1,11 +1,9 @@
-'use strict'
-
 const keys = Reflect.ownKeys.bind(Reflect)
 const descriptor = Object.getOwnPropertyDescriptor.bind(Object)
 const define = Object.defineProperty.bind(Object)
 const has = Object.prototype.hasOwnProperty
 
-function mixin(target, ...mixins) {
+export function mixin(target, ...mixins) {
   for (let source of mixins) {
     inherit(target, source)
     inherit(target.prototype, source.prototype)
@@ -21,5 +19,3 @@ function inherit(target, source) {
     }
   }
 }
-
-module.exports = mixin

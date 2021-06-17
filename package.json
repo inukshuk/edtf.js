@@ -2,17 +2,15 @@
   "name": "edtf",
   "version": "3.1.0",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
-  "type": "commonjs",
-  "main": "./index.js",
-  "module": "./index.mjs",
+  "type": "module",
   "exports": {
-    "import": "./index.mjs",
-    "require": "./index.js"
+    ".": "./index.js",
+    "./sample": "./src/sample.js",
+    "./types": "./src/types.js"
   },
   "scripts": {
     "lint": "eslint src test",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
-    "sample": "nearley-unparse -s edtf -n 20 src/grammar.js && echo || true",
     "prepare": "npm run compile",
     "pretest": "npm run lint",
     "test": "mocha",

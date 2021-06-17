@@ -1,7 +1,6 @@
-'use strict'
+import LC from '../locale-data/index.cjs'
 
 const { assign } = Object
-const LC = require('../locale-data')
 
 const noTime = {
   timeZone: 'UTC',
@@ -45,7 +44,7 @@ function getOrderedProps(obj) {
   return props
 }
 
-function getFormat(date, locale, options) {
+export function getFormat(date, locale, options) {
   let opts = {}
 
   switch (date.precision) {
@@ -102,7 +101,7 @@ function mask(date, parts) {
   return string
 }
 
-function format(date, locale = 'en-US', options = {}) {
+export function format(date, locale = 'en-US', options = {}) {
   const fmt = getFormat(date, locale, options)
   const pat = getPatternsFor(fmt)
 
@@ -127,9 +126,3 @@ function format(date, locale = 'en-US', options = {}) {
 }
 
 format.cache = new Map()
-
-
-module.exports = {
-  getFormat,
-  format
-}

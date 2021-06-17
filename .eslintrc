@@ -1,8 +1,13 @@
 root: true
-env:
-  es2020: true
-  node: true
 extends: 'eslint:recommended'
+env:
+  es2021: true
+  node: true
+parserOptions:
+  ecmaVersion: 2021
+  sourceType: module
+ignorePatterns:
+  - src/grammar.js
 rules:
   array-bracket-spacing: 2
   block-spacing: 2

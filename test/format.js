@@ -1,12 +1,9 @@
-'use strict'
+import edtf, { format } from '../index.js'
 
-const edtf = require('..')
 const canFormatToParts =
   typeof Intl.DateTimeFormat.prototype.formatToParts === 'function'
 
 describe('format', () => {
-  const { format } = edtf
-
   it('is a function', () =>
     expect(format).to.be.a('function'))
 

@@ -1,19 +1,19 @@
 // Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
-(function () {
 function id(x) { return x[0]; }
 
-  const {
+  import {
     num, zero, nothing, pick, pluck, join, concat, merge, century,
     interval, list, masked, date, datetime, season, qualify, year, decade
-  } = require('./util')
+  } from './util.js'
+
+  import { Bitmask } from './bitmask.js'
 
   const {
     DAY, MONTH, YEAR, YMD, YM, MD, YYXX, YYYX, XXXX
-  } = require('./bitmask')
-var grammar = {
-    Lexer: undefined,
-    ParserRules: [
+  } = Bitmask
+let Lexer = undefined;
+let ParserRules = [
     {"name": "edtf", "symbols": ["L0"], "postprocess": id},
     {"name": "edtf", "symbols": ["L1"], "postprocess": id},
     {"name": "edtf", "symbols": ["L2"], "postprocess": id},
@@ -386,12 +386,6 @@ var grammar = {
     {"name": "_$ebnf$1", "symbols": []},
     {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", {"literal":" "}], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "_", "symbols": ["_$ebnf$1"]}
-]
-  , ParserStart: "edtf"
-}
-if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
-   module.exports = grammar;
-} else {
-   window.grammar = grammar;
-}
-})();
+];
+let ParserStart = "edtf";
+export default { Lexer, ParserRules, ParserStart };

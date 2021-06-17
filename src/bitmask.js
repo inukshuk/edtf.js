@@ -1,5 +1,3 @@
-'use strict'
-
 const DAY = /^days?$/i
 const MONTH = /^months?$/i
 const YEAR = /^years?$/i
@@ -25,7 +23,7 @@ const { floor, pow, max, min } = Math
  *   Year    11110000
  *
  */
-class Bitmask {
+export class Bitmask {
 
   static test(a, b) {
     return this.convert(a) & this.convert(b)
@@ -305,5 +303,3 @@ Bitmask.UA = [
   Bitmask.DAY,    // YEARDAY
   Bitmask.YMD
 ]
-
-module.exports = Bitmask

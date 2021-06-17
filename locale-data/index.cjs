@@ -1,5 +1,3 @@
-'use strict'
-
 const locale = {}
 
 locale.en = require('./en-US.json')

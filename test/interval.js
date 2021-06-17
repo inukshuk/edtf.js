@@ -1,6 +1,4 @@
-'use strict'
-
-const { Interval, Date, Season } = require('..')
+import { Interval, Date, Season } from '../index.js'
 
 describe('Interval', () => {
 

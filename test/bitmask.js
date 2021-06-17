@@ -1,6 +1,4 @@
-'use strict'
-
-const { Bitmask } = require('..')
+import { Bitmask } from '../index.js'
 
 describe('Bitmask', () => {
 

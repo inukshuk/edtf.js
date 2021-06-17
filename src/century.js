@@ -1,13 +1,11 @@
-'use strict'
+import assert from 'assert'
+import { Date as ExtDate } from './date.js'
+import { ExtDateTime } from './interface.js'
 
-const assert = require('assert')
-const ExtDate = require('./date')
-const ExtDateTime = require('./interface')
 const { abs, floor } = Math
-
 const V = new WeakMap()
 
-class Century extends ExtDateTime {
+export class Century extends ExtDateTime {
   constructor(input) {
     super()
 
@@ -102,5 +100,3 @@ class Century extends ExtDateTime {
     return `${number}`
   }
 }
-
-module.exports = Century

@@ -1,14 +1,12 @@
-'use strict'
+import assert from 'assert'
+import { Date } from './date.js'
+import { ExtDateTime } from './interface.js'
 
-const assert = require('assert')
-const Date = require('./date')
-const ExtDateTime = require('./interface')
 const { isArray } = Array
-
 const V = new WeakMap()
 
 
-class List extends ExtDateTime {
+export class List extends ExtDateTime {
   constructor(...args) {
     super()
 
@@ -121,5 +119,3 @@ class List extends ExtDateTime {
     return `{${content}}`
   }
 }
-
-module.exports = List

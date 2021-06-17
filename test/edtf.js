@@ -1,6 +1,11 @@
-'use strict'
-
-const edtf = require('..')
+import edtf, {
+  Date as ExtDate,
+  Interval,
+  List,
+  Season,
+  Set,
+  Year
+} from '../index.js'
 
 describe('edtf', () => {
 
@@ -13,11 +18,11 @@ describe('edtf', () => {
   it('parses strings', () => {
     expect(edtf('2016-03')).to.be.an.edtf.and.produce([2016, 2])
 
-    expect(edtf('[2016-03]')).to.be.instanceof(edtf.Set)
-    expect(edtf('{2016..2020}')).to.be.instanceof(edtf.List)
-    expect(edtf('2016/2019')).to.be.instanceof(edtf.Interval)
-    expect(edtf('2016-21')).to.be.instanceof(edtf.Season)
-    expect(edtf('Y210001')).to.be.instanceof(edtf.Year)
+    expect(edtf('[2016-03]')).to.be.instanceof(Set)
+    expect(edtf('{2016..2020}')).to.be.instanceof(List)
+    expect(edtf('2016/2019')).to.be.instanceof(Interval)
+    expect(edtf('2016-21')).to.be.instanceof(Season)
+    expect(edtf('Y210001')).to.be.instanceof(Year)
   })
 
   it('parses date instances', () =>
@@ -38,7 +43,7 @@ describe('edtf', () => {
   it('creates new extended date objects', () => {
     expect(edtf([2016, 2])).to.be.an.edtf.and.produce([2016, 2])
 
-    let a = new edtf.Date([2016])
+    let a = new ExtDate([2016])
 
     expect(edtf(a))
       .to.be.an.edtf

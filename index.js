@@ -1,18 +1,5 @@
-'use strict'
-
-const edtf = require('./src/edtf')
-const Bitmask = require('./src/bitmask')
-const types = require('./src/types')
-const { parse, defaults } = require('./src/parser')
-const { format } = require('./src/format')
-
-module.exports = Object.assign(edtf, types, {
-  Bitmask,
-  defaults,
-  parse,
-  format,
-  get sample() {
-    return require('./src/sample').sample
-  },
-  types: Object.keys(types)
-})
+export { edtf as default } from './src/edtf.js'
+export * from './src/types.js'
+export { Bitmask } from './src/bitmask.js'
+export { parse, defaults } from './src/parser.js'
+export { format } from './src/format.js'
