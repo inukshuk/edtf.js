@@ -19,7 +19,7 @@ exceptions:
 
 ### ESM
 Since version 4.0 EDTF.js uses Nodes.js native ESM module implementation.
-If you require CommonJS modules, please use package version '< 4.0'.
+Since version 4.1 EDTF.js is published as a dual-package.
 
 
 ## Installation
