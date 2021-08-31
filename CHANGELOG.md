@@ -1,3 +1,11 @@
+4.1.0 / 2021-08-31
+==================
+  * Publish as dual-package, including a CJS fallback build
+
+4.0.0 / 2021-06-17
+==================
+  * Use native ESM module syntax
+
 3.1.0 / 2020-11-06
 ==================
   * Support '..' affix for earlier/later in inclusive lists
