@@ -25,6 +25,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - run: npm install
+      - run: npm run compile
       - run: npm run coverage
       - uses: codecov/codecov-action@v1
         with:

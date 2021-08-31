@@ -3,14 +3,19 @@
   "version": "4.0.0",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "type": "module",
+  "main": "./dist/index.cjs",
   "exports": {
-    ".": "./index.js",
+    ".": {
+      "module": "./index.js",
+      "require": "./dist/index.cjs"
+    },
     "./sample": "./src/sample.js",
     "./types": "./src/types.js"
   },
   "scripts": {
     "lint": "eslint src test",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
+    "postcompile": "rollup -c rollup.config.js",
     "prepare": "npm run compile",
     "pretest": "npm run lint",
     "test": "mocha",
@@ -43,9 +48,13 @@
     "randexp": "^0.5.3"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
     "c8": "^7.7.3",
     "chai": "^4.2.0",
     "eslint": "^7.12.1",
-    "mocha": "^9.0.0"
+    "mocha": "^9.0.0",
+    "rollup": "^2.56.3"
   }
 }

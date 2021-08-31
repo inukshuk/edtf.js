@@ -4,3 +4,4 @@ src/edtf.ne
 .eslintrc
 .istanbul.yml
 .travis.yml
+rollup.config.js
