@@ -5,3 +5,4 @@ src/edtf.ne
 .istanbul.yml
 .travis.yml
 rollup.config.js
+coverage
