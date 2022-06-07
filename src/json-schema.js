@@ -2,7 +2,7 @@
 
 import { parse } from './parser.js'
 
-function isLevel(date, level, seasonIntervals) {
+function validate(date, level, seasonIntervals) {
   if (typeof date !== 'string') return false
 
   try {
@@ -18,7 +18,7 @@ for (const _seasonIntervals of [false, true]) {
   for (const _level of [0, 1, 2]) {
     ((level, seasonIntervals) => {
       const fmt = `edtf/${level}${seasonIntervals ? '+season-intervals' : ''}`
-      formats[fmt] = date => isLevel(date, { level, seasonIntervals })
+      formats[fmt] = date => validate(date, { level, seasonIntervals })
     })(_level, _seasonIntervals)
   }
 }

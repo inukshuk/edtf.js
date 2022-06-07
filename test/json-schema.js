@@ -46,16 +46,17 @@ const dates = [
 
 describe('JSON schema', () => {
   for (const date of dates) {
-    it(`${date.name} ${JSON.stringify(date.date)} with ajv`, () => {
+    const test = `${date.name} ${JSON.stringify(date.date)}`
+    it(`${test} with ajv`, () => {
       expect(ajv.validate(schema, date)).to.equal(date.validates)
     })
-    it(`${date.name} ${JSON.stringify(date.date)} with z-schema`, () => {
+    it(`${test} with z-schema`, () => {
       expect(zschema.validate(date, schema)).to.equal(date.validates)
     })
-    it(`${date.name} ${JSON.stringify(date.date)} with is-my-json-valid`, () => {
+    it(`${test} with is-my-json-valid`, () => {
       expect(imjv(date)).to.equal(date.validates)
     })
-    it(`${date.name} ${JSON.stringify(date.date)} with jsen`, () => {
+    it(`${test} with jsen`, () => {
       expect(jsen(date)).to.equal(date.validates)
     })
   }
