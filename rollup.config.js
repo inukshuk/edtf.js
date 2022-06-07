@@ -1,6 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs'
-import json from '@rollup/plugin-json'
-//import resolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
 
 export default [
   {
@@ -11,11 +10,18 @@ export default [
       exports: 'named'
     },
     plugins: [
-      json(),
+      replace({
+        preventAssignment: false,
+        delimiters: ['`', '`'],
+        values: {
+          '${locale}.json': '`../locale-data/${locale}.json`'
+        }
+      }),
       commonjs()
     ],
     external: [
       'assert',
+      'fs',
       'nearley',
       'randexp'
     ]
