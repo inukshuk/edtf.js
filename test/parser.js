@@ -589,7 +589,9 @@ describe('parser', () => {
       expect(p('[1760..]', { types: ['List', 'Set'] }))
         .to.be.a.set.at.level(2).and.have.property('later', true)
 
-      expect(() => p('[1760..]', { types: [] })).to.be.rejected
+      expect(p('[1760..]', { types: [] }))
+        .to.be.a.set.at.level(2).and.have.property('later', true)
+
       expect(() => p('[1760..]', { types: ['List'] })).to.be.rejected
     })
 
@@ -609,6 +611,14 @@ describe('parser', () => {
         .to.be.rejected
       expect(() => p('1800/1X01', { level: 1, types: ['Interval'] }))
         .to.be.rejected
+    })
+
+    describe('by features', () => {
+      it('season-intervals', () => {
+        expect(() => p('2012-21/2012-22')).to.be.rejected
+        expect(p('2012-21/2012-22', { seasonIntervals: true }))
+          .to.be.an.interval.at.level(3)
+      })
     })
   })
 

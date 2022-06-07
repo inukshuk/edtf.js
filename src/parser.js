@@ -3,19 +3,39 @@ import grammar from './grammar.js'
 
 export const defaults = {
   level: 2,
-  types: []
+  types: [],
+  seasonIntervals: false
 }
 
 function byLevel(a, b) {
   return a.level < b.level ? -1 : a.level > b.level ? 1 : 0
 }
 
-function limit(results, { level, types } = defaults) {
+function limit(results, constraints = {}) {
   if (!results.length) return results
-  if (typeof level !== 'number') level = defaults.level
 
-  return results.filter(res =>
-    (level >= res.level) && (!types || types.includes(res.type)))
+  let {
+    level,
+    types,
+    seasonIntervals
+  } = { ...defaults, ...constraints }
+
+
+  return results.filter(res => {
+    if (seasonIntervals && isSeasonInterval(res))
+      return true
+
+    if (res.level > level)
+      return false
+    if (types.length && !types.includes(res.type))
+      return false
+
+    return true
+  })
+}
+
+function isSeasonInterval({ type, values }) {
+  return type === 'Interval' && values[0].type === 'Season'
 }
 
 function best(results) {
