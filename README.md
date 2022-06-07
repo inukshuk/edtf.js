@@ -15,7 +15,8 @@ levels 0, 1, and 2 as specified by ISO 8601-2 with the following
 exceptions:
 
 1. Seasons in intervals are supported at the experimental/non-standard
-   level 3.
+   level 3. To enable season intervals, enable `seasonIntervals` in
+   `defaults` or when passing constraints to the parse function.
 
 ### ESM
 Since version 4.0 EDTF.js uses Nodes.js native ESM module implementation.
@@ -223,6 +224,8 @@ the values array:
     parse('2015/2016')
     #-> { type: 'Interval', level: 0, values: [{..}, {..}] }
 
+#### Tuning parser compliance
+
 By passing `level` or `types` constraints to the parser, you can ensure
 EDTF.js will accept only dates supported by your application.
 
@@ -235,10 +238,24 @@ EDTF.js will accept only dates supported by your application.
     parse('2016-21', { types: ['Date'] })           #-> parse error
     parse('2016-21', { types: ['Date', 'Season'] }) #-> ok
 
-
     parse('2016?', { level: 0, types: ['Date'] })   #-> parse error
     parse('2016?', { level: 1, types: ['Date'] })   #-> ok
 
+
+Specific features can be enabled,
+regardless of `level` or `types` constraints.
+
+    parse('2016-21/2016-22', { level: 1 })          #-> parse error
+    parse('2016-21/2016-22', {
+      level: 1,
+      seasonIntervals: true
+    })                                              #-> ok
+
+You can review or change the parser's default constraints
+via the `defaults` object.
+
+    import { defaults } from 'edtf'
+    defaults.level = 1
 
 ### Generator
 
