@@ -8,18 +8,19 @@ function isLevel(date, level, seasonIntervals) {
   try {
     parse(date, { level, seasonIntervals })
     return true
-  }
-  catch (err) {
+  } catch (err) {
     return false
   }
 }
 
 export const formats = {}
-for (const seasonIntervals of [ false, true ]) {
-  for (const level of [0, 1, 2]) {
+for (const _seasonIntervals of [false, true]) {
+  for (const _level of [0, 1, 2]) {
     ((level, seasonIntervals) => {
-      formats[`edtf/${level}${seasonIntervals ? '+season-intervals' : ''}`] = date => isLevel(date, { level, seasonIntervals })
-    })(level, seasonIntervals)
+      const fmt = `edtf/${level}${seasonIntervals ? '+season-intervals' : ''}`
+      formats[fmt] = date => isLevel(date, { level, seasonIntervals })
+    })(_level, _seasonIntervals)
+  }
 }
 
 export function ajv(_ajv) {
