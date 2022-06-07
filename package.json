@@ -1,6 +1,6 @@
 {
   "name": "edtf",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -51,6 +51,7 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-replace": "^4.0.0",
     "c8": "^7.7.3",
     "chai": "^4.2.0",
     "eslint": "^8.11.0",

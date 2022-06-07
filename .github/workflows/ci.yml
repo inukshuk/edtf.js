@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         node:
-          - 12
           - 14
           - 16
+          - 17
 
     steps:
       - uses: actions/checkout@v2
@@ -24,10 +24,20 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - run: npm install
-      - run: npm run compile
-      - run: npm run coverage
-      - uses: codecov/codecov-action@v1
+      - name: Install dependencies
+        run: npm clean-install
+
+      - name: Compile CJS bundle
+        run: npm run compile
+
+      - name: Test CJS package loading
+        run: node -e "console.log(require('.').default('1980').next().year)"
+
+      - name: Run tests
+        run: npm run coverage
+
+      - name: Upload coverage results
+        uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
         if: matrix.node == '16'
