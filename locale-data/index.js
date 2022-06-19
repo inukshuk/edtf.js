@@ -1,7 +1,9 @@
-import { readFileSync } from 'fs'
-
-const load = (locale) =>
-  JSON.parse(readFileSync(new URL(`${locale}.json`, import.meta.url)))
+import en from './en-US.json' assert { type: 'json' }
+import es from './es-ES.json' assert { type: 'json' }
+import de from './de-DE.json' assert { type: 'json' }
+import fr from './fr-FR.json' assert { type: 'json' }
+import it from './it-IT.json' assert { type: 'json' }
+import ja from './ja-JA.json' assert { type: 'json' }
 
 const alias = (lang, ...regions) => {
   for (let region of regions)
@@ -9,12 +11,12 @@ const alias = (lang, ...regions) => {
 }
 
 const data = {
-  en: load('en-US'),
-  es: load('es-ES'),
-  de: load('de-DE'),
-  fr: load('fr-FR'),
-  it: load('it-IT'),
-  ja: load('ja-JA')
+  en, 
+  es,
+  de,
+  fr,
+  it,
+  ja
 }
 
 alias('en', 'AU', 'CA', 'GB', 'NZ', 'SA', 'US')

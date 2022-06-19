@@ -1,5 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs'
-import replace from '@rollup/plugin-replace'
+import { importAssertionsPlugin } from 'rollup-plugin-import-assert'
+import { importAssertions } from 'acorn-import-assertions'
 
 export default [
   {
@@ -9,14 +10,11 @@ export default [
       format: 'cjs',
       exports: 'named'
     },
+    acornInjectPlugins: [
+      importAssertions
+    ],
     plugins: [
-      replace({
-        preventAssignment: false,
-        delimiters: ['`', '`'],
-        values: {
-          '${locale}.json': '`../locale-data/${locale}.json`'
-        }
-      }),
+      importAssertionsPlugin(),
       commonjs()
     ],
     external: [
