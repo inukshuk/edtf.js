@@ -1,3 +1,8 @@
+4.3.0 / 2022-06-19
+==================
+  * Add `seasonIntervals` parser constraint
+  * Use ESM import assertions to import JSON locale data
+
 4.1.0 / 2021-08-31
 ==================
   * Publish as dual-package, including a CJS fallback build
