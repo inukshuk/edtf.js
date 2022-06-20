@@ -1,6 +1,4 @@
 import commonjs from '@rollup/plugin-commonjs'
-import { importAssertionsPlugin } from 'rollup-plugin-import-assert'
-import { importAssertions } from 'acorn-import-assertions'
 
 export default [
   {
@@ -10,11 +8,7 @@ export default [
       format: 'cjs',
       exports: 'named'
     },
-    acornInjectPlugins: [
-      importAssertions
-    ],
     plugins: [
-      importAssertionsPlugin(),
       commonjs()
     ],
     external: [
