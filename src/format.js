@@ -1,4 +1,4 @@
-import LC from '../locale-data/index.js'
+import LC from '../locale-data/index.cjs'
 
 const { assign } = Object
 

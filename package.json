@@ -49,12 +49,10 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
-    "acorn-import-assertions": "^1.8.0",
     "c8": "^7.7.3",
     "chai": "^4.2.0",
     "eslint": "^8.11.0",
     "mocha": "^10.0.0",
-    "rollup": "^2.56.3",
-    "rollup-plugin-import-assert": "^2.1.0"
+    "rollup": "^2.56.3"
   }
 }

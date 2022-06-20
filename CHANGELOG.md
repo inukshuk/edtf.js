@@ -1,3 +1,8 @@
+4.4.0 / 2022-06-20
+==================
+  * Revert to loading JSON locale data with require
+    while Rollup has no built-in support for import assertions.
+
 4.3.0 / 2022-06-19
 ==================
   * Add `seasonIntervals` parser constraint
