@@ -14,7 +14,7 @@ const X = new WeakMap()
 
 const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
-export class Date extends global.Date {
+export class Date extends globalThis.Date {
   constructor(...args) { // eslint-disable-line complexity
     let precision = 0
     let uncertain, approximate, unspecified
