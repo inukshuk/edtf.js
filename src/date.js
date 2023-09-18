@@ -30,8 +30,8 @@ export class Date extends globalThis.Date {
 
       case 'string':
         args = [Date.parse(args[0])]
-        // eslint-disable-line no-fallthrough
 
+      // eslint-disable-next-line no-fallthrough
       case 'object':
         if (isArray(args[0]))
           args[0] = { values: args[0] }

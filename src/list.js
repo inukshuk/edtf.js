@@ -18,8 +18,8 @@ export class List extends ExtDateTime {
       switch (typeof args[0]) {
       case 'string':
         args[0] = new.target.parse(args[0])
-        // eslint-disable-line no-fallthrough
 
+      // eslint-disable-next-line no-fallthrough
       case 'object':
         if (isArray(args[0]))
           args[0] = { values: args[0] }

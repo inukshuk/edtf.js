@@ -21,8 +21,8 @@ export class Century extends ExtDateTime {
 
     case 'string':
       input = Century.parse(input)
-      // eslint-disable-line no-fallthrough
 
+    // eslint-disable-next-line no-fallthrough
     case 'object':
       if (Array.isArray(input))
         input = { values: input }

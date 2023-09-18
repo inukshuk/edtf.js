@@ -22,8 +22,8 @@ export class Interval extends ExtDateTime {
       switch (typeof args[0]) {
       case 'string':
         args[0] = Interval.parse(args[0])
-        // eslint-disable-line no-fallthrough
 
+      // eslint-disable-next-line no-fallthrough
       case 'object':
         if (Array.isArray(args[0]))
           args[0] = { values: args[0] }
