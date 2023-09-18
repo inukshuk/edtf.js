@@ -327,9 +327,19 @@ describe('parser', () => {
       expect(p('2004-06-01/..'))
         .to.be.an.interval.from([2004, 5, 1]).at.level(1))
 
-    it('/YYYY-MM', () =>
+    it('/YYYY-MM', () => {
       expect(p('/2016-05'))
-        .to.be.an.interval.through([2016, 4]).at.level(1))
+        .to.be.an.interval.through([2016, 4]).at.level(1)
+      expect(p('/1960-11'))
+        .to.be.an.interval.through([1960, 10]).at.level(1)
+    })
+
+    it('/YYYY', () => {
+      expect(p('/2015'))
+        .to.be.an.interval.through([2015]).at.level(1)
+      expect(p('/1960'))
+        .to.be.an.interval.through([1960]).at.level(1)
+    })
 
     it('YYYY-MM-DD/', () =>
       expect(p('2016-05-31/..'))
