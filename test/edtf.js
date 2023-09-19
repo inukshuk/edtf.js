@@ -21,6 +21,8 @@ describe('edtf', () => {
     expect(edtf('[2016-03]')).to.be.instanceof(Set)
     expect(edtf('{2016..2020}')).to.be.instanceof(List)
     expect(edtf('2016/2019')).to.be.instanceof(Interval)
+    expect(edtf('/1970-01-02')).to.be.instanceof(Interval)
+    expect(edtf('/1969')).to.be.instanceof(Interval)
     expect(edtf('2016-21')).to.be.instanceof(Season)
     expect(edtf('Y210001')).to.be.instanceof(Year)
   })

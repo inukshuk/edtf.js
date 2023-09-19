@@ -90,7 +90,7 @@ export class Interval extends ExtDateTime {
 
     value = getDateOrSeasonFrom(value)
 
-    if (this.lower !== Infinity && value <= this.lower)
+    if (this.lower !== Infinity && value <= this.lower && this.lower != null)
       throw new RangeError(`invalid upper bound: ${value}`)
 
     this.values[1] =  value
