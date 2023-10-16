@@ -14,8 +14,6 @@ export default [
       commonjs()
     ],
     external: [
-      'assert',
-      'fs',
       'nearley',
       'randexp'
     ]

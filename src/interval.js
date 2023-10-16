@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from './assert.js'
 import { Date as ExtDate } from './date.js'
 import { ExtDateTime } from './interface.js'
 import { Season } from './season.js'

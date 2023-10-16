@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from './assert.js'
 import { Bitmask } from './bitmask.js'
 import { ExtDateTime } from './interface.js'
 import { mixin } from './mixin.js'
