@@ -1,3 +1,7 @@
+4.5.0 / 2023-10-16
+==================
+  * Use custom assert instead of node:assert;
+    this makes it easy to use the ESM build in browsers.
 4.4.0 / 2022-06-20
 ==================
   * Revert to loading JSON locale data with require
