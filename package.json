@@ -1,6 +1,6 @@
 {
   "name": "edtf",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "type": "module",
   "main": "./dist/index.cjs",

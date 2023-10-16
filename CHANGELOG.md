@@ -1,4 +1,4 @@
-4.5.0 / 2023-10-16
+4.5.1 / 2023-10-16
 ==================
   * Use custom assert instead of node:assert;
     this makes it easy to use the ESM build in browsers.
