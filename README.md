@@ -2,7 +2,7 @@
 
 ![Build Status](https://github.com/inukshuk/edtf.js/actions/workflows/ci.yml/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/inukshuk/edtf.js/branch/main/graph/badge.svg?token=AL1EwOHlfd)](https://codecov.io/gh/inukshuk/edtf.js)
-[![NPM version](https://img.shields.io/npm/v/edtf.svg)](https://www.npmjs.com/packages/edtf)
+[![NPM version](https://img.shields.io/npm/v/edtf.svg)](https://www.npmjs.com/package/edtf)
 
 An Extended Date Time Format (EDTF) / ISO 8601-2 parser and toolkit for
 date/time hackers and enthusiasts.
