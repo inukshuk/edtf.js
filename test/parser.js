@@ -66,6 +66,17 @@ describe('parser', () => {
       expect(p('2016-05-02T16:54:59.042'))
         .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0))
 
+    it('YYYY-MM-DDThh:mm:ss.sss+', () => {
+      expect(p('2016-05-02T16:54:59.04200000'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
+      expect(p('2016-05-02T16:54:59.4'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 4]).at.level(0)
+      expect(p('2016-05-02T16:54:59.42'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
+      expect(p('2016-05-02T16:54:59.042123'))
+        .to.produce([2016, 4, 2, 16, 54, 59, 42]).at.level(0)
+    })
+
     it('YYYY-MM-DDThh:mm:ssZ', () => {
       expect(p('2016-05-02T16:54:59Z'))
         .to.produce([2016, 4, 2, 16, 54, 59]).at.level(0)

@@ -85,7 +85,7 @@ minutes -> d00_59 {% num %}
 seconds -> d00_59 {% num %}
 
 milliseconds -> null
-              | "." d3 {% data => num(data.slice(1)) %}
+              | "." d3s {% data => num(data.slice(1)) %}
 
 timezone -> "Z"                 {% zero %}
           | ("-"|"−") offset    {% data => -data[1] %}
@@ -295,6 +295,11 @@ nd2 -> d2
 d4 -> d2 d2       {% join %}
 d3 -> d2 digit    {% join %}
 d2 -> digit digit {% join %}
+
+d3s -> digit      {% id %}
+     | d2         {% id %}
+     | d3         {% id %}
+     | d3 digits  {% pick(0) %}
 
 d5+ -> positive_digit d3 digits {% num %}
 
