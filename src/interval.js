@@ -134,7 +134,7 @@ export class Interval extends ExtDateTime {
 function getDateOrSeasonFrom(value) {
   try {
     return ExtDate.from(value)
-  } catch (de) {
+  } catch {
     return Season.from(value)
   }
 }
