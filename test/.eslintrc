@@ -1,9 +1,0 @@
-env:
-  mocha: true
-globals:
-  expect: true
-rules:
-  max-nested-callbacks: [1, 8]
-
-
-# vi: set ft=yaml
