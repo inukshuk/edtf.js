@@ -44,5 +44,9 @@ describe('Season', () => {
       expect(new Season([2014, 23]).edtf).to.eql('2014-23')
       expect(new Season(14).edtf).to.eql('0014-21')
     })
+
+    it('YYYY?-SS', () =>
+      expect(new Season({ values: [2014, 22], uncertain: 'year' }).edtf)
+        .to.eql('2014?-22'))
   })
 })

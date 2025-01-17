@@ -1,12 +1,17 @@
 import assert from './assert.js'
+import { Bitmask } from './bitmask.js'
 import { ExtDateTime } from './interface.js'
 import { pad } from './date.js'
 
+const A = new WeakMap()
+const U = new WeakMap()
 const V = new WeakMap()
+const X = new WeakMap()
 
 export class Season extends ExtDateTime {
   constructor(input) {
     super()
+    let uncertain, approximate, unspecified
 
     V.set(this, [])
 
@@ -33,6 +38,9 @@ export class Season extends ExtDateTime {
 
         this.year = input.values[0]
         this.season = input.values[1]
+
+        ;({ unspecified, uncertain, approximate } = input)
+
       }
       break
 
@@ -44,6 +52,10 @@ export class Season extends ExtDateTime {
     default:
       throw new RangeError('Invalid season value')
     }
+
+    this.unspecified = unspecified
+    this.uncertain = uncertain
+    this.approximate = approximate
   }
 
   get year() {
@@ -64,6 +76,30 @@ export class Season extends ExtDateTime {
 
   get values() {
     return V.get(this)
+  }
+
+  set uncertain(value) {
+    U.set(this, new Bitmask(value))
+  }
+
+  get uncertain() {
+    return U.get(this)
+  }
+
+  set approximate(value) {
+    A.set(this, new Bitmask(value))
+  }
+
+  get approximate() {
+    return A.get(this)
+  }
+
+  set unspecified(value) {
+    X.set(this, new Bitmask(value))
+  }
+
+  get unspecified() {
+    return X.get(this)
   }
 
   next(k = 1) {
@@ -171,7 +207,21 @@ export class Season extends ExtDateTime {
   }
 
   toEDTF() {
-    return `${this.year < 0 ? '-' : ''}${pad(this.year)}-${this.season}`
+    let sign = (this.year < 0) ? '-' : ''
+    let values = [pad(this.year), this.season]
+
+    if (this.unspecified.value)
+      return sign + this.unspecified.masks(values).join('-')
+
+    if (this.uncertain.value)
+      values = this.uncertain.marks(values, '?')
+
+    if (this.approximate.value) {
+      values = this.approximate.marks(values, '~')
+        .map(value => value.replace(/(~\?)|(\?~)/, '%'))
+    }
+
+    return  sign + values.join('-')
   }
 }
 
