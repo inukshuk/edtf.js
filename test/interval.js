@@ -62,7 +62,11 @@ describe('Interval', () => {
   })
 
   describe('seasons (non-standard)', () => {
-    const S80 = new Interval('1980-21', '1980-24')
+    let S80
+
+    before(() => {
+      S80 = new Interval('1980-21', '1980-24')
+    })
 
     it('.lower', () => {
       expect(S80.lower).to.be.instanceof(Season)
