@@ -107,11 +107,11 @@ export function datetime(data) {
   }
 }
 
-export function season(data, level = 1) {
+export function season(values, level = 1) {
   return {
     type: 'Season',
     level,
-    values: [Number(data[0]), Number(data[2])]
+    values: values.map(Number)
   }
 }
 
@@ -119,22 +119,24 @@ export function list(data) {
   return assign({ values: data[1], level: 2 }, data[0], data[2])
 }
 
-export function qualify([parts], _, reject) {
-  let q = {
-    uncertain: new Bitmask(), approximate: new Bitmask()
-  }
-
-  let values = parts
-    .map(([lhs, part, rhs], idx) => {
-      for (let ua in lhs) q[ua].qualify(idx * 2)
-      for (let ua in rhs) q[ua].qualify(1 + idx * 2)
-      return part
-    })
-
-  return (!q.uncertain.value && !q.approximate.value) ?
-    reject : {
-      ...date(values, 2),
-      uncertain: q.uncertain.value,
-      approximate: q.approximate.value
+export function qualified(fn, level = 2) {
+  return ([parts], _, reject) => {
+    let q = {
+      uncertain: new Bitmask(), approximate: new Bitmask()
     }
+
+    let values = parts
+      .map(([lhs, part, rhs], idx) => {
+        for (let ua in lhs) q[ua].qualify(idx * 2)
+        for (let ua in rhs) q[ua].qualify(1 + idx * 2)
+        return part
+      })
+
+    return (!q.uncertain.value && !q.approximate.value) ?
+      reject : {
+        ...fn(values, level),
+        uncertain: q.uncertain.value,
+        approximate: q.approximate.value
+      }
+  }
 }

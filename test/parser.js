@@ -603,6 +603,14 @@ describe('parser', () => {
       expect(() => p('2018-21/2017-01-01', { level: 3 })).to.be.rejected
       expect(() => p('2018-01?/2018-23', { level: 3 })).to.be.rejected
     })
+
+    it('YYYY?-SS', () =>
+      expect(p('2001?-23', { level: 3 }))
+        .to.produce([2001, 23]).at.level(3).and.be.a.season)
+
+    it('YYYY-SS?', () =>
+      expect(p('2001-33?', { level: 3 }))
+        .to.produce([2001, 33]).at.level(3).and.be.a.season)
   })
 
   describe('constrain', () => {

@@ -5,7 +5,7 @@
 @{%
   import {
     num, zero, nothing, pick, pluck, join, concat, merge, century,
-    interval, list, masked, date, datetime, season, qualify, year, decade
+    interval, list, masked, date, datetime, season, qualified, year, decade
   } from './util.js'
 
   import { Bitmask } from './bitmask.js'
@@ -145,7 +145,7 @@ UA -> "?" {% () => ({ uncertain: true }) %}
     | "%" {% () => ({ approximate: true, uncertain: true }) %}
 
 
-L1S -> year "-" d21_24 {% data => season(data, 1) %}
+L1S -> year "-" d21_24 {% d => season([d[0], d[2]], 1) %}
 
 
 # --- EDTF / ISO 8601-2 Level 2 ---
@@ -171,9 +171,9 @@ L2C -> century    {% id %}
 # NB: these are slow because they match almost everything!
 # We could enumerate all possible combinations of qualified
 # dates, excluding those covered by level 1.
-ua_date -> ua_year           {% qualify %}
-         | ua_year_month     {% qualify %}
-         | ua_year_month_day {% qualify %}
+ua_date -> ua_year           {% qualified(date) %}
+         | ua_year_month     {% qualified(date) %}
+         | ua_year_month_day {% qualified(date) %}
 
 # TODO: do not allow the same symbol on both sides!
 ua[X] -> UA:? $X UA:?
@@ -227,7 +227,7 @@ exp -> digits "E" digits
   {% data => num(data[0]) * Math.pow(10, num(data[2])) %}
 
 
-L2S -> year "-" d25_41 {% data => season(data, 2) %}
+L2S -> year "-" d25_41 {% d => season([d[0], d[2]], 2) %}
 
 decade -> positive_decade     {% data => decade(data[0]) %}
         | "000"               {% () => decade(0) %}
@@ -267,12 +267,19 @@ consecutives
 
 # --- Level 3 / Non-Standard Features ---
 
-L3 -> L3i        {% id %}
+L3 -> L3i                     {% id %}
+    | L3S                     {% id %}
 
-L3i -> L3S "/" L3S       {% interval(3) %}
+L3i -> L3s "/" L3s            {% interval(3) %}
 
-L3S -> L1S {% id %}
-     | L2S {% id %}
+L3s -> L1S                    {% id %}
+     | L2S                    {% id %}
+     | L3S                    {% id %}
+
+L3S -> ua_season              {% qualified(season, 3) %}
+
+ua_season
+  -> ua[year] "-" ua[d21_41]  {% pluck(0, 2) %}
 
 
 # --- Base Definitions ---
@@ -378,5 +385,8 @@ d21_24 -> "2" [1-4] {% join %}
 d25_41 -> "2" [5-9] {% join %}
         | "3" digit {% join %}
         | "4" [01]  {% join %}
+
+d21_41 -> d21_24 {% id %}
+        | d25_41 {% id %}
 
 _ -> " ":*
