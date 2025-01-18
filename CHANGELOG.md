@@ -1,3 +1,8 @@
+4.7.0 / 2025-01-18
+==================
+  * Support uncertain or approximate seasons at level 3
+  * Support seasons with unspecified years at level 3
+  * Add `seasonUncertainty` parser constraint
 4.5.1 / 2023-10-16
 ==================
   * Use custom assert instead of node:assert;
