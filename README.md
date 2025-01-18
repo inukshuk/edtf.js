@@ -17,6 +17,14 @@ exceptions:
 1. Seasons in intervals are supported at the experimental/non-standard
    level 3. To enable season intervals, enable `seasonIntervals` in
    `defaults` or when passing constraints to the parse function.
+2. Uncertain or approximate seasons as well as seasons with unspecifed
+   years are supported at the experimental/non-standard level 3.
+   To enable this feature, set `seasonUncertainty` in `defaults`
+   or when passing constraints to the parse function.
+
+To enable all experimental/non-standard features
+you can also set the `level` to 3 in `defaults` or when passing
+parser constraints.
 
 ### ESM
 Since version 4.0 EDTF.js uses Nodes.js native ESM module implementation.
