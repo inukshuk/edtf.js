@@ -4,7 +4,8 @@ import grammar from './grammar.js'
 export const defaults = {
   level: 2,
   types: [],
-  seasonIntervals: false
+  seasonIntervals: false,
+  seasonUncertainty: false
 }
 
 function byLevel(a, b) {
@@ -17,12 +18,15 @@ function limit(results, constraints = {}) {
   let {
     level,
     types,
-    seasonIntervals
+    seasonIntervals,
+    seasonUncertainty
   } = { ...defaults, ...constraints }
 
 
   return results.filter(res => {
     if (seasonIntervals && isSeasonInterval(res))
+      return true
+    if (seasonUncertainty && isSeasonLevel3(res))
       return true
 
     if (res.level > level)
@@ -36,6 +40,9 @@ function limit(results, constraints = {}) {
 
 function isSeasonInterval({ type, values }) {
   return type === 'Interval' && values[0].type === 'Season'
+}
+function isSeasonLevel3({ type, level }) {
+  return type === 'Season' && level >= 3
 }
 
 function best(results) {
