@@ -44,7 +44,7 @@ export function interval(level) {
   })
 }
 
-export function masked(type = 'unspecified', symbol = 'X') {
+export function masked(type = 'unspecified', symbol = 'X', normalize = true) {
   return (data, _, reject) => {
     data = data.join('')
 
@@ -53,7 +53,7 @@ export function masked(type = 'unspecified', symbol = 'X') {
 
     if (mask.indexOf(symbol) === -1) return reject
 
-    let values = Bitmask.values(mask, 0)
+    let values = Bitmask.values(mask, 0, normalize)
 
     if (negative) values[0] = -values[0]
 

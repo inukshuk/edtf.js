@@ -56,14 +56,14 @@ export class Bitmask {
       (memo | (SYMBOL.test(c) ? pow(2, idx) : 0)), 0)
   }
 
-  static values(mask, digit = 0) {
+  static values(mask, digit = 0, normalize = true) {
     let num = Bitmask.numbers(mask, digit).split('')
     let values = [Number(num.slice(0, 4).join(''))]
 
     if (num.length > 4) values.push(Number(num.slice(4, 6).join('')))
     if (num.length > 6) values.push(Number(num.slice(6, 8).join('')))
 
-    return Bitmask.normalize(values)
+    return normalize ? Bitmask.normalize(values) : values
   }
 
   static numbers(mask, digit = 0) {

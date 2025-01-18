@@ -277,10 +277,12 @@ L3s -> L1S                    {% id %}
      | L3S                    {% id %}
 
 L3S -> ua_season              {% qualified(season, 3) %}
+     | xx_season              {% merge(0, { type: 'Season', level: 3 }) %}
 
 ua_season
   -> ua[year] "-" ua[d21_41]  {% pluck(0, 2) %}
 
+xx_season -> dx4 "-" d21_41   {% masked('unspecified', 'X', false) %}
 
 # --- Base Definitions ---
 

@@ -611,6 +611,10 @@ describe('parser', () => {
     it('YYYY-SS?', () =>
       expect(p('2001-33?', { level: 3 }))
         .to.produce([2001, 33]).at.level(3).and.be.a.season)
+
+    it('YYXX-SS', () =>
+      expect(p('20XX-41', { level: 3 }))
+        .to.produce([2000, 41]).at.level(3).and.be.a.season)
   })
 
   describe('constrain', () => {
