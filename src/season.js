@@ -208,7 +208,7 @@ export class Season extends ExtDateTime {
 
   toEDTF() {
     let sign = (this.year < 0) ? '-' : ''
-    let values = [pad(this.year), this.season]
+    let values = [pad(this.year), String(this.season)]
 
     if (this.unspecified.value)
       return sign + this.unspecified.masks(values).join('-')
