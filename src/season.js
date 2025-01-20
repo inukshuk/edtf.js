@@ -172,25 +172,27 @@ export class Season extends ExtDateTime {
   }
 
   get max() { // eslint-disable-line complexity
+    let year = this.unspecified.max([pad(this.year)])
+
     switch (this.season) {
     case 21:
     case 25:
     case 32:
     case 33:
-      return ExtDateTime.UTC(this.year, 3) - 1
+      return ExtDateTime.UTC(year, 3) - 1
 
     case 22:
     case 26:
     case 31:
     case 34:
     case 40:
-      return ExtDateTime.UTC(this.year, 6) - 1
+      return ExtDateTime.UTC(year, 6) - 1
 
     case 23:
     case 27:
     case 30:
     case 35:
-      return ExtDateTime.UTC(this.year, 9) - 1
+      return ExtDateTime.UTC(year, 9) - 1
 
     case 24:
     case 28:
@@ -198,16 +200,16 @@ export class Season extends ExtDateTime {
     case 36:
     case 41:
     case 39:
-      return ExtDateTime.UTC(this.year + 1, 0) - 1
+      return ExtDateTime.UTC(year + 1, 0) - 1
 
     case 37:
-      return ExtDateTime.UTC(this.year, 5) - 1
+      return ExtDateTime.UTC(year, 5) - 1
 
     case 38:
-      return ExtDateTime.UTC(this.year, 9) - 1
+      return ExtDateTime.UTC(year, 9) - 1
 
     default:
-      return ExtDateTime.UTC(this.year + 1, 0) - 1
+      return ExtDateTime.UTC(year + 1, 0) - 1
     }
   }
 
