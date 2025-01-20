@@ -19,6 +19,17 @@ describe('Season', () => {
       expect(new Season({ values: [2014, 33], unspecified: 'yyyxmmdd' }).max)
         .to.eql(Date.UTC(2019, 2, 31, 23, 59, 59, 999))
     })
+
+    it('max should equal next.min - 1', () => {
+      let seasons = [
+        new Season(2016, 21),
+        new Season({ values: [2016, 21], unspecifed: 'yyyxmmdd' }),
+      ]
+
+      for (let s of seasons)
+        expect(s.max).to.eql(s.next().min - 1)
+
+    })
   })
 
   describe('.next', () => {
