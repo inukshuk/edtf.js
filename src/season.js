@@ -103,7 +103,7 @@ export class Season extends ExtDateTime {
   }
 
   next(k = 1) {
-    let { season, year } = this
+    let { season, year, unspecified, approximate, uncertain } = this
 
     switch (true) {
     case (season >= 21 && season <= 36):
@@ -119,7 +119,12 @@ export class Season extends ExtDateTime {
       throw new RangeError(`Cannot compute next/prev for season ${season}`)
     }
 
-    return new Season(year, season)
+    return new Season({
+      values: [year, season],
+      approximate,
+      uncertain,
+      unspecified
+    })
   }
 
   prev(k = 1) {
