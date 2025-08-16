@@ -1,3 +1,6 @@
+4.8.0 / 2025-08-16
+==================
+  * Format intervals using DateFormat.formatRange
 4.7.0 / 2025-01-18
 ==================
   * Support uncertain or approximate seasons at level 3
