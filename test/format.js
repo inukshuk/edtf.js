@@ -44,4 +44,12 @@ describe('format', () => {
     })).to.eql('Sep 6, XX')
 
   } : null)
+
+  it('formats simple intervals', () => {
+    expect(format(edtf('2017/2025'))).to.eql('2017 – 2025')
+    expect(format(edtf('2017-01/2025-03'))).to.eql('1/2017 – 3/2025')
+    expect(format(edtf('2017-01/2017-03'))).to.eql('1/2017 – 3/2017')
+    expect(format(edtf('2017-01-10/2017-03-14')))
+      .to.eql('1/10/2017 – 3/14/2017')
+  })
 })

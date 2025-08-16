@@ -101,6 +101,10 @@ export class Interval extends ExtDateTime {
       (this.upper != null && this.upper !== Infinity)
   }
 
+  get precision() {
+    return this.lower?.precision ?? this.upper?.precision ?? 0
+  }
+
   *[Symbol.iterator]() {
     if (!this.finite) throw Error('cannot iterate infinite interval')
     yield* this.lower.through(this.upper)

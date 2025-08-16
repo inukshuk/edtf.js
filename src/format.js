@@ -1,4 +1,5 @@
 import LC from '../locale-data/index.cjs'
+import { Interval } from './interval.js'
 
 const { assign } = Object
 
@@ -101,12 +102,21 @@ function mask(date, parts) {
   return string
 }
 
+// eslint-disable-next-line complexity
 export function format(date, locale = 'en-US', options = {}) {
   const fmt = getFormat(date, locale, options)
   const pat = getPatternsFor(fmt)
 
   if (!date.isEDTF || pat == null) {
     return fmt.format(date)
+  }
+
+  if (date instanceof Interval) {
+    if (date.finite) {
+      return fmt.formatRange(date.lower, date.upper)
+    } else {
+      throw new Error('cannot format infinite intervals')
+    }
   }
 
   let string = (!date.unspecified.value || !fmt.formatToParts) ?
