@@ -74,7 +74,8 @@ describe('edtf', () => {
       '-0300-XX',
       '-03XX',
       '1985-04/..',
-      '../1985'
+      '../1985',
+      '2025-10-14T12:00:00.000Z'
 
     ]) expect(edtf(string).edtf).to.eql(string)
   })
