@@ -4,7 +4,7 @@ describe('ISO 8601-1', () => {
   let H, M
 
   before(() => {
-    let offset = new Date().getTimezoneOffset()
+    let offset = new Date('2014-12-08').getTimezoneOffset()
     H = offset / 60
     M = offset % 60
   })

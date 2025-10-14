@@ -1,12 +1,6 @@
 import nearley from 'nearley'
 import grammar from './grammar.js'
-
-export const defaults = {
-  level: 2,
-  types: [],
-  seasonIntervals: false,
-  seasonUncertainty: false
-}
+import { defaults } from './defaults.js'
 
 function byLevel(a, b) {
   return a.level < b.level ? -1 : a.level > b.level ? 1 : 0

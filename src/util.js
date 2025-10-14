@@ -1,4 +1,5 @@
 import { Bitmask } from './bitmask.js'
+import { defaults } from './defaults.js'
 const { assign } = Object
 
 
@@ -97,13 +98,21 @@ export function decade(value, level = 2) {
 
 export function datetime(data) {
   let offset = data[3]
-  if (offset == null) offset = new Date().getTimezoneOffset()
+  let values = Bitmask.normalize(data[0].map(Number)).concat(data[2])
+
+  if (offset == null && !!defaults.offset) {
+    if (typeof defaults.offset === 'number') {
+      offset = defaults.offset
+    } else {
+      offset = new Date(...values).getTimezoneOffset()
+    }
+  }
 
   return {
-    values: Bitmask.normalize(data[0].map(Number)).concat(data[2]),
+    level: 0,
     offset,
     type: 'Date',
-    level: 0
+    values
   }
 }
 
