@@ -1,3 +1,8 @@
+4.9.0 / 2025-10-14
+==================
+  * Allow configuring a global timezone offset using `defaults.offset`
+  * Compute default timezone offset based on the date being parsed;
+    this better accounts for daylight savings and historical timezone changes.
 4.8.0 / 2025-08-16
 ==================
   * Format intervals using DateFormat.formatRange
