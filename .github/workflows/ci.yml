@@ -14,14 +14,14 @@ jobs:
     strategy:
       matrix:
         node:
-          - 18
           - 20
-          - 21
           - 22
+          - 23
+          - 24
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}
 
@@ -41,4 +41,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.node == '21'
+        if: matrix.node == '22'
