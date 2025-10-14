@@ -1,5 +1,4 @@
 import LC from '../locale-data/index.cjs'
-import { Interval } from './interval.js'
 
 const { assign } = Object
 
@@ -111,7 +110,7 @@ export function format(date, locale = 'en-US', options = {}) {
     return fmt.format(date)
   }
 
-  if (date instanceof Interval) {
+  if (date.type === 'Interval') {
     if (date.finite) {
       return fmt.formatRange(date.lower, date.upper)
     } else {
