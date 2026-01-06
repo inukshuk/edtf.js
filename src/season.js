@@ -172,7 +172,7 @@ export class Season extends ExtDateTime {
   }
 
   get max() { // eslint-disable-line complexity
-    let year = this.unspecified.max([pad(this.year)])
+    let [year] = this.unspecified.max([pad(this.year)])
 
     switch (this.season) {
     case 21:
