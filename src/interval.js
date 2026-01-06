@@ -124,6 +124,10 @@ export class Interval extends ExtDateTime {
     return !v ? null : (v === Infinity) ? Infinity : v.max
   }
 
+  get isEDTFInterval() {
+    return true
+  }
+
   toEDTF() {
     return this.values
       .map(v => {
