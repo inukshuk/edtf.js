@@ -45,6 +45,17 @@ describe('format', () => {
 
   } : null)
 
+  it('formats datetime in a given time zone', () => {
+    let date = edtf('2014-12-08T11:46:42+02:00')
+    let opts = { timeZoneName: 'short' }
+
+    expect(format(date, 'en-US', { ...opts, timeZone: '+02:00' }))
+      .to.match(/11:46:42\sAM\sGMT\+2/)
+
+    expect(format(date, 'en-US', { ...opts, timeZone: 'UTC' }))
+      .to.match(/9:46:42\sAM\sUTC/)
+  })
+
   it('formats simple intervals', () => {
     expect(format(edtf('2017/2025'))).to.eql('2017 – 2025')
     expect(format(edtf('2017-01/2025-03'))).to.eql('1/2017 – 3/2025')

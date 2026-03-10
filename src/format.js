@@ -10,8 +10,15 @@ const noTime = {
   second: undefined
 }
 
+const time = {
+  timeZone: 'UTC',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric'
+}
+
 const DEFAULTS = [
-  {},
+  time,
   assign({ weekday: undefined, day: undefined, month: undefined }, noTime),
   assign({ weekday: undefined, day: undefined }, noTime),
   assign({}, noTime),
@@ -59,7 +66,7 @@ export function getFormat(date, locale, options) {
     break
   }
 
-  assign(opts, options, DEFAULTS[date.precision])
+  assign(opts, DEFAULTS[date.precision], options)
 
   let id = getCacheId(locale, opts)
 
