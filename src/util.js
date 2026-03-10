@@ -104,7 +104,7 @@ export function datetime(data) {
     if (typeof defaults.offset === 'number') {
       offset = defaults.offset
     } else {
-      offset = new Date(...values).getTimezoneOffset()
+      offset = -1 * new Date(...values).getTimezoneOffset()
     }
   }
 

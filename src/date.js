@@ -54,8 +54,8 @@ export class Date extends globalThis.Date {
               while (args.length < 5) args.push(0)
 
               // ECMA Date constructor handles overflows so we
-              // simply add the offset!
-              args[4] = args[4] + obj.offset
+              // simply subtract the offset here!
+              args[4] = args[4] - obj.offset
             }
 
             args = [ExtDateTime.UTC(...args)]

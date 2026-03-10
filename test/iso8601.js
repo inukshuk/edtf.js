@@ -68,9 +68,9 @@ describe('ISO 8601-1', () => {
   it('YYYY-MM-DDTHH:MMZ', () =>
     expect(edtf('2014-12-08T11:46Z'))
       .to.have.ymd([2014, 11, 8]).and.hms([11, 46, 0]))
-  it('YYYY-MM-DDTHH:MM+02:00', () =>
-    expect(edtf('2014-12-08T11:46-02:00'))
-      .to.have.ymd([2014, 11, 8]).and.hms([9, 46, 0]))
+  it('YYYY-MM-DDTHH:MM-03:00', () =>
+    expect(edtf('2014-12-08T11:46-03:00'))
+      .to.have.ymd([2014, 11, 8]).and.hms([14, 46, 0]))
 
   it('YYYY-MM-DDTHH:MM:SS.sss', () =>
     expect(edtf('2014-12-08T11:46:42.123'))
@@ -83,14 +83,14 @@ describe('ISO 8601-1', () => {
 
   it('YYYY-MM-DDTHH:MM:SS+02:00', () =>
     expect(edtf('2014-12-08T11:46:42+02:00'))
-      .to.have.ymd([2014, 11, 8]).and.hms([13, 46, 42]))
+      .to.have.ymd([2014, 11, 8]).and.hms([9, 46, 42]))
 
   it('YYYY-MM-DDTHH:MM:SS-02:00', () => {
     expect(edtf('2014-12-08T11:46:42-02:00'))
-      .to.have.ymd([2014, 11, 8]).and.hms([9, 46, 42])
+      .to.have.ymd([2014, 11, 8]).and.hms([13, 46, 42])
 
     // Using minus sign!
     expect(edtf('2014-12-08T11:46:42−02:00'))
-      .to.have.ymd([2014, 11, 8]).and.hms([9, 46, 42])
+      .to.have.ymd([2014, 11, 8]).and.hms([13, 46, 42])
   })
 })
