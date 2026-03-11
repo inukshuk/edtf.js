@@ -1,3 +1,7 @@
+4.10.0 / 2026-03-11
+===================
+  * Added extended timeZone property
+  * Improved formatting date/times with time zone
 4.9.0 / 2025-10-14
 ==================
   * Allow configuring a global timezone offset using `defaults.offset`
