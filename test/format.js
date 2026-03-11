@@ -59,6 +59,38 @@ describe('format', () => {
     })).to.eql('Wed, Sep 6, 2017')
   })
 
+  it('precision takes precedence over user options', () => {
+    expect(format(edtf('2017'), 'en-US', {
+      month: 'long',
+      day: 'numeric'
+    })).to.eql('2017')
+
+    expect(format(edtf('2017-09'), 'en-US', {
+      day: 'numeric',
+      weekday: 'long'
+    })).to.eql('9/2017')
+
+    expect(format(edtf('2017-09-06'), 'en-US', {
+      hour: 'numeric',
+      minute: 'numeric'
+    })).to.eql('9/6/2017')
+  })
+
+  it('allows overriding defaults within precision', () => {
+    expect(format(edtf('2017'), 'en-US', {
+      year: '2-digit'
+    })).to.eql('17')
+
+    expect(format(edtf('2017-09'), 'en-US', {
+      month: 'long'
+    })).to.eql('September 2017')
+
+    expect(format(edtf('2017-09-06'), 'en-US', {
+      month: 'short',
+      weekday: 'short'
+    })).to.eql('Wed, Sep 6, 2017')
+  })
+
   it('formats uncertain/approximate dates', () => {
     expect(format(edtf('2017?'))).to.eql('2017 (?)')
     expect(format(edtf('2017~'))).to.eql('c. 2017')

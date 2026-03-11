@@ -2,26 +2,58 @@ import LC from '../locale-data/index.cjs'
 
 const { assign } = Object
 
-const NO_TIME = {
-  timeZone: 'UTC',
-  timeZoneName: undefined,
-  hour: undefined,
-  minute: undefined,
-  second: undefined
-}
+const OPTS = [
+  {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    timeZoneName: undefined,
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  },
+  {
+    year: 'numeric',
+    timeZone: 'UTC',
+    timeZoneName: undefined
+  },
+  {
+    month: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+    timeZoneName: undefined
+  },
+  {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+    timeZoneName: undefined
+  }
+]
 
-const TIME = {
-  timeZoneName: undefined,
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric'
-}
-
-const DEFAULTS = [
-  TIME,
-  assign({ weekday: undefined, day: undefined, month: undefined }, NO_TIME),
-  assign({ weekday: undefined, day: undefined }, NO_TIME),
-  assign({}, NO_TIME),
+const CONS = [
+  {},
+  {
+    month: undefined,
+    day: undefined,
+    weekday: undefined,
+    hour: undefined,
+    minute: undefined,
+    second: undefined
+  },
+  {
+    day: undefined,
+    weekday: undefined,
+    hour: undefined,
+    minute: undefined,
+    second: undefined
+  },
+  {
+    hour: undefined,
+    minute: undefined,
+    second: undefined
+  }
 ]
 
 
@@ -52,23 +84,12 @@ function getOrderedProps(obj) {
 }
 
 export function getFormat(date, locale, options) {
-  let opts = {}
-
-  switch (date.precision) {
-  case 0:
-    // eslint-disable-next-line no-fallthrough
-  case 3:
-    opts.day = 'numeric'
-    // eslint-disable-next-line no-fallthrough
-  case 2:
-    opts.month = 'numeric'
-    // eslint-disable-next-line no-fallthrough
-  case 1:
-    opts.year = 'numeric'
-    break
-  }
-
-  assign(opts, DEFAULTS[date.precision], options)
+  let opts = assign(
+    {},
+    OPTS[date.precision],
+    options,
+    CONS[date.precision]
+  )
 
   let id = getCacheId(locale, opts)
 
