@@ -13,7 +13,7 @@
     "./types": "./src/types.js"
   },
   "scripts": {
-    "lint": "eslint src test",
+    "lint": "eslint src test *.js",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
     "postcompile": "rollup -c rollup.config.js",
     "prepare": "npm run compile",
@@ -48,11 +48,12 @@
     "randexp": "^0.5.3"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.0.1",
     "c8": "^11.0.0",
     "chai": "^6.2.2",
-    "eslint": "^9.1.0",
+    "eslint": "^10.0.3",
     "globals": "^17.4.0",
     "mocha": "^11.7.1",
     "rollup": "^4.1.4"

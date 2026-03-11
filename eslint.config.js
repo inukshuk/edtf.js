@@ -1,14 +1,17 @@
-import js from "@eslint/js"
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
+import js from '@eslint/js'
 
-export default [
-  js.configs.recommended,
+export default defineConfig([
   {
-    ignores: [
-      'src/grammar.js'
-    ]
-  },
-  {
+    files: ['**/*.js'],
+    plugins: { js },
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    },
+    extends: ['js/recommended'],
     rules: {
       'array-bracket-spacing': 2,
       'block-spacing': 2,
@@ -30,14 +33,11 @@ export default [
       'no-eval': 2,
       'no-implied-eval': 2,
       'no-loop-func': 2,
-      'no-mixed-spaces-and-tabs': 2,
       'no-multi-str': 2,
       'no-setter-return': 0,
       'no-spaced-func': 2,
       'no-trailing-spaces': 2,
-      'no-unexpected-multiline': 2,
       'no-unneeded-ternary': 2,
-      'no-unreachable': 2,
       'no-useless-concat': 2,
       'object-curly-spacing': [2, 'always'],
       'operator-linebreak': [2, 'after'],
@@ -45,13 +45,20 @@ export default [
       'quotes': [2, 'single', 'avoid-escape'],
       'radix': 2,
       'semi': [2, 'never'],
-      'semi-spacing': 0,
       'space-before-blocks': 2,
-      'space-before-function-paren': [2, { anonymous: 'always', named: 'never' }],
+      'space-before-function-paren': [2, {
+        anonymous: 'always',
+        named: 'never'
+      }],
       'space-infix-ops': 2,
       'space-unary-ops': 2,
       'wrap-regex': 2,
     }
+  },
+  {
+    ignores: [
+      'src/grammar.js'
+    ]
   },
   {
     files: [
@@ -68,4 +75,4 @@ export default [
       'max-nested-callbacks': 0
     }
   }
-]
+])
