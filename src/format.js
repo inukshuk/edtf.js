@@ -55,6 +55,8 @@ export function getFormat(date, locale, options) {
   let opts = {}
 
   switch (date.precision) {
+  case 0:
+    // eslint-disable-next-line no-fallthrough
   case 3:
     opts.day = 'numeric'
     // eslint-disable-next-line no-fallthrough

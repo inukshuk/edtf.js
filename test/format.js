@@ -17,6 +17,41 @@ describe('format', () => {
     expect(format(edtf('2017-09-06'))).to.eql('9/6/2017')
   })
 
+  describe('year precision', () => {
+    it('formats parsed year-only strings as year', () => {
+      expect(format(edtf('2017'))).to.eql('2017')
+      expect(format(edtf('1999'))).to.eql('1999')
+      expect(format(edtf('0800'))).to.eql('800')
+      expect(format(edtf('2000'))).to.eql('2000')
+    })
+  })
+
+  describe('year-month precision', () => {
+    it('formats parsed year-month strings as month/year', () => {
+      expect(format(edtf('2017-01'))).to.eql('1/2017')
+      expect(format(edtf('2017-06'))).to.eql('6/2017')
+      expect(format(edtf('2017-12'))).to.eql('12/2017')
+      expect(format(edtf('1999-03'))).to.eql('3/1999')
+    })
+  })
+
+  describe('year-month-day precision', () => {
+    it('formats parsed full date strings as month/day/year', () => {
+      expect(format(edtf('2017-01-01'))).to.eql('1/1/2017')
+      expect(format(edtf('2017-06-15'))).to.eql('6/15/2017')
+      expect(format(edtf('2017-12-31'))).to.eql('12/31/2017')
+      expect(format(edtf('2016-02-29'))).to.eql('2/29/2016')
+    })
+  })
+
+  describe('datetime precision', () => {
+    it('formats parsed datetime strings with time', () => {
+      let output = format(edtf('2017-06-15T12:00:00Z'), 'en-US')
+      expect(output).to.match(/6\/15\/2017/)
+      expect(output).to.match(/12:00:00/)
+    })
+  })
+
   it('accepts standard options', () => {
     expect(format(edtf('2017-09-06'), 'en-US', {
       month: 'short',
