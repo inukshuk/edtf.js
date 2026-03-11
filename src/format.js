@@ -2,7 +2,7 @@ import LC from '../locale-data/index.cjs'
 
 const { assign } = Object
 
-const noTime = {
+const NO_TIME = {
   timeZone: 'UTC',
   timeZoneName: undefined,
   hour: undefined,
@@ -10,7 +10,7 @@ const noTime = {
   second: undefined
 }
 
-const time = {
+const TIME = {
   timeZone: 'UTC',
   hour: 'numeric',
   minute: 'numeric',
@@ -18,10 +18,10 @@ const time = {
 }
 
 const DEFAULTS = [
-  time,
-  assign({ weekday: undefined, day: undefined, month: undefined }, noTime),
-  assign({ weekday: undefined, day: undefined }, noTime),
-  assign({}, noTime),
+  TIME,
+  assign({ weekday: undefined, day: undefined, month: undefined }, NO_TIME),
+  assign({ weekday: undefined, day: undefined }, NO_TIME),
+  assign({}, NO_TIME),
 ]
 
 
