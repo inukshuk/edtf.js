@@ -50,30 +50,15 @@ function configure(level, options) {
   return options
 }
 
-function getCacheId(...args) {
-  let id = []
-
-  for (let arg of args) {
-    if (arg && typeof arg === 'object') {
-      id.push(getOrderedProps(arg))
-    } else {
-      id.push(arg)
-    }
-  }
-
-  return JSON.stringify(id)
-
+function getCacheId(locale, options) {
+  return `${locale}:${JSON.stringify(normalize(options))}`
 }
 
-function getOrderedProps(obj) {
-  let props = []
-  let keys = Object.getOwnPropertyNames(obj)
-
-  for (let key of keys.sort()) {
-    props.push({ [key]: obj[key] })
-  }
-
-  return props
+function normalize(obj) {
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([, b]) => b != null)
+      .sort(([a], [b]) => a.localeCompare(b)))
 }
 
 export function getFormat(date, locale, options) {
@@ -81,6 +66,9 @@ export function getFormat(date, locale, options) {
   let id = getCacheId(locale, opts)
 
   if (!format.cache.has(id)) {
+    if (format.cache.size >= 64)
+      format.cache.clear()
+
     format.cache.set(id, new Intl.DateTimeFormat(locale, opts))
   }
 
