@@ -45,15 +45,50 @@ describe('format', () => {
 
   } : null)
 
-  it('formats datetime in a given time zone', () => {
+  it('formats datetime with explicit offset', () => {
     let date = edtf('2014-12-08T11:46:42+02:00')
-    let opts = { timeZoneName: 'short' }
 
-    expect(format(date, 'en-US', { ...opts, timeZone: '+02:00' }))
+    expect(date.timeZone).to.eql('+02:00')
+
+    expect(format(date, 'en-US'))
       .to.match(/11:46:42\sAM\sGMT\+2/)
 
-    expect(format(date, 'en-US', { ...opts, timeZone: 'UTC' }))
+    expect(format(date, 'en-US', { timeZone: 'UTC', timeZoneName: 'short' }))
       .to.match(/9:46:42\sAM\sUTC/)
+  })
+
+  it('formats datetime with Z as UTC with label', () => {
+    let date = edtf('2014-12-08T11:46:42Z')
+
+    expect(date.timeZone).to.eql('+00:00')
+
+    expect(format(date, 'en-US'))
+      .to.match(/11:46:42\sAM\s(UTC|GMT)/)
+  })
+
+  it('formats datetime without offset in local time, no label', () => {
+    let date = edtf('2014-12-08T11:46:42')
+
+    expect(date.timeZone).to.eql(undefined)
+
+    let output = format(date, 'en-US')
+    expect(output).to.match(/11:46:42/)
+    expect(output).not.to.match(/UTC|GMT/)
+  })
+
+  it('supports programmatic timeZone', () => {
+    let date = edtf('2014-12-08T11:46:42Z')
+    date.timeZone = 'America/New_York'
+
+    expect(format(date, 'en-US'))
+      .to.match(/6:46:42\sAM\sEST/)
+  })
+
+  it('allows overriding timeZoneName', () => {
+    let date = edtf('2014-12-08T11:46:42+02:00')
+
+    expect(format(date, 'en-US', { timeZoneName: 'longOffset' }))
+      .to.match(/11:46:42\sAM\sGMT\+02:00/)
   })
 
   it('formats simple intervals', () => {

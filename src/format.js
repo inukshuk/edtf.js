@@ -11,7 +11,7 @@ const NO_TIME = {
 }
 
 const TIME = {
-  timeZone: 'UTC',
+  timeZoneName: undefined,
   hour: 'numeric',
   minute: 'numeric',
   second: 'numeric'
@@ -110,6 +110,14 @@ function mask(date, parts) {
 
 // eslint-disable-next-line complexity
 export function format(date, locale = 'en-US', options = {}) {
+  if (date.timeZone && !options.timeZone) {
+    options = {
+      timeZoneName: 'short',
+      ...options,
+      timeZone: date.timeZone
+    }
+  }
+
   const fmt = getFormat(date, locale, options)
   const pat = getPatternsFor(fmt)
 
