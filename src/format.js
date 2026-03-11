@@ -1,8 +1,6 @@
 import LC from '../locale-data/index.cjs'
 
-const { assign } = Object
-
-const OPTS = [
+const DEFAULTS = [
   {
     day: 'numeric',
     month: 'numeric',
@@ -32,30 +30,25 @@ const OPTS = [
   }
 ]
 
-const CONS = [
-  {},
-  {
-    month: undefined,
-    day: undefined,
-    weekday: undefined,
-    hour: undefined,
-    minute: undefined,
-    second: undefined
-  },
-  {
-    day: undefined,
-    weekday: undefined,
-    hour: undefined,
-    minute: undefined,
-    second: undefined
-  },
-  {
-    hour: undefined,
-    minute: undefined,
-    second: undefined
-  }
-]
+function configure(level, options) {
+  options = { ...DEFAULTS[level], ...options }
 
+  switch (level) {
+  case 1:
+    options.month = undefined
+    // eslint-disable-next-line no-fallthrough
+  case 2:
+    options.day = undefined
+    options.weekday = undefined
+    // eslint-disable-next-line no-fallthrough
+  case 3:
+    options.hour = undefined
+    options.minute = undefined
+    options.second = undefined
+  }
+
+  return options
+}
 
 function getCacheId(...args) {
   let id = []
@@ -84,13 +77,7 @@ function getOrderedProps(obj) {
 }
 
 export function getFormat(date, locale, options) {
-  let opts = assign(
-    {},
-    OPTS[date.precision],
-    options,
-    CONS[date.precision]
-  )
-
+  let opts = configure(date.precision, options)
   let id = getCacheId(locale, opts)
 
   if (!format.cache.has(id)) {
