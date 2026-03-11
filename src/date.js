@@ -11,13 +11,14 @@ const P = new WeakMap()
 const U = new WeakMap()
 const A = new WeakMap()
 const X = new WeakMap()
+const Z = new WeakMap()
 
 const PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD]
 
 export class Date extends globalThis.Date {
   constructor(...args) { // eslint-disable-line complexity
     let precision = 0
-    let uncertain, approximate, unspecified
+    let uncertain, approximate, unspecified, timeZone
 
     switch (args.length) {
     case 0:
@@ -61,7 +62,7 @@ export class Date extends globalThis.Date {
             args = [ExtDateTime.UTC(...args)]
           }
 
-          ({ uncertain, approximate, unspecified } = obj)
+          ({ uncertain, approximate, unspecified, timeZone } = obj)
         }
         break
 
@@ -82,6 +83,7 @@ export class Date extends globalThis.Date {
     this.uncertain = uncertain
     this.approximate = approximate
     this.unspecified = unspecified
+    this.timeZone = timeZone
   }
 
   set precision(value) {
@@ -114,6 +116,14 @@ export class Date extends globalThis.Date {
 
   get unspecified() {
     return X.get(this)
+  }
+
+  set timeZone(value) {
+    Z.set(this, value)
+  }
+
+  get timeZone() {
+    return Z.get(this)
   }
 
   get atomic() {

@@ -96,9 +96,18 @@ export function decade(value, level = 2) {
   }
 }
 
+export function offsetToTimeZone(offset) {
+  let sign = offset < 0 ? '-' : '+'
+  let abs = Math.abs(offset)
+  let h = String(Math.floor(abs / 60)).padStart(2, '0')
+  let m = String(abs % 60).padStart(2, '0')
+  return `${sign}${h}:${m}`
+}
+
 export function datetime(data) {
   let offset = data[3]
   let values = Bitmask.normalize(data[0].map(Number)).concat(data[2])
+  let timeZone
 
   if (offset == null && !!defaults.offset) {
     if (typeof defaults.offset === 'number') {
@@ -106,11 +115,14 @@ export function datetime(data) {
     } else {
       offset = -1 * new Date(...values).getTimezoneOffset()
     }
+  } else if (offset != null) {
+    timeZone = offsetToTimeZone(offset)
   }
 
   return {
     level: 0,
     offset,
+    timeZone,
     type: 'Date',
     values
   }
