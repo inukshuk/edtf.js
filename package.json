@@ -18,9 +18,8 @@
     "postcompile": "rollup -c rollup.config.js",
     "prepare": "npm run compile",
     "pretest": "npm run lint",
-    "test": "mocha",
-    "coverage": "c8 --reporter=lcov --reporter=text-summary npm test",
-    "debug": "node inspect $(npm bin)/_mocha"
+    "test": "node --test --import ./test/support/index.js 'test/*.js'",
+    "coverage": "node --test --import ./test/support/index.js --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test-reporter=spec --test-reporter-destination=stdout 'test/*.js'"
   },
   "repository": {
     "type": "git",
@@ -51,11 +50,9 @@
     "@eslint/js": "^10.0.1",
     "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.0.1",
-    "c8": "^11.0.0",
     "chai": "^6.2.2",
     "eslint": "^10.0.3",
     "globals": "^17.4.0",
-    "mocha": "^11.7.1",
     "rollup": "^4.1.4"
   }
 }

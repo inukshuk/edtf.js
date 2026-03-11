@@ -67,7 +67,12 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.mocha,
+        describe: 'readonly',
+        it: 'readonly',
+        before: 'readonly',
+        after: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
         expect: 'readonly'
       }
     },
