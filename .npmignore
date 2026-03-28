@@ -1,8 +1,0 @@
-test
-src/edtf.ne
-.eslintignore
-.eslintrc
-.istanbul.yml
-.travis.yml
-rollup.config.js
-coverage

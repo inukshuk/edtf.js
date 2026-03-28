@@ -3,6 +3,13 @@
   "version": "4.10.1",
   "description": "Extended Date Time Format (EDTF) / ISO 8601-2 Parser and Library",
   "type": "module",
+  "files": [
+    "index.js",
+    "src",
+    "!src/edtf.ne",
+    "dist",
+    "locale-data"
+  ],
   "main": "./dist/index.cjs",
   "exports": {
     ".": {
