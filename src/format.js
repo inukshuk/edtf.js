@@ -1,4 +1,4 @@
-import LC from '../locale-data/index.cjs'
+import LC from '../locale-data/index.js'
 
 const DEFAULTS = [
   {
