@@ -1,7 +1,7 @@
 import { Bitmask, Date as ExtDate } from '../../index.js'
 import { expect, Assertion, use } from 'chai'
 
-global.expect = expect
+globalThis.expect = expect
 
 use(function (_, utils) {
 
