@@ -1,3 +1,6 @@
+4.11.0 / 2026-03-28
+===================
+  * Use import attributes to load JSON locale-data
 4.10.0 / 2026-03-11
 ===================
   * Added extended timeZone property
