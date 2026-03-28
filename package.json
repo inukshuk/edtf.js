@@ -24,7 +24,6 @@
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
     "postcompile": "rollup -c rollup.config.js",
     "prepare": "npm run compile",
-    "pretest": "npm run lint",
     "test": "node --test --import ./test/support/index.js 'test/*.js'",
     "coverage": "node --test --import ./test/support/index.js --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test-reporter=spec --test-reporter-destination=stdout 'test/*.js'"
   },

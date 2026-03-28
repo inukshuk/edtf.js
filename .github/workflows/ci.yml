@@ -1,45 +1,59 @@
 name: ci
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+permissions: {}
 jobs:
-  build:
-    environment: CI
+  test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node:
-          - 22
-          - 23
-          - 24
-          - 25
-
+          - 'v22'
+          - 'v23'
+          - 'v24'
+          - 'v25'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-
       - name: Install dependencies
         run: npm clean-install
-
-      - name: Compile CJS bundle
-        run: npm run compile
-
-      - name: Test CJS package loading
+      - name: Test CommonJS package loading
         run: node -e "console.log(require('.').default('1980').next().year)"
-
       - name: Run tests
-        run: npm run coverage
+        run: npm test
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 'latest'
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Lint
+        run: npm run lint
+
+  coverage:
+    needs: [test, lint]
+    environment: CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 'latest'
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Run tests with coverage
+        run: npm run coverage
       - name: Upload coverage results
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
-        if: matrix.node == '22'
