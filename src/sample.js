@@ -5,8 +5,8 @@
  * Copyright (c) 2014 Hardmath123
  */
 
-import assert from 'assert'
 import randexp from 'randexp'
+import assert from './assert.js'
 import * as TYPES from './types.js'
 import grammar from './grammar.js'
 
