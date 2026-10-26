@@ -50,7 +50,7 @@
     "nearley": "^2.19.7"
   },
   "optionalDependencies": {
-    "randexp": "^0.5.3"
+    "randexp": "^0.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
