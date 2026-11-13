@@ -57,7 +57,8 @@ export default defineConfig([
   },
   {
     ignores: [
-      'src/grammar.js'
+      'src/grammar.js',
+      'src/nearley.js'
     ]
   },
   {

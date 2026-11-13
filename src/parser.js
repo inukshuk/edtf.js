@@ -1,4 +1,4 @@
-import nearley from 'nearley'
+import nearley from './nearley.js'
 import grammar from './grammar.js'
 import { defaults } from './defaults.js'
 

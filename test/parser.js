@@ -1,5 +1,5 @@
 import { parse as p, parser } from '../src/parser.js'
-import nearley from 'nearley'
+import nearley from '../src/nearley.js'
 
 describe('parser', () => {
   it('returns a parser instance', () =>
