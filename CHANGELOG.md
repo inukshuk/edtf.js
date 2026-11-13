@@ -1,3 +1,6 @@
+4.12.0 / 2026-11-13
+===================
+  * Bundle nearley runtim
 4.11.0 / 2026-03-28
 ===================
   * Use import attributes to load JSON locale-data
