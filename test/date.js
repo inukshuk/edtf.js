@@ -323,6 +323,17 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(2016, 10, 30, 23, 59, 59, 999))
         expect(Date.from('2016-X2').max)
           .to.eql(global.Date.UTC(2016, 11, 31, 23, 59, 59, 999))
+        expect(Date.from('2016-X0').max)
+          .to.eql(global.Date.UTC(2016, 9, 31, 23, 59, 59, 999))
+      })
+
+      it('YYYY-MM-X0', () => {
+        expect(Date.from('2016-01-X0').max)
+          .to.eql(global.Date.UTC(2016, 0, 30, 23, 59, 59, 999))
+        expect(Date.from('2016-06-X0').max)
+          .to.eql(global.Date.UTC(2016, 5, 30, 23, 59, 59, 999))
+        expect(Date.from('2016-02-X0').max)
+          .to.eql(global.Date.UTC(2016, 1, 20, 23, 59, 59, 999))
       })
 
       it('YYXY', () => {
@@ -469,6 +480,29 @@ describe('Date', () => {
           .to.eql(global.Date.UTC(2000, 0, 4, 0, 0, 0, 0))
       })
 
+      it('YYYY-XM', () => {
+        expect(Date.from('2016-X1').min)
+          .to.eql(global.Date.UTC(2016, 0, 1, 0, 0, 0, 0))
+        expect(Date.from('2016-X2').min)
+          .to.eql(global.Date.UTC(2016, 1, 1, 0, 0, 0, 0))
+        expect(Date.from('2016-X0').min)
+          .to.eql(global.Date.UTC(2016, 9, 1, 0, 0, 0, 0))
+      })
+
+      it('YYYY-MM-XD', () => {
+        expect(Date.from('2016-06-X1').min)
+          .to.eql(global.Date.UTC(2016, 5, 1, 0, 0, 0, 0))
+        expect(Date.from('2016-06-X0').min)
+          .to.eql(global.Date.UTC(2016, 5, 10, 0, 0, 0, 0))
+      })
+
+      it('YYYY-XM-XD', () => {
+        expect(Date.from('2016-X2-X0').min)
+          .to.eql(global.Date.UTC(2016, 1, 10, 0, 0, 0, 0))
+        expect(Date.from('2016-X2-X0').max)
+          .to.eql(global.Date.UTC(2016, 11, 30, 23, 59, 59, 999))
+      })
+
       it('YXYY-MX-XD', () => {
         expect(Date.from('2X12-1X-X4').min)
           .to.eql(global.Date.UTC(2012, 9, 4, 0, 0, 0, 0))
@@ -513,6 +547,14 @@ describe('Date', () => {
       expect(new Date([2014, 3, 15]).edtf).to.eql('2014-04-15')
       expect(new Date([2016, 1, 29]).edtf).to.eql('2016-02-29')
       expect(new Date([2015, 1, 29]).edtf).to.eql('2015-03-01')
+    })
+
+    it('YYYY-XM and YYYY-MM-XD', () => {
+      expect(Date.from('2016-X0').edtf).to.eql('2016-X0')
+      expect(Date.from('2016-X2').edtf).to.eql('2016-X2')
+      expect(Date.from('2016-01-X0').edtf).to.eql('2016-01-X0')
+      expect(Date.from('2016-X0-15').edtf).to.eql('2016-X0-15')
+      expect(Date.from('2016-X2-X0').edtf).to.eql('2016-X2-X0')
     })
 
     it('YYYY-MM-XX', () =>

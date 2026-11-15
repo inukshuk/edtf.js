@@ -57,11 +57,16 @@ export class Bitmask {
   }
 
   static values(mask, digit = 0, normalize = true) {
-    let num = Bitmask.numbers(mask, digit).split('')
-    let values = [Number(num.slice(0, 4).join(''))]
+    let num = Bitmask.numbers(mask, digit)
+    let values = [num.slice(0, 4)]
 
-    if (num.length > 4) values.push(Number(num.slice(4, 6).join('')))
-    if (num.length > 6) values.push(Number(num.slice(6, 8).join('')))
+    if (num.length > 4) values.push(num.slice(4, 6))
+    if (num.length > 6) values.push(num.slice(6, 8))
+
+    if (normalize && !digit)
+      return new Bitmask(Bitmask.compute(mask)).min(values)
+
+    values = values.map(Number)
 
     return normalize ? Bitmask.normalize(values) : values
   }
@@ -194,11 +199,14 @@ export class Bitmask {
 
     switch (this.test(Bitmask.MONTH)) {
     case Bitmask.MONTH:
-    case Bitmask.XM:
       month = 0
       break
     case Bitmask.MX:
       month = (month < 9) ? 0 : 9
+      break
+    case Bitmask.XM:
+      month = (month + 1) % 10
+      month = (month === 0) ? 9 : month - 1
       break
     }
 
@@ -214,7 +222,7 @@ export class Bitmask {
       day = max(1, floor(day / 10) * 10)
       break
     case Bitmask.XD:
-      day = max(1, day % 10)
+      day = (day % 10 === 0) ? 10 : day % 10
       break
     }
 

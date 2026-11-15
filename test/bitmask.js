@@ -79,8 +79,11 @@ describe('Bitmask', () => {
       expect(new Bitmask('yyyymxdd').min(['2019', '11'])).to.eql([2019, 9])
       expect(new Bitmask('yyyymxdd').min(['2019', '12'])).to.eql([2019, 9])
 
-      expect(new Bitmask('yyyyxmdd').min(['2019', '03'])).to.eql([2019, 0])
-      expect(new Bitmask('yyyyxmdd').min(['2019', '12'])).to.eql([2019, 0])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '03'])).to.eql([2019, 2])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '12'])).to.eql([2019, 1])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '02'])).to.eql([2019, 1])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '01'])).to.eql([2019, 0])
+      expect(new Bitmask('yyyyxmdd').min(['2019', '10'])).to.eql([2019, 9])
     })
 
     it('day', () => {
@@ -105,7 +108,9 @@ describe('Bitmask', () => {
       expect(new Bitmask('yyyymmxd').min(['2019', '01', '31']))
         .to.eql([2019, 0, 1])
       expect(new Bitmask('yyyymmxd').min(['2019', '01', '30']))
-        .to.eql([2019, 0, 1])
+        .to.eql([2019, 0, 10])
+      expect(new Bitmask('yyyymmxd').min(['2019', '01', '10']))
+        .to.eql([2019, 0, 10])
     })
   })
 
