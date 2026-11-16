@@ -86,6 +86,52 @@ describe('Date', () => {
     })
   })
 
+  describe('stepping over unspecified digits', () => {
+    const same = (date, edtf) => {
+      let parsed = Date.from(edtf)
+      expect(date.edtf).to.eql(edtf)
+      expect(date.values).to.eql(parsed.values)
+      expect(date.min).to.eql(parsed.min)
+      expect(date.max).to.eql(parsed.max)
+    }
+
+    it('YYYX', () => {
+      same(Date.from('201X').next(), '202X')
+      same(Date.from('201X').prev(), '200X')
+    })
+
+    it('YYXX', () => {
+      same(Date.from('20XX').prev(), '19XX')
+    })
+
+    it('-YYYX', () => {
+      same(Date.from('-201X').next(), '-200X')
+      same(Date.from('-201X').prev(), '-202X')
+    })
+
+    it('YYYY-MX', () => {
+      same(Date.from('2016-0X').prev(), '2015-1X')
+      same(Date.from('2016-0X').next(), '2016-1X')
+    })
+
+    it('YYYY-MM-XX', () => {
+      same(Date.from('2016-01-XX').prev(), '2015-12-XX')
+      same(Date.from('2016-01-XX').next(), '2016-02-XX')
+    })
+
+    it('YYYY-MM-DX', () => {
+      same(Date.from('2016-01-1X').prev(), '2016-01-0X')
+      same(Date.from('2016-01-1X').next(), '2016-01-2X')
+    })
+
+    it('by more than one', () => {
+      same(Date.from('201X').next(2), '203X')
+      same(Date.from('201X').prev(2), '199X')
+      same(Date.from('-201X').next(2), '-199X')
+      same(Date.from('2016-01-1X').next(2), '2016-01-3X')
+    })
+  })
+
   describe('.prev()', () => {
     it('YYYX', () => {
       let date = new Date({

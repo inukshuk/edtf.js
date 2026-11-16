@@ -4,7 +4,7 @@ import { ExtDateTime } from './interface.js'
 import { mixin } from './mixin.js'
 import { format } from './format.js'
 
-const { abs } = Math
+const { abs, sign } = Math
 const { isArray } = Array
 
 const P = new WeakMap()
@@ -146,7 +146,7 @@ export class Date extends globalThis.Date {
 
   get max() {
     // TODO uncertain and approximate
-    return (this.atomic) ? this.getTime() : this.next().getTime() - 1
+    return (this.atomic) ? this.getTime() : step(this, 1).getTime() - 1
   }
 
   get year() {
@@ -194,21 +194,23 @@ export class Date extends globalThis.Date {
    * unspecified masks are copied.
    */
   next(k = 1) {
-    let { values, unspecified, uncertain, approximate } = this
+    if (!this.unspecified.value) return step(this, k)
 
-    if (unspecified.value) {
+    // Step one block of the mask at a time and hold the lowest
+    // unspecified digits, as when parsed.
+    let date = this
+
+    for (let i = 0; i < abs(k); ++i) {
+      let { values, unspecified, uncertain, approximate } = step(date, sign(k))
       let bc = values[0] < 0
 
-      values = (k < 0) ^ bc ?
-        unspecified.min(values.map(Date.pad)) :
-        unspecified.max(values.map(Date.pad))
-
+      values = unspecified.min(values.map(Date.pad))
       if (bc) values[0] = -values[0]
+
+      date = new Date({ values, unspecified, uncertain, approximate })
     }
 
-    values.push(values.pop() + k)
-
-    return new Date({ values, unspecified, uncertain, approximate })
+    return date
   }
 
   prev(k = 1) {
@@ -273,5 +275,24 @@ export class Date extends globalThis.Date {
 }
 
 mixin(Date, ExtDateTime)
+
+// Steps from the last date the mask allows in the step's direction.
+function step(date, k) {
+  let { values, unspecified, uncertain, approximate } = date
+
+  if (unspecified.value) {
+    let bc = values[0] < 0
+
+    values = (k < 0) ^ bc ?
+      unspecified.min(values.map(Date.pad)) :
+      unspecified.max(values.map(Date.pad))
+
+    if (bc) values[0] = -values[0]
+  }
+
+  values.push(values.pop() + k)
+
+  return new Date({ values, unspecified, uncertain, approximate })
+}
 
 export const pad = Date.pad
