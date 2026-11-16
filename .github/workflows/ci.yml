@@ -12,12 +12,11 @@ jobs:
       matrix:
         node:
           - 'v22'
-          - 'v23'
           - 'v24'
-          - 'v25'
+          - 'v26'
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
       - name: Install dependencies
@@ -30,8 +29,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 'latest'
       - name: Install dependencies
@@ -44,8 +43,8 @@ jobs:
     environment: CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 'latest'
       - name: Install dependencies
