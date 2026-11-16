@@ -63,12 +63,10 @@ export class Bitmask {
     if (num.length > 4) values.push(num.slice(4, 6))
     if (num.length > 6) values.push(num.slice(6, 8))
 
-    if (normalize && !digit)
-      return new Bitmask(Bitmask.compute(mask)).min(values)
+    if (!normalize) return values.map(Number)
 
-    values = values.map(Number)
-
-    return normalize ? Bitmask.normalize(values) : values
+    let bitmask = new Bitmask(Bitmask.compute(mask))
+    return digit ? bitmask.max(values) : bitmask.min(values)
   }
 
   static numbers(mask, digit = 0) {

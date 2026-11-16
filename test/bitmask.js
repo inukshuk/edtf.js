@@ -176,7 +176,7 @@ describe('Bitmask', () => {
     it('XXXXMMXX', () => {
       expect(Bitmask.values('XXXX05XX')).to.eql([0, 4, 1])
       expect(Bitmask.values('XXXX05XX', 9)).to.eql([9999, 4, 31])
-      expect(Bitmask.values('XXXX02XX', 9)).to.eql([9999, 1, 29])
+      expect(Bitmask.values('XXXX02XX', 9)).to.eql([9999, 1, 28])
       expect(Bitmask.values('XXXX06XX', 9)).to.eql([9999, 5, 30])
     })
 
@@ -197,6 +197,20 @@ describe('Bitmask', () => {
       expect(Bitmask.values('XXXX0XXX', 9)).to.eql([9999, 8, 30])
       expect(Bitmask.values('XXXX1XXX')).to.eql([0, 9, 1])
       expect(Bitmask.values('XXXX1XXX', 9)).to.eql([9999, 11, 31])
+    })
+
+    it('XXXXMMXD', () => {
+      expect(Bitmask.values('XXXXXXX5')).to.eql([0, 0, 5])
+      expect(Bitmask.values('XXXXXXX5', 9)).to.eql([9999, 11, 25])
+      expect(Bitmask.values('XXXXXXX0')).to.eql([0, 0, 10])
+      expect(Bitmask.values('XXXXXXX0', 9)).to.eql([9999, 11, 30])
+    })
+
+    it('XXXXXMXX', () => {
+      expect(Bitmask.values('XXXXX0XX')).to.eql([0, 9, 1])
+      expect(Bitmask.values('XXXXX0XX', 9)).to.eql([9999, 9, 31])
+      expect(Bitmask.values('XXXXX2XX')).to.eql([0, 1, 1])
+      expect(Bitmask.values('XXXXX2XX', 9)).to.eql([9999, 11, 31])
     })
 
     it('XXXXMX', () => {
