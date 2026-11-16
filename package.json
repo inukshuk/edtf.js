@@ -19,6 +19,7 @@
     "./sample": "./src/sample.js",
     "./types": "./src/types.js"
   },
+  "packageManager": "npm",
   "scripts": {
     "lint": "eslint src test *.js",
     "compile": "nearleyc -o src/grammar.js src/edtf.ne || true",
